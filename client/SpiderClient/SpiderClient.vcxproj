@@ -169,7 +169,6 @@
     <ClCompile Include="RequestHandler.cpp" />
     <ClCompile Include="StaticTools.cpp" />
     <ClCompile Include="TCPClient.cpp" />
-    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AInputType.h" />
