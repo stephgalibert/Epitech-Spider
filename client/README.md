@@ -1,3 +1,0 @@
-# WinStroker
-
-A Windows keylogger
