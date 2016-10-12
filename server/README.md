@@ -1,2 +1,2 @@
 # SpiderServer
-C++ server for SpiderClient project
+C++ server for Spider project
