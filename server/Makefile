@@ -1,13 +1,3 @@
-##
-## Makefile for server in /home/galibe_s/project
-## 
-## Made by stephane galibert
-## Login   <galibe_s@epitech.net>
-## 
-## Started on  Fri Aug  5 21:12:57 2016 stephane galibert
-## Last update Wed Aug 24 22:29:06 2016 stephane galibert
-##
-
 NAME		=	./bin/server
 
 CXX		=	g++
@@ -53,6 +43,7 @@ CXXFLAGS	+=	-I./core/request/
 CXXFLAGS	+=	-I./utils/
 CXXFLAGS	+=	-I./shared/plugin/include/
 
+#LDFLAGS		+=	-L~/Libraries/Boost/lib/
 LDFLAGS		+=	-lpthread
 LDFLAGS		+=	-lboost_system
 LDFLAGS		+=	-lboost_filesystem
