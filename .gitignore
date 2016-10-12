@@ -1,6 +1,6 @@
 # visual studio
 *.VC.db
-*.suo
+*.VC.VC.opendb
 
 # Prerequisites
 *.d

@@ -9,6 +9,8 @@
 
 # define PAYLOAD __declspec(dllexport)
 
+/* test */
+
 HHOOK g_hKeyboardHook;
 HHOOK g_hMouseHook;
 HINSTANCE g_hInstance;
