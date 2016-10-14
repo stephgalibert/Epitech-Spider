@@ -155,24 +155,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\spider\spider\AInputType.cpp" />
-    <ClCompile Include="..\..\spider\spider\Distributor.cpp" />
     <ClCompile Include="..\..\spider\spider\InputKeyboard.cpp" />
     <ClCompile Include="..\..\spider\spider\InputMouse.cpp" />
     <ClCompile Include="..\..\spider\spider\JSONBuilder.cpp" />
-    <ClCompile Include="..\..\spider\spider\JSONReader.cpp" />
-    <ClCompile Include="..\..\spider\spider\Kill.cpp" />
-    <ClCompile Include="..\..\spider\spider\LogFile.cpp" />
-    <ClCompile Include="..\..\spider\spider\RequestBuilder.cpp" />
-    <ClCompile Include="..\..\spider\spider\RequestHandler.cpp" />
     <ClCompile Include="..\..\spider\spider\StaticTools.cpp" />
-    <ClCompile Include="..\..\spider\spider\TCPClient.cpp" />
     <ClCompile Include="Keylogger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Payload.cpp" />
     <ClCompile Include="Propagator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IPayload.h" />
     <ClInclude Include="Keylogger.h" />
     <ClInclude Include="KeyState.h" />
+    <ClInclude Include="Payload.h" />
     <ClInclude Include="Propagator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

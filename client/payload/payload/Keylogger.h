@@ -5,9 +5,9 @@
 #include <functional>
 #include <memory>
 
-#include "Distributor.h"
 #include "StaticTools.h"
 #include "KeyState.h"
+#include "IDistributor.h"
 
 #include "AInputType.h"
 #include "InputKeyboard.h"
@@ -27,7 +27,7 @@ public:
 	void keyReleased(LPKBDLLHOOKSTRUCT key);
 	void mouseClick(LPMSLLHOOKSTRUCT mouse);
 
-	void setDistributor(std::shared_ptr<Distributor> distributor);
+	void setDistributor(std::shared_ptr<IDistributor> distributor);
 
 private:
 	std::string key_Enter(KeyState v);
@@ -46,7 +46,6 @@ private:
 	KeyState _maj;
 	KeyState _shift;
 
-	//Diffuser _diffuser;
-	std::shared_ptr<Distributor> _distributor;
+	std::shared_ptr<IDistributor> _distributor;
 };
 

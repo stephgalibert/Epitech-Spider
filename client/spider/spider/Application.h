@@ -7,19 +7,16 @@
 #include <memory>
 
 #include "Distributor.h"
-#include "DLLHandler.h"
 #include "StaticTools.h"
+#include "IPayload.h"
 
 #include <Windows.h>
 #include <ShlObj.h>
 #include <TlHelp32.h>
 
-# define APP_NAME "spider.exe"
+#include "WinDlLoader.h"
 
-typedef void(__stdcall *KBHookBuilder)(void);
-typedef void(__stdcall *KBHookDeleter)(void);
-typedef void(*AppliPathSetter)(std::string const&);
-typedef void(*DistributorSetter)(std::shared_ptr<Distributor>);
+# define APP_NAME "spider.exe"
 
 class Application
 {
@@ -34,12 +31,8 @@ public:
 	static bool Existing(void);
 private:
 	std::string _appliPath;
+	WinDlLoader<IPayload> _dllLoader;
+	IPayload *_payload;
 
-	DLLHandler _dllHandler;
-	KBHookBuilder _hookBuilder;
-	KBHookDeleter _hookDeleter;
-	AppliPathSetter _appliPathSetter;
-	DistributorSetter _distriSetter;
-
-	std::shared_ptr<Distributor> _distributor;
+	std::shared_ptr<IDistributor> _distributor;
 };

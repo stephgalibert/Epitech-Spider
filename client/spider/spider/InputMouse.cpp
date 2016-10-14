@@ -10,11 +10,12 @@ InputMouse::~InputMouse()
 
 void InputMouse::format(std::streamoff logSize)
 {
+	std::string winName = StaticTools::GetActiveWindowTitle();
 	_format = "";
 
 	if (logSize > 0)
 		_format = "\n";
-	_format += StaticTools::GetDate() + " | " + StaticTools::GetActiveWindowTitle() + " | ";
+	_format += StaticTools::GetDate() + " | " + ((winName.empty()) ? "NONE" : winName) + " | ";
 }
 
 AInputType &InputMouse::operator>>(LogFile &logger)
@@ -23,7 +24,7 @@ AInputType &InputMouse::operator>>(LogFile &logger)
 	return (*this);
 }
 
-AInputType &InputMouse::operator>>(TCPClient &client)
+AInputType &InputMouse::operator>>(IClient &client)
 {
 	JSONBuilder builder;
 

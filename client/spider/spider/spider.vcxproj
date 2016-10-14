@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Libraries\OpenSSL\build\debug\include;C:\Libraries\Boost\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Github\Spider\client\payload\payload;C:\Libraries\OpenSSL\build\debug\include;C:\Libraries\Boost\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_WIN32_WINNT=0x0501 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -123,7 +123,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Libraries\OpenSSL\build\release\include;C:\Libraries\Boost\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Github\Spider\client\payload\payload;C:\Libraries\OpenSSL\build\release\include;C:\Libraries\Boost\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-D_WIN32_WINNT=0x0501 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -157,7 +157,6 @@
     <ClCompile Include="AInputType.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Distributor.cpp" />
-    <ClCompile Include="DLLHandler.cpp" />
     <ClCompile Include="InputKeyboard.cpp" />
     <ClCompile Include="InputMouse.cpp" />
     <ClCompile Include="JSONBuilder.cpp" />
@@ -171,10 +170,12 @@
     <ClCompile Include="TCPClient.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ADlLoader.h" />
     <ClInclude Include="AInputType.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Distributor.h" />
-    <ClInclude Include="DLLHandler.h" />
+    <ClInclude Include="IClient.h" />
+    <ClInclude Include="IDistributor.h" />
     <ClInclude Include="InputKeyboard.h" />
     <ClInclude Include="InputMouse.h" />
     <ClInclude Include="IReader.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="RequestHandler.h" />
     <ClInclude Include="StaticTools.h" />
     <ClInclude Include="TCPClient.h" />
+    <ClInclude Include="WinDlLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

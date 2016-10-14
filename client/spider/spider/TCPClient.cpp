@@ -64,7 +64,7 @@ bool TCPClient::isConnected(void) const
 	return (_connected);
 }
 
-TCPClient &TCPClient::operator<<(std::string const& data)
+IClient &TCPClient::operator<<(std::string const& data)
 {
 	write(data);
 	return (*this);

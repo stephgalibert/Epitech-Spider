@@ -8,11 +8,6 @@
 #include <Windows.h>
 #include <shellapi.h>
 
-/*
-	pour le startup, faire modulable (.dll startup by registry || .dll startup by folder)
-	changer la location des fichiers log et dll (les mettre dans user local)
-*/
-
 int main(int ac, char **av);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,

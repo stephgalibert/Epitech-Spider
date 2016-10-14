@@ -1,6 +1,4 @@
 #include "Kill.h"
-#include "TCPClient.h"
-
 Kill::Kill(void)
 {
 }
@@ -9,7 +7,7 @@ Kill::~Kill(void)
 {
 }
 
-std::string Kill::execute(TCPClient &client, JSONReader &reader)
+std::string Kill::execute(IClient &client, JSONReader &reader)
 {
 	(void)reader;
 	(void)client;

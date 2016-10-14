@@ -1,11 +1,10 @@
 #pragma once
 
 #include "JSONReader.h"
-
-class TCPClient;
+#include "IClient.h"
 
 struct IRequest
 {
 	virtual ~IRequest(void) {}
-	virtual std::string execute(TCPClient &client, JSONReader &reader) = 0;
+	virtual std::string execute(IClient &client, JSONReader &reader) = 0;
 };

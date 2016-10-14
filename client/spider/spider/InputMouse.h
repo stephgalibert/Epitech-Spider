@@ -10,7 +10,7 @@ public:
 
 	virtual void format(std::streamoff logSize);
 	virtual AInputType &operator>>(LogFile &logger);
-	virtual AInputType &operator>>(TCPClient &client);
+	virtual AInputType &operator>>(IClient &client);
 private:
 	std::string _format;
 };

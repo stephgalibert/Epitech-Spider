@@ -9,7 +9,7 @@ RequestHandler::~RequestHandler(void)
 {
 }
 
-std::string RequestHandler::request(TCPClient &client, std::string const& data)
+std::string RequestHandler::request(IClient &client, std::string const& data)
 {
   try {
     JSONReader reader;
@@ -38,7 +38,7 @@ std::string RequestHandler::request(TCPClient &client, std::string const& data)
   }
 }
 
-std::string RequestHandler::cmd(TCPClient &client, JSONReader &reader)
+std::string RequestHandler::cmd(IClient &client, JSONReader &reader)
 {
   std::string ret;
 

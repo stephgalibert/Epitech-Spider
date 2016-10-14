@@ -2,26 +2,23 @@
 
 #include <iostream>
 #include <string>
-#include <memory>
 #include <cstdio>
 
-#include "JSONBuilder.h"
-#include "AInputType.h"
-#include "LogFile.h"
 #include "TCPClient.h"
+#include "JSONBuilder.h"
+#include "LogFile.h"
+#include "IDistributor.h"
 
-#include <Windows.h>
-
-class Distributor : private std::enable_shared_from_this<Distributor>
+class Distributor : public IDistributor
 {
 public:
-	Distributor();
-	~Distributor();
+	Distributor(void);
+	virtual ~Distributor(void);
 
-	void init(void);
-	void destroy(void);
+	virtual void init(void);
+	virtual void destroy(void);
 
-	Distributor &operator<<(AInputType &entry);
+	virtual IDistributor &operator<<(AInputType &entry);
 
 private:
 	void sendToSend(void);

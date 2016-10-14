@@ -21,7 +21,7 @@ void Distributor::destroy(void)
 	_client.disconnect();
 }
 
-Distributor &Distributor::operator<<(AInputType &entry)
+IDistributor &Distributor::operator<<(AInputType &entry)
 {
 	entry.format(_log.getSize());
 

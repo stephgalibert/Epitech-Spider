@@ -11,24 +11,25 @@
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
 
+#include "IClient.h"
 #include "StaticTools.h"
 #include "RequestHandler.h"
 
-class TCPClient
+class TCPClient : public IClient
 {
 public:
 	TCPClient(void);
-	~TCPClient(void);
+	virtual ~TCPClient(void);
 
-	void connect(std::string const& remote, std::string const& port);
-	void write(std::string const& data);
-	void disconnect(void);
+	virtual void connect(std::string const& remote, std::string const& port);
+	virtual void write(std::string const& data);
+	virtual void disconnect(void);
 
-	void run(void);
+	virtual void run(void);
 
-	bool isConnected(void) const;
+	virtual bool isConnected(void) const;
 
-	TCPClient &operator<<(std::string const& data);
+	virtual IClient &operator<<(std::string const& data);
 private:
 	void read(void);
 	void write(void);

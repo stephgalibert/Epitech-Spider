@@ -10,6 +10,7 @@
 #include <boost/core/noncopyable.hpp>
 #include <boost/algorithm/string.hpp>
 
+#include "IClient.h"
 #include "JSONBuilder.h"
 #include "JSONReader.h"
 #include "RequestBuilder.h"
@@ -22,9 +23,9 @@ public:
   RequestHandler(void);
   ~RequestHandler(void);
 
-  std::string request(TCPClient &client, std::string const& data);
+  std::string request(IClient &client, std::string const& data);
 
  private:
-  std::string cmd(TCPClient &client, JSONReader &reader);
+  std::string cmd(IClient &client, JSONReader &reader);
   RequestBuilder _builder;
 };
