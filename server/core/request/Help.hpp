@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Aug 16 10:50:55 2016 stephane galibert
-// Last update Thu Aug 18 13:32:33 2016 stephane galibert
+// Last update Wed Oct 19 15:30:16 2016 stephane galibert
 //
 
 #pragma once
@@ -14,7 +14,7 @@
 
 #include "IRequest.hpp"
 
-class Help : public IRequest
+class Help// : public IRequest
 {
 public:
   typedef std::shared_ptr<AConnection> Owner;

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sat Aug 20 19:29:03 2016 stephane galibert
-// Last update Wed Aug 24 22:28:01 2016 stephane galibert
+// Last update Wed Oct 19 17:09:21 2016 stephane galibert
 //
 
 #include "Nc.hpp"
@@ -18,7 +18,16 @@ Nc::~Nc(void)
 {
 }
 
-std::string Nc::execute(AConnection::shared own, JSONReader &reader)
+void Nc::execute(AConnection::shared own, std::string const& param, Packet **reply)
+{
+  (void)reply;
+  if (param.size() == 12) {
+    own->setMacAddress(param);
+    own->connectToDB();
+  }
+}
+
+/*std::string Nc::execute(AConnection::shared own, JSONReader &reader)
 {
   Params av;
 
@@ -45,4 +54,4 @@ std::string Nc::badParameter(void)
   builder.addValue("type", "error");
   builder.addValue("name", "Nc: bad parameter");
   return (builder.get());
-}
+  }*/

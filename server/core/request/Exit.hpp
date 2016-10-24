@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug 14 08:27:31 2016 stephane galibert
-// Last update Thu Aug 18 14:27:27 2016 stephane galibert
+// Last update Wed Oct 19 16:20:53 2016 stephane galibert
 //
 
 #pragma once
@@ -20,5 +20,7 @@ public:
   Exit(void);
   virtual ~Exit(void);
 
-  virtual std::string execute(AConnection::shared own, JSONReader &reader);
+  //virtual std::string execute(AConnection::shared own, JSONReader &reader);
+  virtual void execute(AConnection::shared own, std::string const& param,
+		       Packet **reply);
 };

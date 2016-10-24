@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:05:52 2016 stephane galibert
-// Last update Thu Aug 18 13:45:28 2016 stephane galibert
+// Last update Wed Oct 19 14:44:46 2016 stephane galibert
 //
 
 #pragma once
@@ -19,8 +19,6 @@
 #include <boost/asio/ssl.hpp>
 
 #include "AConnection.hpp"
-
-//#include "Database.hpp"
 
 class TCPConnection : public AConnection
 {
@@ -36,7 +34,8 @@ public:
   virtual ~TCPConnection(void);
 
   virtual void start(void);
-  virtual void write(std::string const& data);
+  //virtual void write(std::string const& data);
+  virtual void write(Packet *packet);
 
   SSLSocket::lowest_layer_type& socket(void);
 
@@ -52,12 +51,6 @@ protected:
   SSLSocket _socket;
 
   boost::asio::streambuf _read;
-  std::queue<std::string> _toWrites;
+  //std::queue<std::string> _toWrites;
+  std::queue<Packet *> _toWrites;
 };
-
-/*void writeLog(std::string const& data);
-  void setEnable(bool value);
-  bool isEnabled(void) const;
-  void openLogFile(void);
-  void closeLogFile(void);
-  std::ofstream _ofs;*/

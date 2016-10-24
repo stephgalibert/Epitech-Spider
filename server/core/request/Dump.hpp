@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug 14 07:25:50 2016 stephane galibert
-// Last update Sun Aug 21 22:04:18 2016 stephane galibert
+// Last update Wed Oct 19 15:29:50 2016 stephane galibert
 //
 
 #pragma once
@@ -16,7 +16,7 @@
 
 #include "IRequest.hpp"
 
-class Dump : public IRequest
+class Dump// : public IRequest
 {
 public:
   typedef std::vector<std::pair<std::string, std::string> > Params;

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug 12 03:01:15 2016 stephane galibert
-// Last update Wed Aug 24 22:30:24 2016 stephane galibert
+// Last update Wed Oct 19 14:44:33 2016 stephane galibert
 //
 
 #pragma once
@@ -19,6 +19,7 @@
 #include "PluginManager.hpp"
 #include "ServerConfig.hpp"
 #include "Privilege.hpp"
+#include "Protocol.hpp"
 
 class ConnectionManager;
 class RequestHandler;
@@ -36,7 +37,7 @@ public:
   virtual ~AConnection(void);
 
   virtual void start(void) = 0;
-  virtual void write(std::string const& data) = 0;
+  virtual void write(Packet *packet) = 0;
 
   virtual void do_write(boost::system::error_code const& ec, size_t len) = 0;
   virtual void do_read(boost::system::error_code const& ec, size_t len) = 0;

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:04:39 2016 stephane galibert
-// Last update Wed Aug 24 22:26:52 2016 stephane galibert
+// Last update Mon Oct 24 11:23:24 2016 stephane galibert
 //
 
 #include "RequestHandler.hpp"
@@ -18,9 +18,10 @@ RequestHandler::~RequestHandler(void)
 {
 }
 
-std::string RequestHandler::request(AConnection::shared own, std::string const& data)
+void RequestHandler::request(AConnection::shared own, Packet const* received,
+			     Packet **reply)
 {
-  try {
+  /*try {
     JSONReader reader;
     std::string type;
 
@@ -43,10 +44,19 @@ std::string RequestHandler::request(AConnection::shared own, std::string const& 
     builder.addValue("type", "error");
     builder.addValue("name", "Bad JSON");
     return (builder.get());
+    }*/
+
+  if (received && received->type != PacketType::PT_Error && received->type != PacketType::PT_Response) {
+    std::cout << "received type: " << (int)received->type << std::endl;
+    std::unique_ptr<IRequest> ptr(_builder.create(received->type));
+    if (ptr) {
+      std::string param(received->data, received->size);
+      ptr->execute(own, param, reply);
+    }
   }
 }
 
-std::string RequestHandler::cmd(AConnection::shared own, JSONReader &reader)
+/*std::string RequestHandler::cmd(AConnection::shared own, JSONReader &reader)
 {
   std::string ret;
 
@@ -71,7 +81,7 @@ std::string RequestHandler::cmd(AConnection::shared own, JSONReader &reader)
     ret = builder.get();
   }
   return (ret);
-}
+  }*/
 
 /*std::string RequestHandler::cmd_key(AConnection::shared own, JSONReader &reader)
 {

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug 21 22:03:30 2016 stephane galibert
-// Last update Sun Aug 21 22:04:22 2016 stephane galibert
+// Last update Wed Oct 19 16:19:09 2016 stephane galibert
 //
 
 #pragma once
@@ -14,7 +14,7 @@
 
 #include "IRequest.hpp"
 
-class SQL : public IRequest
+class SQL// : public IRequest
 {
 public:
   typedef std::vector<std::pair<std::string, std::string> > Params;

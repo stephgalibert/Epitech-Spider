@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug 14 09:35:00 2016 stephane galibert
-// Last update Thu Aug 18 14:28:30 2016 stephane galibert
+// Last update Wed Oct 19 16:20:10 2016 stephane galibert
 //
 
 #pragma once
@@ -16,7 +16,7 @@
 
 #include "IRequest.hpp"
 
-class Reload : public IRequest
+class Reload// : public IRequest
 {
 public:
   typedef std::vector<std::pair<std::string, std::string> > Params;

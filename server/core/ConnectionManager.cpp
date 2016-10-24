@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:04:57 2016 stephane galibert
-// Last update Thu Aug 18 13:39:50 2016 stephane galibert
+// Last update Wed Oct 19 17:00:16 2016 stephane galibert
 //
 
 #include "ConnectionManager.hpp"
@@ -33,8 +33,9 @@ void ConnectionManager::leave(AConnection::shared connection)
 
 void ConnectionManager::broadcast(std::string const& msg)
 {
-  for (auto it : _connections)
-    it->write(msg);
+  (void)msg;
+  //for (auto it : _connections)
+  //it->write(msg);
 }
 
 void ConnectionManager::closeAll(void)
