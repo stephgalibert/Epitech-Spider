@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:00 2016 stephane galibert
-// Last update Mon Oct 24 11:25:38 2016 stephane galibert
+// Last update Mon Oct 24 12:03:25 2016 stephane galibert
 //
 
 #include "TCPConnection.hpp"
@@ -93,21 +93,21 @@ void TCPConnection::do_write(boost::system::error_code const& ec, size_t)
 void TCPConnection::do_read(boost::system::error_code const& ec, size_t /* len */)
 {
   if (!ec) {
-    /*Packet const* packet = boost::asio::buffer_cast<Packet const *>(_read.data());
+    Packet const* packet = boost::asio::buffer_cast<Packet const *>(_read.data());
 
     std::cout << "read: " << std::endl
 	      << "size: " << packet->size << std::endl
 	      << "type: " << (int)packet->type << std::endl
 	      << "data: " << std::string(packet->data, packet->size) << std::endl;
 
-	      _read.consume(sizeof(Packet) + (packet->size * sizeof(char)));*/
+    _read.consume(sizeof(Packet) + (packet->size * sizeof(char)));
 
-    /*Packet *reply = NULL;
+    Packet *reply = NULL;
     _reqHandler.request(shared_from_this(), packet, &reply);
 
     if (reply) {
       write(reply);
-      }*/
+    }
 
     if (_running) {
       read();

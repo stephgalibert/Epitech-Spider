@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Mon Aug  8 20:13:59 2016 stephane galibert
-// Last update Mon Aug 22 19:23:44 2016 stephane galibert
+// Last update Mon Oct 24 12:00:49 2016 stephane galibert
 //
 
 #pragma once
@@ -27,6 +27,7 @@
 
 #include "JSONBuilder.hpp"
 #include "JSONReader.hpp"
+#include "Protocol.hpp"
 
 #include "IUserInterface.hpp"
 #include "PluginRegister.hpp"
@@ -68,16 +69,18 @@ private:
 
   bool verify_crt(bool preverified, boost::asio::ssl::verify_context& ctx);
 
-  std::string read(void);
-  void write(std::string const& data);
+  //std::string read(void);
+  Packet *read(void);
+  //void write(std::string const& data);
+  void write(Packet *packet);
 
-  void cmd_help(std::vector<std::string> const& av);
-  void cmd_dump(std::vector<std::string> const& av);
+  /*void cmd_help(std::vector<std::string> const& av);
+    void cmd_dump(std::vector<std::string> const& av);*/
   void cmd_exit(std::vector<std::string> const& av);
-  void cmd_reload(std::vector<std::string> const& av);
+  /*void cmd_reload(std::vector<std::string> const& av);
   void cmd_set(std::vector<std::string> const& av);
   void cmd_get(std::vector<std::string> const& av);
-  void cmd_sql(std::vector<std::string> const& av);
+  void cmd_sql(std::vector<std::string> const& av);*/
   std::map<std::string, Cmds> _cmds;
 
   boost::asio::io_service _io_service;

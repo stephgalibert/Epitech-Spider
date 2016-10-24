@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug  7 19:09:05 2016 stephane galibert
-// Last update Mon Aug 22 19:23:24 2016 stephane galibert
+// Last update Mon Oct 24 12:52:13 2016 stephane galibert
 //
 
 #include "Console.hpp"
@@ -15,13 +15,13 @@ Console::Console(void)
     _context(boost::asio::ssl::context::sslv23),
     _socket(_io_service, _context)
 {
-  _cmds["help"] = std::bind(&Console::cmd_help, this, std::placeholders::_1);
-  _cmds["dump"] = std::bind(&Console::cmd_dump, this, std::placeholders::_1);
+  /*_cmds["help"] = std::bind(&Console::cmd_help, this, std::placeholders::_1);
+    _cmds["dump"] = std::bind(&Console::cmd_dump, this, std::placeholders::_1);*/
   _cmds["exit"] = std::bind(&Console::cmd_exit, this, std::placeholders::_1);
-  _cmds["reload"] = std::bind(&Console::cmd_reload, this, std::placeholders::_1);
+  /*_cmds["reload"] = std::bind(&Console::cmd_reload, this, std::placeholders::_1);
   _cmds["set"] = std::bind(&Console::cmd_set, this, std::placeholders::_1);
   _cmds["get"] = std::bind(&Console::cmd_get, this, std::placeholders::_1);
-  _cmds["sql"] = std::bind(&Console::cmd_sql, this, std::placeholders::_1);
+  _cmds["sql"] = std::bind(&Console::cmd_sql, this, std::placeholders::_1);*/
 
   _running = false;
 }
@@ -146,29 +146,29 @@ bool Console::verify_crt(bool preverified, boost::asio::ssl::verify_context& ctx
   return (preverified);
 }
 
-std::string Console::read(void)
+Packet *Console::read(void)
 {
+  boost::system::error_code ec;
   boost::array<char, 1024> buf;
-  boost::system::error_code ec;
-  size_t len = 0;
 
-  len = _socket.read_some(boost::asio::buffer(buf), ec);
+  _socket.read_some(boost::asio::buffer(buf), ec);
   if (ec) {
     throw (std::runtime_error(ec.message()));
   }
-  return (std::string(buf.data(), len));
+  return (reinterpret_cast<Packet *>(buf.data()));
 }
 
-void Console::write(std::string const& data)
+void Console::write(Packet *packet)
 {
   boost::system::error_code ec;
-  boost::asio::write(_socket, boost::asio::buffer(data), ec);
+  boost::asio::write(_socket, boost::asio::buffer(packet, sizeof(Packet) + packet->size), ec);
   if (ec) {
     throw (std::runtime_error(ec.message()));
   }
+  free(packet);
 }
 
-void Console::cmd_help(std::vector<std::string> const& av)
+/*void Console::cmd_help(std::vector<std::string> const& av)
 {
   JSONBuilder builder;
   JSONReader reader;
@@ -228,18 +228,45 @@ void Console::cmd_dump(std::vector<std::string> const& av)
     std::cerr << "UIConsole: " << e.what() << std::endl;
   }
 
-}
+  }*/
 
 void Console::cmd_exit(std::vector<std::string> const& av)
 {
-  (void)av;
-  JSONBuilder builder;
-  JSONReader reader;
+  size_t i = 0;
+  Packet *packet;
+  std::string data = av[0];
 
-  builder.addValue("type", "cmd");
-  builder.addValue("name", av[0]);
+  packet = (Packet *)malloc(sizeof(Packet) + (av[0].size() * sizeof(char) + 1));
+  packet->size = av[0].size();
+  packet->type = PacketType::PT_Kill;
+  while (i < av[0].size()) {
+    packet->data[i] = av[0][i];
+    ++i;
+  }
+  packet->data[i] = 0;
+
+  std::cout << "Console: write type: " << (int)packet->type
+	    << " data: " << std::string(packet->data, packet->size) << std::endl;
 
   try {
+    write(packet);
+    Packet *reply = read();
+
+    std::cout << "Console: read type: " << (int)packet->type
+	      << " data: " << std::string(packet->data, packet->size) << std::endl;
+
+    if (reply && reply->type == PacketType::PT_Response) {
+      std::string data(reply->data, reply->size);
+      std::cerr << data << std::endl;
+    }
+    else {
+      _running = false;
+    }
+  } catch (std::exception const& e) {
+    std::cerr << "uiconsole: exit: " << e.what() << std::endl;
+  }
+
+  /*try {
     write(builder.get());
     reader.readFromString(read());
     if (reader.getValue<std::string>("type") == "error") {
@@ -249,10 +276,10 @@ void Console::cmd_exit(std::vector<std::string> const& av)
     }
   } catch (std::exception const& e) {
     //std::cerr << "UIConsole: exit: " << e.what() << std::endl;
-  }
+    }*/
 }
 
-void Console::cmd_reload(std::vector<std::string> const& av)
+/*void Console::cmd_reload(std::vector<std::string> const& av)
 {
   JSONBuilder builder;
   JSONReader reader;
@@ -362,4 +389,4 @@ void Console::cmd_sql(std::vector<std::string> const& av)
   } catch (std::exception const& e) {
     std::cerr << "UIConsole: get: " << e.what() << std::endl;
   }
-}
+  }*/
