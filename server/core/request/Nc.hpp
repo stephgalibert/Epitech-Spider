@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sat Aug 20 19:26:06 2016 stephane galibert
-// Last update Wed Aug 24 22:28:02 2016 stephane galibert
+// Last update Wed Oct 19 15:53:52 2016 stephane galibert
 //
 
 #pragma once
@@ -22,7 +22,8 @@ public:
   Nc(void);
   virtual ~Nc(void);
 
-  virtual std::string execute(AConnection::shared own, JSONReader &reader);
+  virtual void execute(AConnection::shared own, std::string const& param,
+		       Packet **reply);
 private:
-  static std::string badParameter(void);
+  //*static std::string badParameter(void);
 };

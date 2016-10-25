@@ -11,7 +11,9 @@
 #include <IPHlpApi.h>
 #include <ShlObj.h>
 
-# pragma comment(lib, "IPHLPAPI.lib")
+#pragma comment(lib, "IPHLPAPI.lib")
+
+#include "Protocol.h"
 
 #define DLL_NAME "payload.dll"
 #define APP_NAME "spider.exe"
@@ -27,5 +29,6 @@ public:
 	static std::string GetProjectResourceDirectory(void);
 	static void CreateFolder(std::string const& path);
 	static std::string GetDLLPath(std::string const& appPath);
+	static Packet *CreatePacket(PacketType type, std::string const& data);
 };
 

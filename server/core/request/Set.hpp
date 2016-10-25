@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug 14 08:40:19 2016 stephane galibert
-// Last update Thu Aug 18 14:29:55 2016 stephane galibert
+// Last update Tue Oct 25 15:05:12 2016 stephane galibert
 //
 
 #pragma once
@@ -15,22 +15,21 @@
 #include <unordered_map>
 #include <functional>
 
-#include "IRequest.hpp"
+#include "ICommand.hpp"
 #include "Privilege.hpp"
 
-class Set : public IRequest
+class Set : public ICommand
 {
 public:
   typedef std::vector<std::pair<std::string, std::string> > Params;
-  typedef std::function<std::string(AConnection::shared, Params const&)> Cmds;
+  typedef std::function<Packet *(AConnection::shared, Params const&)> Cmds;
 public:
   Set(void);
   virtual ~Set(void);
 
-  virtual std::string execute(AConnection::shared own, JSONReader &reader);
+  virtual void execute(AConnection::shared own, JSONReader const& reader,
+		       Packet **reply);
 private:
-  std::string privilege(AConnection::shared own, Params const& av);
+  Packet *privilege(AConnection::shared own, Params const& av);
   std::unordered_map<std::string, Cmds> _cmds;
-
-  static std::string badParameter(void);
 };

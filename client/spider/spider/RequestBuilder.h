@@ -18,6 +18,7 @@
 
 #include <boost/core/noncopyable.hpp>
 
+#include "Protocol.h"
 #include "IRequest.h"
 #include "Kill.h"
 
@@ -29,8 +30,8 @@ public:
 	RequestBuilder(void);
 	~RequestBuilder(void);
 
-	std::unique_ptr<IRequest> create(std::string const& name) const;
+	std::unique_ptr<IRequest> create(PacketType type) const;
 private:
 	std::unique_ptr<IRequest> kill(void) const;
-	std::unordered_map<std::string, Cmds> _cmds;
+	std::unordered_map<PacketType, Cmds> _cmds;
 };

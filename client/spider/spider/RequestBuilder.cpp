@@ -2,17 +2,17 @@
 
 RequestBuilder::RequestBuilder(void)
 {
-  _cmds["kill"] = std::bind(&RequestBuilder::kill, this);
+  _cmds[PacketType::PT_Kill] = std::bind(&RequestBuilder::kill, this);
 }
 
 RequestBuilder::~RequestBuilder(void)
 {
 }
 
-std::unique_ptr<IRequest> RequestBuilder::create(std::string const& name) const
+std::unique_ptr<IRequest> RequestBuilder::create(PacketType type) const
 {
-  if (_cmds.find(name) != _cmds.cend()) {
-    return (std::move(_cmds.at(name)()));
+  if (_cmds.find(type) != _cmds.cend()) {
+    return (std::move(_cmds.at(type)()));
   }
   return (NULL);
 }

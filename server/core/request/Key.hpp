@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Wed Aug 24 22:24:41 2016 stephane galibert
-// Last update Wed Aug 24 22:25:00 2016 stephane galibert
+// Last update Wed Oct 19 15:54:08 2016 stephane galibert
 //
 
 #pragma once
@@ -22,7 +22,9 @@ public:
   Key(void);
   virtual ~Key(void);
 
-  virtual std::string execute(AConnection::shared own, JSONReader &reader);
+  //virtual std::string execute(AConnection::shared own, JSONReader &reader);
+  virtual void execute(AConnection::shared own, std::string const& param,
+		       Packet **packet);
 private:
-  static std::string badParameter(void);
+  //static std::string badParameter(void);
 };

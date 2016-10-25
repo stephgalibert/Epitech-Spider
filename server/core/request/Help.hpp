@@ -5,22 +5,26 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Aug 16 10:50:55 2016 stephane galibert
-// Last update Thu Aug 18 13:32:33 2016 stephane galibert
+// Last update Tue Oct 25 16:53:25 2016 stephane galibert
 //
 
 #pragma once
 
 #include <string>
+#include <sstream>
 
-#include "IRequest.hpp"
+#include "StaticTools.hpp"
+#include "Protocol.hpp"
+#include "ICommand.hpp"
 
-class Help : public IRequest
+class Help : public ICommand
 {
 public:
   typedef std::shared_ptr<AConnection> Owner;
+
 public:
   Help(void);
   virtual ~Help(void);
 
-  virtual std::string execute(Owner own, JSONReader &reader);
+  virtual void execute(Owner own, JSONReader const& reader, Packet **reply);
 };

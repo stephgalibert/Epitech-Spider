@@ -7,10 +7,10 @@ Kill::~Kill(void)
 {
 }
 
-std::string Kill::execute(IClient &client, JSONReader &reader)
+void Kill::execute(IClient &client, std::string const& param, Packet **toSend)
 {
-	(void)reader;
+	(void)param;
+	(void)toSend;
 	(void)client;
 	exit(1);
-	return ("");
 }

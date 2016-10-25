@@ -1,11 +1,11 @@
 //
-// Console.hpp for server in /home/galibe_s/project/SpiderServer/plugins/UIConsole
+// Console.hpp for console in /home/galibe_s/rendu/Spider/server/plugins/UIConsole
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Mon Aug  8 20:13:59 2016 stephane galibert
-// Last update Mon Aug 22 19:23:44 2016 stephane galibert
+// Started on  Tue Oct 25 16:15:32 2016 stephane galibert
+// Last update Tue Oct 25 17:18:12 2016 stephane galibert
 //
 
 #pragma once
@@ -27,6 +27,7 @@
 
 #include "JSONBuilder.hpp"
 #include "JSONReader.hpp"
+#include "Protocol.hpp"
 
 #include "IUserInterface.hpp"
 #include "PluginRegister.hpp"
@@ -68,8 +69,8 @@ private:
 
   bool verify_crt(bool preverified, boost::asio::ssl::verify_context& ctx);
 
-  std::string read(void);
-  void write(std::string const& data);
+  Packet const *read(void);
+  void write(Packet *packet);
 
   void cmd_help(std::vector<std::string> const& av);
   void cmd_dump(std::vector<std::string> const& av);

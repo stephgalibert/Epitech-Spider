@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:05:29 2016 stephane galibert
-// Last update Mon Aug 22 19:25:45 2016 stephane galibert
+// Last update Mon Oct 24 18:05:47 2016 stephane galibert
 //
 
 #pragma once
@@ -16,9 +16,12 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+#include "Protocol.hpp"
+
 class StaticTools
 {
 public:
   static std::string GetDate(void);
   static std::string GetHour(void);
+  static Packet *CreatePacket(PacketType type, std::string const& data);
 };

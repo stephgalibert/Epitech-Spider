@@ -159,8 +159,6 @@
     <ClCompile Include="Distributor.cpp" />
     <ClCompile Include="InputKeyboard.cpp" />
     <ClCompile Include="InputMouse.cpp" />
-    <ClCompile Include="JSONBuilder.cpp" />
-    <ClCompile Include="JSONReader.cpp" />
     <ClCompile Include="Kill.cpp" />
     <ClCompile Include="LogFile.cpp" />
     <ClCompile Include="main.cpp" />
@@ -178,12 +176,10 @@
     <ClInclude Include="IDistributor.h" />
     <ClInclude Include="InputKeyboard.h" />
     <ClInclude Include="InputMouse.h" />
-    <ClInclude Include="IReader.h" />
     <ClInclude Include="IRequest.h" />
-    <ClInclude Include="JSONBuilder.h" />
-    <ClInclude Include="JSONReader.h" />
     <ClInclude Include="Kill.h" />
     <ClInclude Include="LogFile.h" />
+    <ClInclude Include="Protocol.h" />
     <ClInclude Include="RequestBuilder.h" />
     <ClInclude Include="RequestHandler.h" />
     <ClInclude Include="StaticTools.h" />

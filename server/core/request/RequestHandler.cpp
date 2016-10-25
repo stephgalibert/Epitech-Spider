@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:04:39 2016 stephane galibert
-// Last update Wed Aug 24 22:26:52 2016 stephane galibert
+// Last update Tue Oct 25 16:36:16 2016 stephane galibert
 //
 
 #include "RequestHandler.hpp"
@@ -18,75 +18,57 @@ RequestHandler::~RequestHandler(void)
 {
 }
 
-std::string RequestHandler::request(AConnection::shared own, std::string const& data)
+void RequestHandler::request(AConnection::shared own, Packet const* received,
+			     Packet **reply)
 {
-  try {
-    JSONReader reader;
-    std::string type;
+  std::unique_ptr<IRequest> ptr;
 
-    reader.readFromString(data);
-    type = reader.getValue<std::string>("type");
-    if (type == "cmd") {
-      return (cmd(own, reader));
-    }
-    else if (type == "result" || type == "error") {
-      return ("");
-    }
-
-    JSONBuilder builder;
-    builder.addValue("type", "error");
-    builder.addValue("name", type + ": Unknown type");
-    return (builder.get());
-
-  } catch (std::exception const& e) {
-    JSONBuilder builder;
-    builder.addValue("type", "error");
-    builder.addValue("name", "Bad JSON");
-    return (builder.get());
-  }
-}
-
-std::string RequestHandler::cmd(AConnection::shared own, JSONReader &reader)
-{
-  std::string ret;
-
-  try {
-    std::string name = reader.getValue<std::string>("name");
-    std::unique_ptr<IRequest> ptr(_builder.create(name));
-
-    if (!ptr) {
-      JSONBuilder builder;
-      builder.addValue("type", "error");
-      builder.addValue("name", name + ": Unknown command");
-      ret = builder.get();
+  if (received && received->type != PacketType::PT_Response) {
+    if (received->MAGIC == MAGIC_NUMBER) {
+      if (received->type == PacketType::PT_Command) {
+	createCmd(own, received, reply);
+      }
+      else {
+	createReq(own, received, reply);
+      }
     }
     else {
-      ret = ptr->execute(own, reader);
+      *reply = StaticTools::CreatePacket(PacketType::PT_Error, ERROR_DATA);
     }
-
-  } catch (std::exception const& e) {
-    JSONBuilder builder;
-    builder.addValue("type", "error");
-    builder.addValue("name", "bad JSON");
-    ret = builder.get();
   }
-  return (ret);
 }
 
-/*std::string RequestHandler::cmd_key(AConnection::shared own, JSONReader &reader)
+void RequestHandler::createReq(AConnection::shared own, Packet const *received,
+			       Packet **reply)
 {
-  JSONBuilder builder;
+  std::unique_ptr<IRequest> ptr(_reqBuilder.create(received->type));
 
-  if (av.size() > 1 && own->isEnabled()) {
-    //own->writeLog(av[1]);
-    builder.addValue("type", "cmd");
-    builder.addValue("name", "OK");
-    return (builder.get());
+  if (ptr) {
+    std::string param(received->data, received->size);
+    ptr->execute(own, param, reply);
+  } else {
+    *reply = StaticTools::CreatePacket(PacketType::PT_Error, BAD_CMD);
   }
-  builder.addValue("type", "error");
-  builder.addValue("data", "not registered");
-  return (builder.get());
-  (void)own;
-  (void)reader;
-  return ("KO");
-  }*/
+}
+
+void RequestHandler::createCmd(AConnection::shared own, Packet const *received,
+			       Packet **reply)
+{
+  std::string name;
+  JSONReader reader;
+  std::string data(received->data, received->size);
+
+  try {
+    reader.readFromString(data);
+    name = reader.getValue<std::string>("name");
+
+    std::unique_ptr<ICommand> ptr(_cmdBuilder.create(name));
+    if (ptr) {
+      ptr->execute(own, reader, reply);
+    } else {
+      *reply = StaticTools::CreatePacket(PacketType::PT_Error, BAD_CMD);
+    }
+  } catch (std::exception const& e) {
+    *reply = StaticTools::CreatePacket(PacketType::PT_Error, ERROR_JSON);
+  }
+}

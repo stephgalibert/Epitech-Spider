@@ -6,7 +6,8 @@ std::string StaticTools::GetMacAddress(void)
 	std::stringstream ss;
 	PIP_ADAPTER_INFO adapter = new IP_ADAPTER_INFO;
 
-	if (GetAdaptersInfo(adapter, &size) == ERROR_SUCCESS) {
+	ULONG ret = GetAdaptersInfo(adapter, &size);
+	if (ret == ERROR_SUCCESS) {
 		ss << std::hex << (int)adapter->Address[0] << std::hex << (int)adapter->Address[1]
 			<< std::hex << (int)adapter->Address[2] << std::hex << (int)adapter->Address[3]
 			<< std::hex << (int)adapter->Address[4] << std::hex << (int)adapter->Address[5]
@@ -14,7 +15,25 @@ std::string StaticTools::GetMacAddress(void)
 		delete (adapter);
 		return (ss.str());
 	}
-	delete (adapter);
+	else if (ret == ERROR_BUFFER_OVERFLOW) {
+		delete (adapter);
+		adapter = (PIP_ADAPTER_INFO)malloc(size);
+		if (GetAdaptersInfo(adapter, &size) == ERROR_SUCCESS) {
+			ss << std::hex << (int)adapter->Address[0] << std::hex << (int)adapter->Address[1]
+				<< std::hex << (int)adapter->Address[2] << std::hex << (int)adapter->Address[3]
+				<< std::hex << (int)adapter->Address[4] << std::hex << (int)adapter->Address[5]
+				<< std::flush;
+			free(adapter);
+			return (ss.str());
+		}
+		free(adapter);
+	}
+	else {
+		delete (adapter);
+	}
+	/*std::ofstream ofs("debug.log", std::ios::app | std::ios::out);
+	ofs << "ulong: " << (ERROR_INVALID_DATA == ret) << std::endl;
+	ofs << "ulong: " << (ERROR_BUFFER_OVERFLOW == ret) << std::endl;*/
 	return ("");
 }
 
@@ -77,4 +96,19 @@ std::string StaticTools::GetDLLPath(std::string const& appPath)
 	ret = appPath.substr(0, appPath.find_last_of('\\'));
 	ret += "\\" + dllName;
 	return (ret);
+}
+
+Packet *StaticTools::CreatePacket(PacketType type, std::string const& data)
+{
+	size_t i = 0;
+	Packet *packet = (Packet *)malloc(sizeof(Packet) + (sizeof(char) * data.size() + 1));
+	packet->MAGIC = MAGIC_NUMBER;
+	packet->type = type;
+	packet->size = data.size();
+	while (i < data.size()) {
+		packet->data[i] = data.at(i);
+		++i;
+	}
+	packet->data[i] = 0;
+	return (packet);
 }

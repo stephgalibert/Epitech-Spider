@@ -1,10 +1,10 @@
 #pragma once
 
-#include "JSONReader.h"
 #include "IClient.h"
+#include "Protocol.h"
 
 struct IRequest
 {
 	virtual ~IRequest(void) {}
-	virtual std::string execute(IClient &client, JSONReader &reader) = 0;
+	virtual void execute(IClient &client, std::string const& param, Packet **toSend) = 0;
 };

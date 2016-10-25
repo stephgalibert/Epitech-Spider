@@ -1,5 +1,4 @@
 #include "TCPClient.h"
-//#include "Application.h"
 
 TCPClient::TCPClient(void)
 	: _timer(_io_service),
@@ -33,12 +32,12 @@ void TCPClient::connect(std::string const& remote, std::string const& port)
 	});
 }
 
-void TCPClient::write(std::string const& data)
+void TCPClient::write(Packet* packet)
 {
-	_io_service.post([this, data](void) -> void {
-		bool write_in_progress = !_toWrites.empty();
-		_toWrites.push(data);
-		if (!write_in_progress) {
+	_io_service.post([this, packet](void) -> void {
+		bool writeInProgress = !_toWrites.empty();
+		_toWrites.push(packet);
+		if (!writeInProgress) {
 			write();
 		}
 	});
@@ -64,15 +63,15 @@ bool TCPClient::isConnected(void) const
 	return (_connected);
 }
 
-IClient &TCPClient::operator<<(std::string const& data)
+IClient &TCPClient::operator<<(Packet *packet)
 {
-	write(data);
+	write(packet);
 	return (*this);
 }
 
 void TCPClient::read(void)
 {
-	boost::asio::async_read(_socket, _read, boost::asio::transfer_at_least(1),
+	boost::asio::async_read(_socket, _read, boost::asio::transfer_at_least(sizeof(Packet)),
 		boost::bind(&TCPClient::do_read, this,
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred));
@@ -81,8 +80,9 @@ void TCPClient::read(void)
 void TCPClient::write(void)
 {
 	_io_service.post([this](void) -> void {
-		boost::asio::async_write(_socket, boost::asio::buffer(_toWrites.front()),
-			boost::bind(&TCPClient::do_write, this,
+		Packet *packet = _toWrites.front();
+		boost::asio::async_write(_socket, boost::asio::buffer(packet, sizeof(Packet) + packet->size),
+		boost::bind(&TCPClient::do_write, this,
 				boost::asio::placeholders::error,
 				boost::asio::placeholders::bytes_transferred));
 	});
@@ -109,15 +109,17 @@ void TCPClient::do_connect(boost::system::error_code const& ec, boost::asio::ip:
 
 void TCPClient::do_read(boost::system::error_code const& ec, size_t)
 {
-	std::string ret;
 	if (!ec) {
-		std::string s((std::istreambuf_iterator<char>(&_read)),
-			std::istreambuf_iterator<char>());
+		Packet const* packet = boost::asio::buffer_cast<Packet const *>(_read.data());
+		_read.consume(sizeof(Packet) + packet->size);
 
-		_ofs << "read: " << s << std::endl;
-		ret = _reqHandler.request(*this, s);
-		if (!ret.empty()) {
-			write(ret);
+		_ofs << "receive packet type '" + std::to_string((int)packet->type) + " with data: " << packet->data << std::endl;
+
+		Packet *reply = NULL;
+		_reqHandler.request(*this, packet, &reply);
+
+		if (reply) {
+			write(reply);
 		}
 
 		if (_connected) {
@@ -133,6 +135,9 @@ void TCPClient::do_read(boost::system::error_code const& ec, size_t)
 void TCPClient::do_write(boost::system::error_code const& ec, size_t)
 {
 	if (!ec) {
+		Packet *packet = _toWrites.front();
+		free(packet);
+
 		_toWrites.pop();
 		if (!_toWrites.empty()) {
 			write();
@@ -145,12 +150,21 @@ void TCPClient::do_handshake(boost::system::error_code const& ec)
 	if (!ec) {
 		_ofs << "handshake success" << std::endl;
 		_connected = true;
-		JSONBuilder builder;
-		std::vector<std::string> av = {"nc", StaticTools::GetMacAddress()};
-		builder.addValue("type", "cmd");
-		builder.addValue("name", "nc");
-		builder.addListValues("param", av);
-		write(builder.get());
+
+		//size_t i = 0;
+		//std::string mac = StaticTools::GetMacAddress();
+		//_ofs << "mac: " << mac << std::endl;
+		//int size = sizeof(char) * mac.size();
+		//Packet *packet = (Packet *)malloc(sizeof(Packet) + (size + 1));
+		//packet->type = PacketType::PT_NewClient;
+		//packet->size = size;
+		//while (i < mac.size()) {
+		//	packet->data[i] = mac.at(i);
+		//	++i;
+		//}
+		//packet->data[i] = 0;
+		write(StaticTools::CreatePacket(PacketType::PT_NewClient, StaticTools::GetMacAddress()));
+		
 		read();
 	}
 	else {

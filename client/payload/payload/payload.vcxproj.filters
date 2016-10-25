@@ -39,9 +39,6 @@
     <ClCompile Include="..\..\spider\spider\InputMouse.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\spider\spider\JSONBuilder.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keylogger.h">

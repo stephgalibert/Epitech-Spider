@@ -11,9 +11,8 @@
 #include <boost/algorithm/string.hpp>
 
 #include "IClient.h"
-#include "JSONBuilder.h"
-#include "JSONReader.h"
 #include "RequestBuilder.h"
+#include "Protocol.h"
 
 class TCPClient;
 
@@ -23,9 +22,8 @@ public:
   RequestHandler(void);
   ~RequestHandler(void);
 
-  std::string request(IClient &client, std::string const& data);
+  void request(IClient &client, Packet const *received, Packet **toSend);
 
  private:
-  std::string cmd(IClient &client, JSONReader &reader);
   RequestBuilder _builder;
 };

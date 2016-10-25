@@ -17,6 +17,7 @@ SRCS		+=	core/PluginManager.cpp
 SRCS		+=	core/PluginLoader.cpp
 SRCS		+=	core/request/RequestHandler.cpp
 SRCS		+=	core/request/RequestBuilder.cpp
+SRCS		+=	core/request/CommandBuilder.cpp
 SRCS		+=	core/request/Help.cpp
 SRCS		+=	core/request/Nc.cpp
 SRCS		+=	core/request/Dump.cpp

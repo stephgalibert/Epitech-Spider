@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:00 2016 stephane galibert
-// Last update Wed Aug 24 17:35:04 2016 stephane galibert
+// Last update Tue Oct 25 14:43:40 2016 stephane galibert
 //
 
 #include "TCPConnection.hpp"
@@ -37,10 +37,10 @@ void TCPConnection::start(void)
   handshake();
 }
 
-void TCPConnection::write(std::string const& data)
+void TCPConnection::write(Packet *packet)
 {
   bool write_in_progress = !_toWrites.empty();
-  _toWrites.push(data);
+  _toWrites.push(packet);
   if (!write_in_progress) {
     write();
   }
@@ -48,7 +48,8 @@ void TCPConnection::write(std::string const& data)
 
 void TCPConnection::write(void)
 {
-  boost::asio::async_write(_socket, boost::asio::buffer(_toWrites.front()),
+  Packet *packet = _toWrites.front();
+  boost::asio::async_write(_socket, boost::asio::buffer(packet, sizeof(Packet) + packet->size),
 			   boost::bind(&AConnection::do_write,
 				       shared_from_this(),
 				       boost::asio::placeholders::error,
@@ -57,7 +58,7 @@ void TCPConnection::write(void)
 
 void TCPConnection::read(void)
 {
-  boost::asio::async_read(_socket, _read, boost::asio::transfer_at_least(1),
+  boost::asio::async_read(_socket, _read, boost::asio::transfer_at_least(sizeof(Packet)),
 			  boost::bind(&AConnection::do_read,
 				      shared_from_this(),
 				      boost::asio::placeholders::error,
@@ -74,7 +75,12 @@ void TCPConnection::handshake(void)
 void TCPConnection::do_write(boost::system::error_code const& ec, size_t)
 {
   if (!ec) {
+
+    Packet *packet = _toWrites.front();
+    free(packet);
+
     _toWrites.pop();
+
     if (!_toWrites.empty()) {
       write();
     }
@@ -87,13 +93,14 @@ void TCPConnection::do_write(boost::system::error_code const& ec, size_t)
 void TCPConnection::do_read(boost::system::error_code const& ec, size_t /* len */)
 {
   if (!ec) {
-    std::string s((std::istreambuf_iterator<char>(&_read)),
-		  std::istreambuf_iterator<char>());
+    Packet const* packet = boost::asio::buffer_cast<Packet const *>(_read.data());
+    _read.consume(sizeof(Packet) + (packet->size * sizeof(char)));
 
-    std::cout << "read: " << s << std::endl;
-    std::string ret = _reqHandler.request(shared_from_this(), s);
-    if (!ret.empty()) {
-      write(ret);
+    Packet *reply = NULL;
+    _reqHandler.request(shared_from_this(), packet, &reply);
+
+    if (reply) {
+      write(reply);
     }
 
     if (_running) {

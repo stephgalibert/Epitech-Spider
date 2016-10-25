@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug 14 09:36:22 2016 stephane galibert
-// Last update Sun Aug 21 22:06:19 2016 stephane galibert
+// Last update Tue Oct 25 17:21:51 2016 stephane galibert
 //
 
 #include "Reload.hpp"
@@ -19,44 +19,33 @@ Reload::~Reload(void)
 {
 }
 
-std::string Reload::execute(AConnection::shared own, JSONReader &reader)
+void Reload::execute(AConnection::shared own, JSONReader const& reader,
+		     Packet **reply)
 {
   Params av;
 
   try {
     reader.getListValues("param", av);
     if (av.size() > 1) {
-      if (_cmds.find(av[1].second) != _cmds.cend())
-	return (_cmds.at(av[1].second)(own));
+      if (_cmds.find(av[1].second) != _cmds.cend()) {
+	*reply = _cmds.at(av[1].second)(own);
+	return ;
+      }
     }
   } catch (std::exception const& e) {
-    throw (e);
+    *reply = StaticTools::CreatePacket(PacketType::PT_Error, ERROR_JSON);
+    return ;
   }
-  return (Reload::badParameter());
+  *reply = StaticTools::CreatePacket(PacketType::PT_Error, BAD_PARAMETER);
 }
 
-std::string Reload::plugin(AConnection::shared own)
+Packet *Reload::plugin(AConnection::shared own)
 {
-  JSONBuilder builder;
-
   if (own->getPrivilege() != Privilege::PL_ADMIN) {
-    builder.addValue("type", "error");
-    builder.addValue("name", "access denied");
-    return (builder.get());
+    return (StaticTools::CreatePacket(PacketType::PT_Error, ACCESS_DENIED));
   }
 
-  builder.addValue("type", "result");
-  builder.addValue("data", "OK");
-  own->write(builder.get());
+  own->write(StaticTools::CreatePacket(PacketType::PT_Response, SUCCESS));
   own->reloadPlugin();
-  return ("");
-}
-
-std::string Reload::badParameter(void)
-{
-  JSONBuilder builder;
-
-  builder.addValue("type", "error");
-  builder.addValue("name", "reload: bad parameter");
-  return (builder.get());
+  return (NULL);
 }

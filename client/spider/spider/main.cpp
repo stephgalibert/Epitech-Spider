@@ -8,6 +8,8 @@
 #include <Windows.h>
 #include <shellapi.h>
 
+#include "Protocol.h"
+
 int main(int ac, char **av);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,

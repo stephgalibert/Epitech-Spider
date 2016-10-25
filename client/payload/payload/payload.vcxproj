@@ -157,7 +157,6 @@
     <ClCompile Include="..\..\spider\spider\AInputType.cpp" />
     <ClCompile Include="..\..\spider\spider\InputKeyboard.cpp" />
     <ClCompile Include="..\..\spider\spider\InputMouse.cpp" />
-    <ClCompile Include="..\..\spider\spider\JSONBuilder.cpp" />
     <ClCompile Include="..\..\spider\spider\StaticTools.cpp" />
     <ClCompile Include="Keylogger.cpp" />
     <ClCompile Include="main.cpp" />

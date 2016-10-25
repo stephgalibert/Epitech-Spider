@@ -7,6 +7,7 @@ class Kill : public IRequest
 public:
 	Kill(void);
 	virtual ~Kill(void);
-	virtual std::string execute(IClient &client, JSONReader &reader);
+
+	virtual void execute(IClient &client, std::string const& param, Packet **toSend);
 };
 

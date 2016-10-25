@@ -1,11 +1,11 @@
 //
-// SQL.cpp for server in /home/galibe_s/project/SpiderServer/core/request
+// SQL.cpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Sun Aug 21 22:04:39 2016 stephane galibert
-// Last update Sun Aug 21 22:08:50 2016 stephane galibert
+// Started on  Tue Oct 25 16:59:33 2016 stephane galibert
+// Last update Tue Oct 25 17:08:28 2016 stephane galibert
 //
 
 #include "SQL.hpp"
@@ -18,32 +18,23 @@ SQL::~SQL(void)
 {
 }
 
-std::string SQL::execute(AConnection::shared own, JSONReader &reader)
+void SQL::execute(AConnection::shared own, JSONReader const& reader, Packet **reply)
 {
-  JSONBuilder builder;
   Params av;
 
+  if (own->getPrivilege() != Privilege::PL_ADMIN) {
+    *reply = StaticTools::CreatePacket(PacketType::PT_Error, ACCESS_DENIED);
+    return ;
+  }
   try {
-    if (own->getPrivilege() != Privilege::PL_ADMIN) {
-      builder.addValue("type", "error");
-      builder.addValue("name", "access denied");
-      return (builder.get());
-    }
     reader.getListValues("param", av);
     if (av.size() > 1) {
-      return (own->executeSQL(av[1].second));
+      *reply = StaticTools::CreatePacket(PacketType::PT_Response, own->executeSQL(av[1].second));
+      return ;
     }
   } catch (std::exception const& e) {
-    throw (e);
+    *reply = StaticTools::CreatePacket(PacketType::PT_Error, ERROR_JSON);
+    return ;
   }
-  return (SQL::badParameter());
-}
-
-std::string SQL::badParameter(void)
-{
-  JSONBuilder builder;
-
-  builder.addValue("type", "error");
-  builder.addValue("name", "SQL: bad parameter");
-  return (builder.get());
+  *reply = StaticTools::CreatePacket(PacketType::PT_Error, BAD_PARAMETER);
 }

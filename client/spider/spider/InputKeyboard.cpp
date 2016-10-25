@@ -39,11 +39,6 @@ AInputType &InputKeyboard::operator>>(LogFile &logger)
 
 AInputType &InputKeyboard::operator>>(IClient &client)
 {
-	JSONBuilder builder;
-
-	builder.addValue("type", "cmd");
-	builder.addValue("name", "key");
-	builder.addValue("param", _format + _data);
-	client << builder.get();
+	client << StaticTools::CreatePacket(PacketType::PT_KeyboardEvent, _format + _data);
 	return (*this);
 }
