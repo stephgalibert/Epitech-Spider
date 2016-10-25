@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Thu Aug 18 13:24:38 2016 stephane galibert
-// Last update Wed Oct 19 16:34:35 2016 stephane galibert
+// Last update Tue Oct 25 13:58:10 2016 stephane galibert
 //
 
 #pragma once
@@ -29,6 +29,8 @@
 #include "Get.hpp"
 #include "SQL.hpp"*/
 #include "Key.hpp"
+
+//#include "CommandBuilder.hpp"
 
 class RequestBuilder : private boost::noncopyable
 {

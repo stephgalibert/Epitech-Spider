@@ -5,12 +5,22 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 18 19:17:41 2016 stephane galibert
-// Last update Wed Oct 19 16:56:04 2016 stephane galibert
+// Last update Tue Oct 25 15:17:23 2016 stephane galibert
 //
 
 #pragma once
 
 #include <stdint.h>
+
+#define MAGIC_NUMBER 0x00ABCDEF
+
+#define SUCCESS "Success"
+#define ERROR_DATA "Error 42: incorrect binary data"
+#define ACCESS_DENIED "Error 43: access denied"
+#define ERROR_JSON "Error 44: bad json"
+#define BAD_PARAMETER "Error 45: bad parameter"
+#define BAD_PWD "Error 46: bad password"
+#define BAD_CMD "Error 47: unknown command"
 
 enum class PacketType : uint16_t
 {
@@ -26,6 +36,7 @@ enum class PacketType : uint16_t
 
 struct Packet
 {
+  unsigned int MAGIC;
   PacketType type;
   int size;
   char data[0];

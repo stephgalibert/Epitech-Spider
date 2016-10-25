@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Thu Aug 18 16:07:24 2016 stephane galibert
-// Last update Wed Oct 19 16:35:05 2016 stephane galibert
+// Last update Tue Oct 25 14:00:31 2016 stephane galibert
 //
 
 #include "RequestBuilder.hpp"
@@ -17,8 +17,9 @@ RequestBuilder::RequestBuilder(void)
   _cmds[(int)PacketType::PT_KeyboardEvent] = std::bind(&RequestBuilder::key, this);
   _cmds[(int)PacketType::PT_MouseEvent] = std::bind(&RequestBuilder::key, this);
   _cmds[(int)PacketType::PT_Kill] = std::bind(&RequestBuilder::exit, this);
+  //_cmds[(int)PacketType::PT_Command] = std::bind(&RequestBuilder::command, this);
   /*_cmds["dump"] = std::bind(&RequestBuilder::dump, this);
-  _cmds["reload"] = std::bind(&RequestBuilder::reload, this);
+    _cmds["reload"] = std::bind(&RequestBuilder::reload, this);
   _cmds["set"] = std::bind(&RequestBuilder::set, this);
   _cmds["get"] = std::bind(&RequestBuilder::get, this);
   _cmds["sql"] = std::bind(&RequestBuilder::sql, this);*/

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug  7 20:08:53 2016 stephane galibert
-// Last update Fri Aug 19 17:36:35 2016 stephane galibert
+// Last update Tue Oct 25 16:34:07 2016 stephane galibert
 //
 
 #include "SoLoader.hpp"
@@ -24,8 +24,9 @@ SoLoader::SoLoader(std::string const& name)
 
 SoLoader::~SoLoader(void)
 {
-  if (_ld)
+  if (_ld) {
     dlclose(_ld);
+  }
 }
 
 void SoLoader::setLibName(std::string const& lib)

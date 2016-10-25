@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:05:34 2016 stephane galibert
-// Last update Mon Aug 22 19:28:49 2016 stephane galibert
+// Last update Mon Oct 24 18:24:11 2016 stephane galibert
 //
 
 #include "StaticTools.hpp"
@@ -34,4 +34,21 @@ std::string StaticTools::GetHour(void)
      << std::setw(2) << std::setfill('0') << now.time_of_day().seconds() << "s"
      << std::flush;
   return (ss.str());
+}
+
+Packet *StaticTools::CreatePacket(PacketType type, std::string const& data)
+{
+  size_t i = 0;
+  Packet *packet;
+
+  packet = (Packet *)malloc(sizeof(Packet) + (data.size() * sizeof(char) + 1));
+  packet->MAGIC = MAGIC_NUMBER;
+  packet->type = type;
+  packet->size = data.size();
+  while (i < data.size()) {
+    packet->data[i] = data[i];
+    ++i;
+  }
+  packet->data[i] = 0;
+  return (packet);
 }

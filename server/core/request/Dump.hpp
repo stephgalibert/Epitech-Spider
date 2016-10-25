@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug 14 07:25:50 2016 stephane galibert
-// Last update Wed Oct 19 15:29:50 2016 stephane galibert
+// Last update Tue Oct 25 15:05:07 2016 stephane galibert
 //
 
 #pragma once
@@ -14,21 +14,20 @@
 #include <unordered_map>
 #include <functional>
 
-#include "IRequest.hpp"
+#include "ICommand.hpp"
 
-class Dump// : public IRequest
+class Dump : public ICommand
 {
 public:
   typedef std::vector<std::pair<std::string, std::string> > Params;
-  typedef std::function<std::string(AConnection::shared)> Cmds;
+  typedef std::function<Packet *(AConnection::shared)> Cmds;
 public:
   Dump(void);
   virtual ~Dump(void);
 
-  virtual std::string execute(AConnection::shared own, JSONReader &reader);
+  virtual void execute(AConnection::shared own, JSONReader const& reader,
+		       Packet **reply);
 private:
-  std::string plugin(AConnection::shared own);
+  Packet *plugin(AConnection::shared own);
   std::unordered_map<std::string, Cmds> _cmds;
-
-  static std::string badParameter(void);
 };

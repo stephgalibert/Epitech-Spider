@@ -1,11 +1,11 @@
 //
-// UserInterface.cpp for server in /home/galibe_s/project/SpiderServer
+// Console.cpp for console in /home/galibe_s/rendu/Spider/server/plugins/UIConsole
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Sun Aug  7 19:09:05 2016 stephane galibert
-// Last update Mon Oct 24 12:52:13 2016 stephane galibert
+// Started on  Tue Oct 25 16:15:19 2016 stephane galibert
+// Last update Tue Oct 25 17:21:13 2016 stephane galibert
 //
 
 #include "Console.hpp"
@@ -15,13 +15,13 @@ Console::Console(void)
     _context(boost::asio::ssl::context::sslv23),
     _socket(_io_service, _context)
 {
-  /*_cmds["help"] = std::bind(&Console::cmd_help, this, std::placeholders::_1);
-    _cmds["dump"] = std::bind(&Console::cmd_dump, this, std::placeholders::_1);*/
+  _cmds["help"] = std::bind(&Console::cmd_help, this, std::placeholders::_1);
+  _cmds["dump"] = std::bind(&Console::cmd_dump, this, std::placeholders::_1);
   _cmds["exit"] = std::bind(&Console::cmd_exit, this, std::placeholders::_1);
-  /*_cmds["reload"] = std::bind(&Console::cmd_reload, this, std::placeholders::_1);
+  _cmds["reload"] = std::bind(&Console::cmd_reload, this, std::placeholders::_1);
   _cmds["set"] = std::bind(&Console::cmd_set, this, std::placeholders::_1);
   _cmds["get"] = std::bind(&Console::cmd_get, this, std::placeholders::_1);
-  _cmds["sql"] = std::bind(&Console::cmd_sql, this, std::placeholders::_1);*/
+  _cmds["sql"] = std::bind(&Console::cmd_sql, this, std::placeholders::_1);
 
   _running = false;
 }
@@ -146,16 +146,18 @@ bool Console::verify_crt(bool preverified, boost::asio::ssl::verify_context& ctx
   return (preverified);
 }
 
-Packet *Console::read(void)
+Packet const *Console::read(void)
 {
   boost::system::error_code ec;
-  boost::array<char, 1024> buf;
 
-  _socket.read_some(boost::asio::buffer(buf), ec);
+  boost::asio::read(_socket, _read, boost::asio::transfer_at_least(sizeof(Packet)));
   if (ec) {
     throw (std::runtime_error(ec.message()));
   }
-  return (reinterpret_cast<Packet *>(buf.data()));
+
+  Packet const *packet = boost::asio::buffer_cast<Packet const *>(_read.data());
+  _read.consume(sizeof(Packet) + packet->size);
+  return (packet);
 }
 
 void Console::write(Packet *packet)
@@ -168,28 +170,28 @@ void Console::write(Packet *packet)
   free(packet);
 }
 
-/*void Console::cmd_help(std::vector<std::string> const& av)
+void Console::cmd_help(std::vector<std::string> const& av)
 {
   JSONBuilder builder;
   JSONReader reader;
-  std::string type;
   std::vector<std::pair<std::string, std::string> > result;
 
-  builder.addValue("type", "cmd");
   builder.addValue("name", av[0]);
 
   try {
-    write(builder.get());
-    reader.readFromString(read());
-    type = reader.getValue<std::string>("type");
-    if (type == "result") {
-      reader.getListValues("data", result);
-      for (auto &it : result) {
-	std::cout << it.first << " : " << it.second << std::endl;
+    write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
+    Packet const *reply = read();
+
+    if (reply && reply->MAGIC == MAGIC_NUMBER) {
+      if (reply->type == PacketType::PT_Error) {
+	std::cout << std::string(reply->data, reply->size) << std::endl;
+      } else {
+	reader.readFromString(std::string(reply->data, reply->size));
+	reader.getListValues("data", result);
+	for (auto &it : result) {
+	  std::cout << it.first << " : " << it.second << std::endl;
+	}
       }
-    }
-    else if (type == "error") {
-      std::cerr << reader.getValue<std::string>("name") << std::endl;
     }
   } catch (std::exception const& e) {
     std::cerr << "UIConsole: help: " << e.what() << std::endl;
@@ -200,100 +202,70 @@ void Console::cmd_dump(std::vector<std::string> const& av)
 {
   JSONBuilder builder;
   JSONReader reader;
-  std::string type;
   std::vector<std::vector<std::pair<std::string, std::string> > > result;
 
-  builder.addValue("type", "cmd");
   builder.addValue("name", av[0]);
   builder.addListValues("param", av);
 
   try {
-    write(builder.get());
-    reader.readFromString(read());
-    type = reader.getValue<std::string>("type");
-    if (type == "result") {
-      reader.getArrayValues("data", result);
-      for (auto &it : result) {
-	std::cout << "---------------------------------" << std::endl;
-	for (auto &subit : it) {
-	  std::cout << subit.first << ": " << subit.second << std::endl;
+    write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
+    Packet const *reply = read();
+
+    if (reply && reply->MAGIC == MAGIC_NUMBER) {
+      if (reply->type == PacketType::PT_Response) {
+	reader.readFromString(std::string(reply->data, reply->size));
+	reader.getArrayValues("data", result);
+	for (auto &it : result) {
+	  std::cout << "---------------------------------" << std::endl;
+	  for (auto &subit : it) {
+	    std::cout << subit.first << ": " << subit.second << std::endl;
+	  }
 	}
+	std::cout << "---------------------------------" << std::endl;
+      } else {
+	std::cerr << std::string(reply->data, reply->size) << std::endl;
       }
-      std::cout << "---------------------------------" << std::endl;
-    }
-    else if (type == "error") {
-      std::cerr << reader.getValue<std::string>("name") << std::endl;
     }
   } catch (std::exception const& e) {
     std::cerr << "UIConsole: " << e.what() << std::endl;
   }
-
-  }*/
+}
 
 void Console::cmd_exit(std::vector<std::string> const& av)
 {
-  size_t i = 0;
-  Packet *packet;
-  std::string data = av[0];
-
-  packet = (Packet *)malloc(sizeof(Packet) + (av[0].size() * sizeof(char) + 1));
-  packet->size = av[0].size();
-  packet->type = PacketType::PT_Kill;
-  while (i < av[0].size()) {
-    packet->data[i] = av[0][i];
-    ++i;
-  }
-  packet->data[i] = 0;
-
-  std::cout << "Console: write type: " << (int)packet->type
-	    << " data: " << std::string(packet->data, packet->size) << std::endl;
-
   try {
-    write(packet);
-    Packet *reply = read();
+    write(StaticTools::CreatePacket(PacketType::PT_Kill, av[0]));
+    Packet const *reply = read();
 
-    std::cout << "Console: read type: " << (int)packet->type
-	      << " data: " << std::string(packet->data, packet->size) << std::endl;
-
-    if (reply && reply->type == PacketType::PT_Response) {
-      std::string data(reply->data, reply->size);
-      std::cerr << data << std::endl;
-    }
-    else {
-      _running = false;
+    if (reply && reply->MAGIC == MAGIC_NUMBER) {
+      if (reply->type == PacketType::PT_Error) {
+	std::cerr << std::string(reply->data, reply->size) << std::endl;
+      }
+      else {
+	_running = false;
+      }
     }
   } catch (std::exception const& e) {
-    std::cerr << "uiconsole: exit: " << e.what() << std::endl;
+    //std::cerr << "uiconsole: exit: " << e.what() << std::endl;
   }
-
-  /*try {
-    write(builder.get());
-    reader.readFromString(read());
-    if (reader.getValue<std::string>("type") == "error") {
-      std::cerr << reader.getValue<std::string>("name") << std::endl;
-    } else {
-      _running = false;
-    }
-  } catch (std::exception const& e) {
-    //std::cerr << "UIConsole: exit: " << e.what() << std::endl;
-    }*/
 }
 
-/*void Console::cmd_reload(std::vector<std::string> const& av)
+void Console::cmd_reload(std::vector<std::string> const& av)
 {
   JSONBuilder builder;
-  JSONReader reader;
   std::string type;
 
-  builder.addValue("type", "cmd");
   builder.addValue("name", av[0]);
   builder.addListValues("param", av);
 
   try {
-    write(builder.get());
-    reader.readFromString(read());
-    if (reader.getValue<std::string>("type") == "error") {
-      std::cerr << reader.getValue<std::string>("name") << std::endl;
+    write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
+    Packet const *reply = read();
+
+    if (reply && reply->MAGIC == MAGIC_NUMBER) {
+      if (reply->type == PacketType::PT_Error) {
+	std::cerr << std::string(reply->data, reply->size) << std::endl;
+      }
     }
   } catch (std::exception const& e) {
     std::cerr << "UIConsole: reload: " << e.what() << std::endl;
@@ -303,19 +275,17 @@ void Console::cmd_exit(std::vector<std::string> const& av)
 void Console::cmd_set(std::vector<std::string> const& av)
 {
   JSONBuilder builder;
-  JSONReader reader;
 
-  builder.addValue("type", "cmd");
   builder.addValue("name", av[0]);
   builder.addListValues("param", av);
 
   try {
-    write(builder.get());
-    reader.readFromString(read());
-    if (reader.getValue<std::string>("type") == "error")
-      std::cerr << reader.getValue<std::string>("name") << std::endl;
-    else
-      std::cerr << reader.getValue<std::string>("data") << std::endl;
+    write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
+    Packet const *reply = read();
+
+    if (reply && reply->MAGIC == MAGIC_NUMBER) {
+      std::cerr << std::string(reply->data, reply->size) << std::endl;
+    }
 
   } catch (std::exception const& e) {
     std::cerr << "UIConsole: set: " << e.what() << std::endl;
@@ -328,20 +298,22 @@ void Console::cmd_get(std::vector<std::string> const& av)
   JSONBuilder builder;
   JSONReader reader;
 
-  builder.addValue("type", "cmd");
   builder.addValue("name", av[0]);
   builder.addListValues("param", av);
 
   try {
-    write(builder.get());
-    reader.readFromString(read());
-    if (reader.getValue<std::string>("type") == "error") {
-      std::cerr << reader.getValue<std::string>("name") << std::endl;
-    }
-    else {
-      reader.getListValues("data", result);
-      for (auto &it : result) {
-	std::cout << it.first << ": " << it.second << std::endl;
+    write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
+    Packet const *reply = read();
+
+    if (reply && reply->MAGIC == MAGIC_NUMBER) {
+      if (reply->type == PacketType::PT_Error) {
+	std::cerr << std::string(reply->data, reply->size) << std::endl;
+      } else {
+	reader.readFromString(std::string(reply->data, reply->size));
+	reader.getListValues("data", result);
+	for (auto &it : result) {
+	  std::cout << it.first << ": " << it.second << std::endl;
+	}
       }
     }
   } catch (std::exception const& e) {
@@ -363,30 +335,30 @@ void Console::cmd_sql(std::vector<std::string> const& av)
   params.push_back("sql");
   params.push_back(boost::algorithm::join(tmp, " "));
 
-  builder.addValue("type", "cmd");
   builder.addValue("name", params[0]);
   builder.addListValues("param", params);
 
   try {
-    write(builder.get());
-    reader.readFromString(read());
-    type = reader.getValue<std::string>("type");
-    if (type == "result") {
-      reader.getArrayValues("data", result);
+    write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
+    Packet const *reply = read();
 
-      for (auto &it : result) {
-	std::cout << "---------------------------------" << std::endl;
-	for (auto &subit : it) {
-	  std::cout << subit.first << ": " << subit.second << std::endl;
+    if (reply && reply->MAGIC == MAGIC_NUMBER) {
+      if (reply->type == PacketType::PT_Error) {
+	std::cerr << std::string(reply->data, reply->size) << std::endl;
+      } else {
+	reader.readFromString(std::string(reply->data, reply->size));
+	reader.getArrayValues("data", result);
+
+	for (auto &it : result) {
+	  std::cout << "---------------------------------" << std::endl;
+	  for (auto &subit : it) {
+	    std::cout << subit.first << ": " << subit.second << std::endl;
+	  }
 	}
+	std::cout << "---------------------------------" << std::endl;
       }
-      std::cout << "---------------------------------" << std::endl;
     }
-    else if (type == "error") {
-      std::cerr << reader.getValue<std::string>("name") << std::endl;
-    }
-
   } catch (std::exception const& e) {
     std::cerr << "UIConsole: get: " << e.what() << std::endl;
   }
-  }*/
+}

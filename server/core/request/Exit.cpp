@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Aug 14 08:29:21 2016 stephane galibert
-// Last update Mon Oct 24 11:23:37 2016 stephane galibert
+// Last update Tue Oct 25 14:54:51 2016 stephane galibert
 //
 
 #include "Exit.hpp"
@@ -30,7 +30,11 @@ void Exit::execute(AConnection::shared own, std::string const& param, Packet **r
     return (builder.get());
     }*/
   (void)param;
-  (void)reply;
-  own->close();
+  if (own->getPrivilege() != Privilege::PL_ADMIN) {
+    *reply = StaticTools::CreatePacket(PacketType::PT_Error, ACCESS_DENIED);
+  }
+  else {
+    own->close();
+  }
   //return ("");
 }

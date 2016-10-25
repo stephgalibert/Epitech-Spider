@@ -1,11 +1,11 @@
 //
-// Dump.cpp for server in /home/galibe_s/project/SpiderServer/core/request
+// Dump.cpp for server in /home/galibe_s/rendu/Spider/server
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Sun Aug 14 07:32:16 2016 stephane galibert
-// Last update Sun Aug 21 22:23:53 2016 stephane galibert
+// Started on  Tue Oct 25 16:58:36 2016 stephane galibert
+// Last update Tue Oct 25 17:02:39 2016 stephane galibert
 //
 
 #include "Dump.hpp"
@@ -19,30 +19,33 @@ Dump::~Dump(void)
 {
 }
 
-std::string Dump::execute(AConnection::shared own, JSONReader &reader)
+void Dump::execute(AConnection::shared own, JSONReader const& reader,
+		   Packet **reply)
 {
   Params av;
 
   try {
     reader.getListValues("param", av);
     if (av.size() > 1) {
-      if (_cmds.find(av[1].second) != _cmds.cend())
-	return (_cmds.at(av[1].second)(own));
+      if (_cmds.find(av[1].second) != _cmds.cend()) {
+	*reply = _cmds.at(av[1].second)(own);
+	return ;
+      }
     }
   } catch (std::exception const& e) {
-    throw (e);
+    *reply = StaticTools::CreatePacket(PacketType::PT_Error, ERROR_JSON);
+    return ;
   }
-  return (Dump::badParameter());
+  *reply = StaticTools::CreatePacket(PacketType::PT_Error, BAD_PARAMETER);
 }
 
-std::string Dump::plugin(AConnection::shared own)
+Packet *Dump::plugin(AConnection::shared own)
 {
   std::ostringstream buf;
   boost::property_tree::ptree root;
   boost::property_tree::ptree nodeData, nodeObject;
   std::vector<PluginInfo> const& info = own->getPluginsInfo();
 
-  root.put("type", "result");
   for (auto &it : info)
     {
       nodeData.put("name", it.name);
@@ -52,14 +55,5 @@ std::string Dump::plugin(AConnection::shared own)
     }
   root.put_child("data", nodeObject);
   boost::property_tree::write_json(buf, root, false);
-  return (buf.str());
-}
-
-std::string Dump::badParameter(void)
-{
-  JSONBuilder builder;
-
-  builder.addValue("type", "error");
-  builder.addValue("name", "dump: bad parameter");
-  return (builder.get());
+  return (StaticTools::CreatePacket(PacketType::PT_Response, buf.str()));
 }

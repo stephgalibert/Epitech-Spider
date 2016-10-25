@@ -1,20 +1,21 @@
 //
-// SQL.hpp for server in /home/galibe_s/project/SpiderServer/core/request
+// SQL.hpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Sun Aug 21 22:03:30 2016 stephane galibert
-// Last update Wed Oct 19 16:19:09 2016 stephane galibert
+// Started on  Tue Oct 25 16:59:17 2016 stephane galibert
+// Last update Tue Oct 25 17:00:13 2016 stephane galibert
 //
 
 #pragma once
 
 #include <string>
 
-#include "IRequest.hpp"
+#include "Protocol.hpp"
+#include "ICommand.hpp"
 
-class SQL// : public IRequest
+class SQL : public ICommand
 {
 public:
   typedef std::vector<std::pair<std::string, std::string> > Params;
@@ -22,7 +23,6 @@ public:
   SQL(void);
   virtual ~SQL(void);
 
-  virtual std::string execute(AConnection::shared own, JSONReader &reader);
-private:
-  static std::string badParameter(void);
+  virtual void execute(AConnection::shared own, JSONReader const& reader,
+		       Packet **reply);
 };
