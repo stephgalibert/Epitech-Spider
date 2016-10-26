@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug 12 03:22:40 2016 stephane galibert
-// Last update Wed Aug 24 22:33:32 2016 stephane galibert
+// Last update Wed Oct 26 15:42:20 2016 stephane galibert
 //
 
 #include "AConnection.hpp"
@@ -62,6 +62,11 @@ void AConnection::reloadPlugin(void)
   _pluginManager.closeAll();
   StaticTools::LoadPlugin(_pluginManager);
   _pluginManager.startUserInterface();
+}
+
+void AConnection::closePlugin(std::string const& name)
+{
+  _pluginManager.close(name);
 }
 
 void AConnection::connectToDB(void)

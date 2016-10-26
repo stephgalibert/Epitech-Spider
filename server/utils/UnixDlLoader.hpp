@@ -5,31 +5,31 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 19:42:18 2016 stephane galibert
-// Last update Wed Oct 26 14:45:44 2016 stephane galibert
+// Last update Wed Oct 26 14:59:14 2016 stephane galibert
 //
 
 #pragma once
 
 #include <string>
 #include <stdexcept>
-#include <vector>
 
 #include <dlfcn.h>
 
-#include "PluginRegister.hpp"
-#include "PluginInfo.hpp"
+#include "ADlLoader.hpp"
 
-class UnixDlLoader
+class UnixDlLoader : public ADlLoader
 {
 public:
   UnixDlLoader(void);
-  ~UnixDlLoader(void);
+  virtual ~UnixDlLoader(void);
 
-  void setLibName(std::string const& name);
-  void load(void);
+  virtual void setLibName(std::string const& name);
+  virtual void load(void);
 
-  void registerInstance(std::unique_ptr<PluginRegister> &pr, PluginInfo &pluginInfo,
-			std::vector<PluginInfo> const& loaded, size_t version);
+  virtual void registerInstance(std::unique_ptr<PluginRegister> &pr,
+				PluginInfo &pluginInfo,
+				std::vector<PluginInfo> const& loaded,
+				size_t version);
 private:
   void *sym(std::string const& symbol);
   void retrievePluginInfo(void *handle, PluginInfo &info,
@@ -39,5 +39,4 @@ private:
 		      std::string const& name);
 
   void *_ld;
-  std::string _name;
 };

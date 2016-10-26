@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Aug  9 03:15:39 2016 stephane galibert
-// Last update Wed Oct 26 14:44:54 2016 stephane galibert
+// Last update Wed Oct 26 15:45:57 2016 stephane galibert
 //
 
 #include "PluginManager.hpp"
@@ -32,7 +32,7 @@ bool PluginManager::load(std::string const& fname)
 
     dl->registerInstance(_pluginRegister, info, _pluginsInfo,
 			 _serverConfig.getVersion());
-
+    _pluginsInfo.push_back(info);
     _plugins.push_back(std::move(dl));
 
   } catch (std::exception const& e) {
@@ -42,28 +42,6 @@ bool PluginManager::load(std::string const& fname)
 
   std::cerr << "done" << std::endl;
   return (true);
-  /* old
-  std::unique_ptr<SoLoader> so(new SoLoader);
-  void *info = NULL;
-  void *data = NULL;
-
-  try {
-    so->setLibName(fname);
-    so->load();
-
-    info = so->sym("getPluginInfo");
-    data = so->sym("registerPlugin");
-
-    if (!retrievePluginInfo(info)) {
-      return (false);
-    }
-    retrievePluginData(data, so);
-  } catch (std::exception const& e) {
-    std::cerr << "error: " << e.what() << std::endl;
-    return (false);
-  }
-  std::clog << "done" << std::endl;
-  return (true);*/
 }
 
 void PluginManager::close(std::string const& pluginName)
@@ -72,6 +50,7 @@ void PluginManager::close(std::string const& pluginName)
   // getUIS()->it->close();
   // it = it(_pluginsInfo).erase(it);
   // it = it(_plugins).erase(it);
+
 }
 
 std::vector<PluginInfo> const& PluginManager::getPluginsInfo(void) const
@@ -152,39 +131,3 @@ void PluginManager::newKeyDatabase(std::string const& id, std::string const& key
     ptr->newKey(id, key);
   }
 }
-
-/*bool PluginManager::retrievePluginInfo(void *handle)
-{
-  PluginInfo const& info = ((PluginInfo const& (*)(void))(handle))();
-  if (!checkDuplicate(info.name)) {
-    std::clog << "error: can not have duplicate plugin" << std::endl;
-    return (false);
-  }
-  if (!checkPluginVersion(info.version)) {
-    std::clog << "warning: the plugin version is not up to date ... " << std::flush;
-  }
-  _pluginsInfo.push_back(info);
-  return (true);
-}
-
-bool PluginManager::retrievePluginData(void *handle, std::unique_ptr<SoLoader> &so)
-{
-  ((void (*)(std::unique_ptr<PluginRegister> &))(handle))(_pluginRegister);
-  _plugins.push_back(std::move(so));
-  return (true);
-}
-
-bool PluginManager::checkPluginVersion(size_t version) const
-{
-  return (version == _serverConfig.getVersion());
-}
-
-bool PluginManager::checkDuplicate(std::string const& name) const
-{
-  for (auto &it : _pluginsInfo) {
-    if (it.name == name) {
-      return (false);
-    }
-  }
-  return (true);
-  }*/

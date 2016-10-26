@@ -1,11 +1,11 @@
 //
-// Dump.hpp for server in /home/galibe_s/project/SpiderServer/core/request
+// Close.hpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Sun Aug 14 07:25:50 2016 stephane galibert
-// Last update Wed Oct 26 15:11:23 2016 stephane galibert
+// Started on  Wed Oct 26 15:09:22 2016 stephane galibert
+// Last update Wed Oct 26 15:29:39 2016 stephane galibert
 //
 
 #pragma once
@@ -16,18 +16,18 @@
 
 #include "ICommand.hpp"
 
-class Dump : public ICommand
+class Close : public ICommand
 {
 public:
   typedef std::vector<std::pair<std::string, std::string> > Params;
-  typedef std::function<Packet *(AConnection::shared)> Cmds;
+  typedef std::function<Packet *(AConnection::shared, Params const &)> Cmds;
 public:
-  Dump(void);
-  virtual ~Dump(void);
+  Close(void);
+  virtual ~Close(void);
 
   virtual void execute(AConnection::shared own, JSONReader const& reader,
 		       Packet **reply);
 private:
-  Packet *plugin(AConnection::shared own);
+  Packet *plugin(AConnection::shared own, Params const& av);
   std::unordered_map<std::string, Cmds> _cmds;
 };

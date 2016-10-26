@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 13:54:32 2016 stephane galibert
-// Last update Tue Oct 25 17:16:24 2016 stephane galibert
+// Last update Wed Oct 26 15:28:01 2016 stephane galibert
 //
 
 #pragma once
@@ -19,6 +19,7 @@
 #include "Help.hpp"
 #include "SQL.hpp"
 #include "Reload.hpp"
+#include "Close.hpp"
 
 #include "JSONReader.hpp"
 
@@ -38,6 +39,7 @@ private:
   std::unique_ptr<ICommand> help(void) const;
   std::unique_ptr<ICommand> sql(void) const;
   std::unique_ptr<ICommand> reload(void) const;
+  std::unique_ptr<ICommand> close(void) const;
 
   std::unordered_map<std::string, Cmds> _cmds;
 };
