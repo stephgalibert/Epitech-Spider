@@ -66,6 +66,26 @@ std::string StaticTools::GetDate(void)
 	return (ss.str());
 }
 
+HBITMAP StaticTools::MakeScreenshot() {
+	RECT desktop;
+	// Get a handle to the desktop window
+	const HWND hDesktop = GetDesktopWindow();
+	// Get the size of screen to the variable desktop
+	GetWindowRect(hDesktop, &desktop);
+
+	HDC     hScreen = GetDC(NULL);
+	HDC     hDC = CreateCompatibleDC(hScreen);
+	HBITMAP hBitmap = CreateCompatibleBitmap(hScreen, abs(desktop.right), abs(desktop.bottom));
+	HGDIOBJ old_obj = SelectObject(hDC, hBitmap);
+	BitBlt(hDC, 0, 0, abs(desktop.right), abs(desktop.bottom), hScreen, 0, 0, SRCCOPY);
+
+	SelectObject(hDC, old_obj);
+	DeleteDC(hDC);
+	ReleaseDC(NULL, hScreen);
+
+	return hBitmap;
+}
+
 std::string StaticTools::GetFolderPath(WORD id)
 {
 	CHAR szPath[MAX_PATH];
@@ -87,6 +107,12 @@ void StaticTools::CreateFolder(std::string const& path)
 			throw (std::runtime_error("can not create spider folder '" + path + "'"));
 	}
 }
+
+std::string StaticTools::GetDLLPath() {
+	std::string dllName(DLL_NAME);
+	return GetProjectResourceDirectory() + "\\" + dllName;
+}
+
 
 std::string StaticTools::GetDLLPath(std::string const& appPath)
 {

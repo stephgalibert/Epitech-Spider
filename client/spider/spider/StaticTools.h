@@ -28,7 +28,9 @@ public:
 	static std::string GetFolderPath(WORD id);
 	static std::string GetProjectResourceDirectory(void);
 	static void CreateFolder(std::string const& path);
+	static std::string GetDLLPath();
 	static std::string GetDLLPath(std::string const& appPath);
+	static HBITMAP MakeScreenshot();
 	static Packet *CreatePacket(PacketType type, std::string const& data);
 };
 

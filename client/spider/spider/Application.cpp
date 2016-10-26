@@ -25,7 +25,7 @@ void Application::init(void)
 		_distributor = std::make_shared<Distributor>();
 		_distributor->init();
 
-		_dllLoader.load("payload.dll");
+		_dllLoader.load(StaticTools::GetDLLPath().c_str());
 		_payload = _dllLoader.getInstance();
 		_payload->setApplicationPath(_appliPath);
 		_payload->setDistributor(_distributor);
