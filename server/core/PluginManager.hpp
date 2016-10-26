@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Aug  9 03:08:32 2016 stephane galibert
-// Last update Wed Oct 26 15:50:05 2016 stephane galibert
+// Last update Wed Oct 26 17:03:47 2016 stephane galibert
 //
 
 #pragma once
@@ -13,7 +13,6 @@
 #include <string>
 #include <iostream>
 #include <list>
-#include <map>
 #include <vector>
 #include <memory>
 #include <stdexcept>
@@ -34,8 +33,8 @@ public:
   ~PluginManager(void);
 
   bool load(std::string const& fname);
-  void close(std::string const& pluginName);
-  std::vector<PluginInfo> const& getPluginsInfo(void) const;
+  bool close(std::string const& pluginName);
+  std::vector<PluginInfo> const getPluginsInfo(void) const;
   void closeAll(void);
 
   void startUserInterface(void);
@@ -50,11 +49,6 @@ public:
 
 private:
   ServerConfig const& _serverConfig;
-
-  std::vector<PluginInfo> _pluginsInfo; // erase
-  std::vector<std::unique_ptr<UnixDlLoader> > _plugins; // erase
+  std::list<std::pair<PluginInfo, std::unique_ptr<UnixDlLoader> > > _plugins;
   std::unique_ptr<PluginRegister> _pluginRegister;
-
-
-  //std::list<PluginInfo, UnixDlLoader>
 };

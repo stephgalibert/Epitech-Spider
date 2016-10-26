@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Wed Oct 26 15:16:58 2016 stephane galibert
-// Last update Wed Oct 26 15:40:13 2016 stephane galibert
+// Last update Wed Oct 26 18:57:04 2016 stephane galibert
 //
 
 #include "Close.hpp"
@@ -42,9 +42,15 @@ void Close::execute(AConnection::shared own, JSONReader const& reader,
 
 Packet *Close::plugin(AConnection::shared own, Params const& av)
 {
+  if (own->getPrivilege() != Privilege::PL_ADMIN) {
+    return (StaticTools::CreatePacket(PacketType::PT_Error, ACCESS_DENIED));
+  }
+
   if (av.size() > 2) {
-    own->closePlugin(av[2].second);
-    return (NULL);
+    if (!own->closePlugin(av[2].second)) {
+      return (StaticTools::CreatePacket(PacketType::PT_Response, "Error: plugin '" + av[2].second + "' not found"));
+    }
+    return (StaticTools::CreatePacket(PacketType::PT_Response, SUCCESS));
   }
   return (StaticTools::CreatePacket(PacketType::PT_Error, BAD_PARAMETER));
 }

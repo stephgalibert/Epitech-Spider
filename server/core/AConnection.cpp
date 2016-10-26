@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug 12 03:22:40 2016 stephane galibert
-// Last update Wed Oct 26 15:42:20 2016 stephane galibert
+// Last update Wed Oct 26 16:59:21 2016 stephane galibert
 //
 
 #include "AConnection.hpp"
@@ -64,9 +64,9 @@ void AConnection::reloadPlugin(void)
   _pluginManager.startUserInterface();
 }
 
-void AConnection::closePlugin(std::string const& name)
+bool AConnection::closePlugin(std::string const& name)
 {
-  _pluginManager.close(name);
+  return (_pluginManager.close(name));
 }
 
 void AConnection::connectToDB(void)
@@ -100,7 +100,7 @@ std::string AConnection::executeSQL(std::string const& stmt)
   return (_pluginManager.executeSQLDatabase(stmt));
 }
 
-std::vector<PluginInfo> const& AConnection::getPluginsInfo(void) const
+std::vector<PluginInfo> const AConnection::getPluginsInfo(void) const
 {
   return (_pluginManager.getPluginsInfo());
 }

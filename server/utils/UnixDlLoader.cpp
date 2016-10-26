@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Wed Oct 26 13:56:52 2016 stephane galibert
-// Last update Wed Oct 26 14:50:22 2016 stephane galibert
+// Last update Wed Oct 26 16:56:30 2016 stephane galibert
 //
 
 #include "UnixDlLoader.hpp"
@@ -53,7 +53,7 @@ void UnixDlLoader::registerInstance(std::unique_ptr<PluginRegister> &pr,
     retrievePluginInfo(info, pluginInfo, loaded, version);
     retrievePluginData(data, pr);
 
-  } catch (std::exception const& e) {
+  } catch (std::runtime_error const& e) {
     throw (e);
   }
 }

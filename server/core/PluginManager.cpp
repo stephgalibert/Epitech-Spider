@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Aug  9 03:15:39 2016 stephane galibert
-// Last update Wed Oct 26 15:45:57 2016 stephane galibert
+// Last update Wed Oct 26 19:00:22 2016 stephane galibert
 //
 
 #include "PluginManager.hpp"
@@ -30,10 +30,9 @@ bool PluginManager::load(std::string const& fname)
     dl->setLibName(fname);
     dl->load();
 
-    dl->registerInstance(_pluginRegister, info, _pluginsInfo,
+    dl->registerInstance(_pluginRegister, info, getPluginsInfo(),
 			 _serverConfig.getVersion());
-    _pluginsInfo.push_back(info);
-    _plugins.push_back(std::move(dl));
+    _plugins.emplace_back(info, std::move(dl));
 
   } catch (std::exception const& e) {
     std::cerr << e.what() << std::endl;
@@ -44,18 +43,29 @@ bool PluginManager::load(std::string const& fname)
   return (true);
 }
 
-void PluginManager::close(std::string const& pluginName)
+bool PluginManager::close(std::string const& pluginName)
 {
-  (void)pluginName;
-  // getUIS()->it->close();
-  // it = it(_pluginsInfo).erase(it);
-  // it = it(_plugins).erase(it);
-
+  std::list<std::pair<PluginInfo, std::unique_ptr<UnixDlLoader> > >::iterator it;
+  it = _plugins.begin();
+  while (it != _plugins.end() && it->first.name != pluginName) {
+    ++it;
+  }
+  if (it != _plugins.end() && it->first.name == pluginName) {
+    if (_pluginRegister->unregisterPlugin(pluginName)) {
+      _plugins.erase(it);
+      return (true);
+    }
+  }
+  return (false);
 }
 
-std::vector<PluginInfo> const& PluginManager::getPluginsInfo(void) const
+std::vector<PluginInfo> const PluginManager::getPluginsInfo(void) const
 {
-  return (_pluginsInfo);
+  std::vector<PluginInfo> infos;
+  for (auto &it : _plugins) {
+    infos.push_back(it.first);
+  }
+  return (infos);
 }
 
 void PluginManager::closeAll(void)
@@ -63,8 +73,7 @@ void PluginManager::closeAll(void)
   closeUserInterface();
   closeDatabase();
   _pluginRegister->clear();
-  _pluginsInfo.clear();
-  _plugins.clear();
+  _plugins.erase(_plugins.begin(), _plugins.end());
 }
 
 void PluginManager::startUserInterface(void)

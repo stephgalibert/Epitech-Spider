@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:32 2016 stephane galibert
-// Last update Wed Oct 26 15:14:55 2016 stephane galibert
+// Last update Wed Oct 26 16:05:31 2016 stephane galibert
 //
 
 #pragma once
@@ -98,7 +98,7 @@ extern "C" void registerPlugin(std::unique_ptr<PluginRegister> &pr)
 {
   std::unique_ptr<Console> ui(new Console);
   ui->init();
-  pr->setUserInterface(std::move(ui));
+  pr->setUserInterface(g_info.name, std::move(ui));
 }
 
 extern "C" PluginInfo const& getPluginInfo(void)
