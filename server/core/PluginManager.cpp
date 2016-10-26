@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Aug  9 03:15:39 2016 stephane galibert
-// Last update Wed Aug 24 22:32:59 2016 stephane galibert
+// Last update Wed Oct 26 14:44:54 2016 stephane galibert
 //
 
 #include "PluginManager.hpp"
@@ -23,6 +23,26 @@ PluginManager::~PluginManager(void)
 bool PluginManager::load(std::string const& fname)
 {
   std::clog << "loading plugin '" << fname << "' ... " << std::flush;
+  std::unique_ptr<UnixDlLoader> dl(new UnixDlLoader);
+  PluginInfo info;
+
+  try {
+    dl->setLibName(fname);
+    dl->load();
+
+    dl->registerInstance(_pluginRegister, info, _pluginsInfo,
+			 _serverConfig.getVersion());
+
+    _plugins.push_back(std::move(dl));
+
+  } catch (std::exception const& e) {
+    std::cerr << e.what() << std::endl;
+    return (false);
+  }
+
+  std::cerr << "done" << std::endl;
+  return (true);
+  /* old
   std::unique_ptr<SoLoader> so(new SoLoader);
   void *info = NULL;
   void *data = NULL;
@@ -43,7 +63,7 @@ bool PluginManager::load(std::string const& fname)
     return (false);
   }
   std::clog << "done" << std::endl;
-  return (true);
+  return (true);*/
 }
 
 void PluginManager::close(std::string const& pluginName)
@@ -133,7 +153,7 @@ void PluginManager::newKeyDatabase(std::string const& id, std::string const& key
   }
 }
 
-bool PluginManager::retrievePluginInfo(void *handle)
+/*bool PluginManager::retrievePluginInfo(void *handle)
 {
   PluginInfo const& info = ((PluginInfo const& (*)(void))(handle))();
   if (!checkDuplicate(info.name)) {
@@ -167,4 +187,4 @@ bool PluginManager::checkDuplicate(std::string const& name) const
     }
   }
   return (true);
-}
+  }*/

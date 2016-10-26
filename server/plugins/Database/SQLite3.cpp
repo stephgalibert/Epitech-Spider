@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sat Aug 20 10:36:29 2016 stephane galibert
-// Last update Mon Aug 22 09:50:44 2016 stephane galibert
+// Last update Wed Oct 26 11:53:21 2016 stephane galibert
 //
 
 #include "SQLite3.hpp"
@@ -32,7 +32,7 @@ SQLite3::~SQLite3(void)
 void SQLite3::createTable(CRString table)
 {
   try {
-    open(_path);
+    open();
     exec(table, NULL);
   } catch (std::runtime_error const& e) {
     throw (e);
@@ -141,10 +141,10 @@ std::string SQLite3::execute(CRString q)
   return (buf.str());
 }
 
-void SQLite3::open(CRString path)
+void SQLite3::open(void)
 {
-  if (sqlite3_open(path.c_str(), &_db) != SQLITE_OK) {
-    throw (std::runtime_error("Error on opening '" + path + "'"));
+  if (sqlite3_open(_path.c_str(), &_db) != SQLITE_OK) {
+    throw (std::runtime_error("Error on opening '" + _path + "'"));
   }
 }
 

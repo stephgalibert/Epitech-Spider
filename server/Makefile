@@ -27,8 +27,8 @@ SRCS		+=	core/request/Get.cpp
 SRCS		+=	core/request/SQL.cpp
 SRCS		+=	core/request/Key.cpp
 SRCS		+=	core/request/Reload.cpp
+SRCS		+=	utils/UnixDlLoader.cpp
 SRCS		+=	utils/StaticTools.cpp
-SRCS		+=	utils/SoLoader.cpp
 SRCS		+=	utils/JSONBuilder.cpp
 SRCS		+=	utils/JSONReader.cpp
 SRCS		+=	utils/XMLReader.cpp
@@ -44,7 +44,6 @@ CXXFLAGS	+=	-I./core/request/
 CXXFLAGS	+=	-I./utils/
 CXXFLAGS	+=	-I./shared/plugin/include/
 
-#LDFLAGS		+=	-L~/Libraries/Boost/lib/
 LDFLAGS		+=	-lpthread
 LDFLAGS		+=	-lboost_system
 LDFLAGS		+=	-lboost_filesystem
@@ -75,6 +74,7 @@ $(NAME):	$(OBJS)
 		cp ./shared/plugin/include/IDatabase.hpp ./plugins/Database/lib/
 		cp ./shared/plugin/include/PluginInfo.hpp ./plugins/Database/lib/
 		cp ./shared/plugin/bin/libplugin.a ./plugins/Database/lib/
+		cp ./core/Protocol.hpp ./plugins/UIConsole/utils/
 
 CCPLUGIN:
 		make -C ./plugins/UIConsole/

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:19 2016 stephane galibert
-// Last update Tue Oct 25 17:21:13 2016 stephane galibert
+// Last update Wed Oct 26 14:49:52 2016 stephane galibert
 //
 
 #include "Console.hpp"
@@ -33,7 +33,7 @@ Console::~Console(void)
 void Console::start(void)
 {
   connect();
-  _th = std::thread(&Console::run, this);
+  _th = boost::thread(&Console::run, this);
 }
 
 void Console::close(void)
@@ -129,7 +129,7 @@ void Console::do_handshake(boost::system::error_code const& ec)
 {
   if (!ec) {
     _running = true;
-    _ui = std::thread(&Console::input, this);
+    _ui = boost::thread(&Console::input, this);
   }
   else {
     std::clog << "UIConsole: handshake FAILED" << std::endl;

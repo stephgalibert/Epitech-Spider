@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:32 2016 stephane galibert
-// Last update Tue Oct 25 17:18:12 2016 stephane galibert
+// Last update Tue Oct 25 19:39:55 2016 stephane galibert
 //
 
 #pragma once
@@ -15,12 +15,12 @@
 #include <sstream>
 #include <map>
 #include <memory>
-#include <thread>
 #include <iterator>
 #include <functional>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/thread.hpp>
 #include <boost/asio/ssl.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
@@ -86,8 +86,8 @@ private:
   boost::asio::ssl::context _context;
   SSLSocket _socket;
 
-  std::thread _th;
-  std::thread _ui;
+  boost::thread _th;
+  boost::thread _ui;
 
   boost::asio::streambuf _read;
   bool _running;

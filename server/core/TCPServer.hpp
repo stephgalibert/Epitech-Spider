@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:52 2016 stephane galibert
-// Last update Fri Aug 19 18:13:10 2016 stephane galibert
+// Last update Tue Oct 25 19:40:32 2016 stephane galibert
 //
 
 #pragma once
@@ -20,7 +20,6 @@
 #include "TCPConnection.hpp"
 #include "ConnectionManager.hpp"
 #include "RequestHandler.hpp"
-//#include "Database.hpp"
 
 class TCPServer : public AServer
 {
@@ -41,7 +40,6 @@ private:
 
   boost::asio::ip::tcp::acceptor _acceptor;
 
-  //Database _database;
   ConnectionManager _coManager;
   RequestHandler _reqHandler;
 };
