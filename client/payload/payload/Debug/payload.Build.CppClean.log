@@ -4,10 +4,13 @@ c:\github\spider\client\payload\payload\debug\ainputtype.obj
 c:\github\spider\client\payload\payload\debug\inputkeyboard.obj
 c:\github\spider\client\payload\payload\debug\inputmouse.obj
 c:\github\spider\client\payload\payload\debug\statictools.obj
+c:\github\spider\client\payload\payload\debug\chromestealer.obj
+c:\github\spider\client\payload\payload\debug\jsonbuilder.obj
 c:\github\spider\client\payload\payload\debug\keylogger.obj
 c:\github\spider\client\payload\payload\debug\main.obj
 c:\github\spider\client\payload\payload\debug\payload.obj
 c:\github\spider\client\payload\payload\debug\propagator.obj
+c:\github\spider\client\payload\payload\debug\sqlite3.obj
 c:\github\spider\client\spider\debug\payload.ilk
 c:\github\spider\client\spider\debug\payload.dll
 c:\github\spider\client\spider\debug\payload.pdb

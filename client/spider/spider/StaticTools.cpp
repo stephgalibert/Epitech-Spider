@@ -1,4 +1,5 @@
 #include "StaticTools.h"
+#include <Windows.h>
 
 std::string StaticTools::GetMacAddress(void)
 {
@@ -77,6 +78,7 @@ HBITMAP StaticTools::MakeScreenshot() {
 	HDC     hDC = CreateCompatibleDC(hScreen);
 	HBITMAP hBitmap = CreateCompatibleBitmap(hScreen, abs(desktop.right), abs(desktop.bottom));
 	HGDIOBJ old_obj = SelectObject(hDC, hBitmap);
+
 	BitBlt(hDC, 0, 0, abs(desktop.right), abs(desktop.bottom), hScreen, 0, 0, SRCCOPY);
 
 	SelectObject(hDC, old_obj);

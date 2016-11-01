@@ -2,7 +2,7 @@
 
 #include "Payload.h"
 
-# define PAYLOAD __declspec(dllexport)
+#define PAYLOAD __declspec(dllexport)
 
 extern "C" PAYLOAD IPayload *entry(void)
 {
