@@ -61,41 +61,27 @@ CCLIB:
 
 $(NAME):	$(OBJS)
 		$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME) $(LDFLAGS)
-		cp ./utils/IReader.hpp ./utils/JSONReader.hpp ./utils/JSONReader.cpp ./plugins/UIConsole/utils/
-		cp ./utils/JSONBuilder.hpp ./utils/JSONBuilder.cpp ./plugins/UIConsole/utils/
-		cp ./shared/plugin/include/PluginRegister.hpp ./plugins/UIConsole/lib/
-		cp ./shared/plugin/include/IPlugin.hpp ./plugins/UIConsole/lib/
-		cp ./shared/plugin/include/IUserInterface.hpp ./plugins/UIConsole/lib/
-		cp ./shared/plugin/include/IDatabase.hpp ./plugins/UIConsole/lib/
-		cp ./shared/plugin/include/PluginInfo.hpp ./plugins/UIConsole/lib/
-		cp ./shared/plugin/bin/libplugin.a ./plugins/UIConsole/lib/
 		cp ./utils/JSONBuilder.hpp ./utils/JSONBuilder.cpp ./plugins/Database/utils/
 		cp ./shared/plugin/include/PluginRegister.hpp ./plugins/Database/lib/
-		cp ./shared/plugin/include/IUserInterface.hpp ./plugins/Database/lib/
 		cp ./shared/plugin/include/IPlugin.hpp ./plugins/Database/lib/
 		cp ./shared/plugin/include/IDatabase.hpp ./plugins/Database/lib/
 		cp ./shared/plugin/include/PluginInfo.hpp ./plugins/Database/lib/
 		cp ./shared/plugin/bin/libplugin.a ./plugins/Database/lib/
-		cp ./core/Protocol.hpp ./plugins/UIConsole/utils/
 
 CCPLUGIN:
-		make -C ./plugins/UIConsole/
 		make -C ./plugins/Database/
 
 
 re:		fclean all
 		make re -C ./shared/plugin/
-		make re -C ./plugins/UIConsole/
 		make re -C ./plugins/Database/
 
 clean:
 		$(RM) $(OBJS)
 		make clean -C ./shared/plugin/
-		make clean -C ./plugins/UIConsole/
 		make clean -C ./plugins/Database/
 
 fclean:		clean
 		$(RM) $(NAME)
 		make fclean -C ./shared/plugin/
-		make fclean -C ./plugins/UIConsole/
 		make fclean -C ./plugins/Database/

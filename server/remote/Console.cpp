@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:19 2016 stephane galibert
-// Last update Wed Oct 26 16:12:41 2016 stephane galibert
+// Last update Tue Nov  1 20:08:57 2016 stephane galibert
 //
 
 #include "Console.hpp"
@@ -43,22 +43,22 @@ void Console::close(void)
   if (_th.joinable()) {
     _th.join();
   }
-  if (_ui.joinable()) {
+  /*if (_ui.joinable()) {
     _ui.join();
-  }
+    }*/
 }
 
-PluginInfo const& Console::getPluginInfo(void) const
+/*PluginInfo const& Console::getPluginInfo(void) const
 {
   return (g_info);
-}
+  }*/
 
 void Console::init(void)
 {
   try {
     _socket.set_verify_mode(boost::asio::ssl::verify_peer);
     //_socket.set_verify_callback(boost::bind(&Console::verify_crt, this, _1, _2));
-    _context.load_verify_file("certificates/server.crt");
+    _context.load_verify_file("server.crt");
   } catch (std::exception const& e) {
     std::cerr << "console init: " << e.what() << std::endl;
   }
@@ -102,17 +102,27 @@ void Console::connect(void)
   boost::asio::ip::tcp::resolver::query q("localhost",
 					  boost::lexical_cast<std::string>(4242));
   boost::asio::ip::tcp::resolver::iterator endpoint_it = _resolver.resolve(q);
-  boost::asio::async_connect(_socket.lowest_layer(), endpoint_it,
+  /*boost::asio::async_connect(_socket.lowest_layer(), endpoint_it,
 			     boost::bind(&Console::do_connect, this,
 					 boost::asio::placeholders::error,
-					 boost::asio::placeholders::iterator));
+					 boost::asio::placeholders::iterator));*/
+  boost::system::error_code error;
+  boost::asio::connect(_socket.lowest_layer(), endpoint_it, error);
+  if (error) {
+    std::cerr << "error on connect" << std::endl;
+  } else {
+    handshake();
+  }
 }
 
 void Console::handshake(void)
 {
-  _socket.async_handshake(boost::asio::ssl::stream_base::client,
+  /*_socket.async_handshake(boost::asio::ssl::stream_base::client,
 			  boost::bind(&Console::do_handshake, this,
-				      boost::asio::placeholders::error));
+			  boost::asio::placeholders::error));*/
+  boost::system::error_code error;
+  _socket.handshake(boost::asio::ssl::stream_base::client, error);
+  do_handshake(error);
 }
 
 void Console::do_connect(boost::system::error_code const& ec,
@@ -129,7 +139,8 @@ void Console::do_handshake(boost::system::error_code const& ec)
 {
   if (!ec) {
     _running = true;
-    _ui = boost::thread(&Console::input, this);
+    input();
+    //_ui = boost::thread(&Console::input, this);
   }
   else {
     std::clog << "UIConsole: handshake FAILED" << std::endl;

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:07:05 2016 stephane galibert
-// Last update Mon Aug 22 19:20:52 2016 stephane galibert
+// Last update Tue Nov  1 20:17:08 2016 stephane galibert
 //
 
 #include "TCPServer.hpp"
@@ -27,7 +27,6 @@ void TCPServer::init(void)
 
 void TCPServer::open(void)
 {
-  _pluginManager.startUserInterface();
   _pluginManager.initDatabase();
   accept();
 }

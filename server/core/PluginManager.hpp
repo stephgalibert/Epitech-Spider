@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Aug  9 03:08:32 2016 stephane galibert
-// Last update Wed Oct 26 17:03:47 2016 stephane galibert
+// Last update Tue Nov  1 20:16:27 2016 stephane galibert
 //
 
 #pragma once
@@ -18,7 +18,6 @@
 #include <stdexcept>
 #include <utility>
 
-#include "IUserInterface.hpp"
 #include "IDatabase.hpp"
 
 #include "ServerConfig.hpp"
@@ -36,9 +35,6 @@ public:
   bool close(std::string const& pluginName);
   std::vector<PluginInfo> const getPluginsInfo(void) const;
   void closeAll(void);
-
-  void startUserInterface(void);
-  void closeUserInterface(void);
 
   void initDatabase(void);
   void closeDatabase(void);

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Aug  9 03:15:39 2016 stephane galibert
-// Last update Wed Oct 26 19:00:22 2016 stephane galibert
+// Last update Tue Nov  1 20:17:54 2016 stephane galibert
 //
 
 #include "PluginManager.hpp"
@@ -70,26 +70,9 @@ std::vector<PluginInfo> const PluginManager::getPluginsInfo(void) const
 
 void PluginManager::closeAll(void)
 {
-  closeUserInterface();
   closeDatabase();
   _pluginRegister->clear();
   _plugins.erase(_plugins.begin(), _plugins.end());
-}
-
-void PluginManager::startUserInterface(void)
-{
-  std::unique_ptr<IUserInterface> const& ptr = _pluginRegister->getUserInterface();
-  if (ptr) {
-    ptr->start();
-  }
-}
-
-void PluginManager::closeUserInterface(void)
-{
-  std::unique_ptr<IUserInterface> const& ptr = _pluginRegister->getUserInterface();
-  if (ptr) {
-    ptr->close();
-  }
 }
 
 void PluginManager::closeDatabase(void)

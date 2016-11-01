@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:32 2016 stephane galibert
-// Last update Wed Oct 26 16:05:31 2016 stephane galibert
+// Last update Tue Nov  1 19:54:56 2016 stephane galibert
 //
 
 #pragma once
@@ -29,30 +29,19 @@
 #include "JSONReader.hpp"
 #include "Protocol.hpp"
 
-#include "IUserInterface.hpp"
-#include "PluginRegister.hpp"
-
 #include "StaticTools.hpp"
 
-PluginInfo g_info = {
-  "UIConsole",
-  "Stéphane GALIBERT",
-  0x01
-};
-
-class Console : public IUserInterface
+class Console
 {
 public:
   typedef boost::asio::ssl::stream<boost::asio::ip::tcp::socket> SSLSocket;
   typedef std::function<void(std::vector<std::string> const&)> Cmds;
 public:
   Console(void);
-  virtual ~Console(void);
+  ~Console(void);
 
-  virtual void start(void);
-  virtual void close(void);
-
-  virtual PluginInfo const& getPluginInfo(void) const;
+  void start(void);
+  void close(void);
 
   void init(void);
 
@@ -88,20 +77,8 @@ private:
   SSLSocket _socket;
 
   boost::thread _th;
-  boost::thread _ui;
+  //boost::thread _ui;
 
   boost::asio::streambuf _read;
   bool _running;
 };
-
-extern "C" void registerPlugin(std::unique_ptr<PluginRegister> &pr)
-{
-  std::unique_ptr<Console> ui(new Console);
-  ui->init();
-  pr->setUserInterface(g_info.name, std::move(ui));
-}
-
-extern "C" PluginInfo const& getPluginInfo(void)
-{
-  return (g_info);
-}
