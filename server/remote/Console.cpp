@@ -5,12 +5,12 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:19 2016 stephane galibert
-// Last update Tue Nov  1 20:08:57 2016 stephane galibert
+// Last update Tue Nov  1 20:55:43 2016 stephane galibert
 //
 
 #include "Console.hpp"
 
-Console::Console(void)
+Console::Console(std::string const& ip, std::string const& port)
   : _resolver(_io_service),
     _context(boost::asio::ssl::context::sslv23),
     _socket(_io_service, _context)
@@ -24,6 +24,8 @@ Console::Console(void)
   _cmds["sql"] = std::bind(&Console::cmd_sql, this, std::placeholders::_1);
   _cmds["close"] = std::bind(&Console::cmd_close, this, std::placeholders::_1);
   _running = false;
+  _remoteIP = ip;
+  _remotePort = port;
 }
 
 Console::~Console(void)
@@ -33,25 +35,17 @@ Console::~Console(void)
 void Console::start(void)
 {
   connect();
-  _th = boost::thread(&Console::run, this);
+  _io_service_thread = boost::thread(&Console::run, this);
 }
 
 void Console::close(void)
 {
   _running = false;
   _io_service.stop();
-  if (_th.joinable()) {
-    _th.join();
+  if (_io_service_thread.joinable()) {
+    _io_service_thread.join();
   }
-  /*if (_ui.joinable()) {
-    _ui.join();
-    }*/
 }
-
-/*PluginInfo const& Console::getPluginInfo(void) const
-{
-  return (g_info);
-  }*/
 
 void Console::init(void)
 {
@@ -99,27 +93,20 @@ void Console::input(void)
 
 void Console::connect(void)
 {
-  boost::asio::ip::tcp::resolver::query q("localhost",
-					  boost::lexical_cast<std::string>(4242));
-  boost::asio::ip::tcp::resolver::iterator endpoint_it = _resolver.resolve(q);
-  /*boost::asio::async_connect(_socket.lowest_layer(), endpoint_it,
-			     boost::bind(&Console::do_connect, this,
-					 boost::asio::placeholders::error,
-					 boost::asio::placeholders::iterator));*/
-  boost::system::error_code error;
-  boost::asio::connect(_socket.lowest_layer(), endpoint_it, error);
-  if (error) {
-    std::cerr << "error on connect" << std::endl;
-  } else {
-    handshake();
+  try {
+    boost::system::error_code error;
+    boost::asio::ip::tcp::resolver::query q(_remoteIP, _remotePort);
+    boost::asio::ip::tcp::resolver::iterator endpoint_it = _resolver.resolve(q);
+
+    boost::asio::connect(_socket.lowest_layer(), endpoint_it, error);
+    do_connect(error, endpoint_it);
+  } catch (std::exception const& e) {
+    throw (std::runtime_error(e.what()));
   }
 }
 
 void Console::handshake(void)
 {
-  /*_socket.async_handshake(boost::asio::ssl::stream_base::client,
-			  boost::bind(&Console::do_handshake, this,
-			  boost::asio::placeholders::error));*/
   boost::system::error_code error;
   _socket.handshake(boost::asio::ssl::stream_base::client, error);
   do_handshake(error);
@@ -131,7 +118,8 @@ void Console::do_connect(boost::system::error_code const& ec,
   if (!ec) {
     handshake();
   } else {
-    std::cerr << "Error on loading UIConsole plugin" << std::endl;
+    std::cerr << "Error: " << _remoteIP << ":" << _remotePort
+	      << " is inaccessible" << std::endl;
   }
 }
 
@@ -140,10 +128,9 @@ void Console::do_handshake(boost::system::error_code const& ec)
   if (!ec) {
     _running = true;
     input();
-    //_ui = boost::thread(&Console::input, this);
   }
   else {
-    std::clog << "UIConsole: handshake FAILED" << std::endl;
+    std::clog << "Error: handshake failed" << std::endl;
   }
 }
 
@@ -205,7 +192,7 @@ void Console::cmd_help(std::vector<std::string> const& av)
       }
     }
   } catch (std::exception const& e) {
-    std::cerr << "UIConsole: help: " << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << std::endl;
   }
 }
 
@@ -238,7 +225,7 @@ void Console::cmd_dump(std::vector<std::string> const& av)
       }
     }
   } catch (std::exception const& e) {
-    std::cerr << "UIConsole: " << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << std::endl;
   }
 }
 
@@ -257,7 +244,7 @@ void Console::cmd_exit(std::vector<std::string> const& av)
       }
     }
   } catch (std::exception const& e) {
-    //std::cerr << "uiconsole: exit: " << e.what() << std::endl;
+    _running = false;
   }
 }
 
@@ -279,7 +266,7 @@ void Console::cmd_reload(std::vector<std::string> const& av)
       }
     }
   } catch (std::exception const& e) {
-    std::cerr << "UIConsole: reload: " << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << std::endl;
   }
 }
 
@@ -299,7 +286,7 @@ void Console::cmd_set(std::vector<std::string> const& av)
     }
 
   } catch (std::exception const& e) {
-    std::cerr << "UIConsole: set: " << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << std::endl;
   }
 }
 
@@ -328,7 +315,7 @@ void Console::cmd_get(std::vector<std::string> const& av)
       }
     }
   } catch (std::exception const& e) {
-    std::cerr << "UIConsole: get: " << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << std::endl;
   }
 }
 
@@ -370,7 +357,7 @@ void Console::cmd_sql(std::vector<std::string> const& av)
       }
     }
   } catch (std::exception const& e) {
-    std::cerr << "UIConsole: get: " << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << std::endl;
   }
 }
 
@@ -390,6 +377,6 @@ void Console::cmd_close(std::vector<std::string> const& av)
     }
 
   } catch (std::exception const& e) {
-    std::cerr << "UIConsole: set: " << e.what() << std::endl;
+    std::cerr << "Error: " << e.what() << std::endl;
   }
 }

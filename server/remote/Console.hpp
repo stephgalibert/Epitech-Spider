@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:32 2016 stephane galibert
-// Last update Tue Nov  1 19:54:56 2016 stephane galibert
+// Last update Tue Nov  1 20:42:59 2016 stephane galibert
 //
 
 #pragma once
@@ -37,7 +37,7 @@ public:
   typedef boost::asio::ssl::stream<boost::asio::ip::tcp::socket> SSLSocket;
   typedef std::function<void(std::vector<std::string> const&)> Cmds;
 public:
-  Console(void);
+  Console(std::string const& remote, std::string const& port);
   ~Console(void);
 
   void start(void);
@@ -76,9 +76,10 @@ private:
   boost::asio::ssl::context _context;
   SSLSocket _socket;
 
-  boost::thread _th;
-  //boost::thread _ui;
+  boost::thread _io_service_thread;
 
   boost::asio::streambuf _read;
   bool _running;
+  std::string _remoteIP;
+  std::string _remotePort;
 };

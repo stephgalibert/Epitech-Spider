@@ -5,17 +5,23 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Nov  1 19:53:29 2016 stephane galibert
-// Last update Tue Nov  1 20:04:13 2016 stephane galibert
+// Last update Tue Nov  1 20:54:59 2016 stephane galibert
 //
 
 #include "Console.hpp"
 
-int	main(void)
+int main(int ac, char **av)
 {
-  Console console;
+  std::string ip = ((ac > 1) ? av[1] : "localhost");
+  std::string port = ((ac > 2) ? av[2] : "4242");
+  Console console(ip, port);
 
-  console.init();
-  console.start();
-  console.close();
+  try {
+    console.init();
+    console.start();
+    console.close();
+  } catch (std::exception const& e) {
+    std::cerr << e.what() << std::endl;
+  }
   return (0);
 }
