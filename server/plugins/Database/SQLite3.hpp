@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sat Aug 20 10:36:41 2016 stephane galibert
-// Last update Mon Aug 22 09:50:36 2016 stephane galibert
+// Last update Wed Oct 26 11:52:40 2016 stephane galibert
 //
 
 #pragma once
@@ -38,8 +38,8 @@ public:
   void erase(CRString table, CRString id, CRString idValue);
   bool exist(CRString table, CRString colName, CRString value);
   std::string execute(CRString q);
+  void open(void);
 private:
-  void open(CRString path);
   void exec(CRString query, int (*callback)(void *, int, char **, char **));
 
   std::string _path;

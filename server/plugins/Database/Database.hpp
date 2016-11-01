@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Wed Aug 17 14:58:36 2016 stephane galibert
-// Last update Mon Aug 22 15:49:39 2016 stephane galibert
+// Last update Wed Oct 26 16:06:02 2016 stephane galibert
 //
 
 #pragma once
@@ -51,7 +51,7 @@ private:
 
 extern "C" void registerPlugin(std::unique_ptr<PluginRegister> &pr)
 {
-  pr->setDatabase(std::unique_ptr<Database>(new Database));
+  pr->setDatabase(g_info.name, std::unique_ptr<Database>(new Database));
 }
 
 extern "C" PluginInfo const& getPluginInfo(void)

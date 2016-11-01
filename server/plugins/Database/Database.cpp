@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Wed Aug 17 15:01:01 2016 stephane galibert
-// Last update Wed Aug 24 22:35:56 2016 stephane galibert
+// Last update Wed Oct 26 14:50:08 2016 stephane galibert
 //
 
 #include "Database.hpp"

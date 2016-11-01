@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:32 2016 stephane galibert
-// Last update Tue Oct 25 17:18:12 2016 stephane galibert
+// Last update Wed Oct 26 16:05:31 2016 stephane galibert
 //
 
 #pragma once
@@ -15,12 +15,12 @@
 #include <sstream>
 #include <map>
 #include <memory>
-#include <thread>
 #include <iterator>
 #include <functional>
 
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/thread.hpp>
 #include <boost/asio/ssl.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
@@ -79,6 +79,7 @@ private:
   void cmd_set(std::vector<std::string> const& av);
   void cmd_get(std::vector<std::string> const& av);
   void cmd_sql(std::vector<std::string> const& av);
+  void cmd_close(std::vector<std::string> const& av);
   std::map<std::string, Cmds> _cmds;
 
   boost::asio::io_service _io_service;
@@ -86,8 +87,8 @@ private:
   boost::asio::ssl::context _context;
   SSLSocket _socket;
 
-  std::thread _th;
-  std::thread _ui;
+  boost::thread _th;
+  boost::thread _ui;
 
   boost::asio::streambuf _read;
   bool _running;
@@ -97,7 +98,7 @@ extern "C" void registerPlugin(std::unique_ptr<PluginRegister> &pr)
 {
   std::unique_ptr<Console> ui(new Console);
   ui->init();
-  pr->setUserInterface(std::move(ui));
+  pr->setUserInterface(g_info.name, std::move(ui));
 }
 
 extern "C" PluginInfo const& getPluginInfo(void)

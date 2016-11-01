@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:19 2016 stephane galibert
-// Last update Tue Oct 25 17:21:13 2016 stephane galibert
+// Last update Wed Oct 26 16:12:41 2016 stephane galibert
 //
 
 #include "Console.hpp"
@@ -22,7 +22,7 @@ Console::Console(void)
   _cmds["set"] = std::bind(&Console::cmd_set, this, std::placeholders::_1);
   _cmds["get"] = std::bind(&Console::cmd_get, this, std::placeholders::_1);
   _cmds["sql"] = std::bind(&Console::cmd_sql, this, std::placeholders::_1);
-
+  _cmds["close"] = std::bind(&Console::cmd_close, this, std::placeholders::_1);
   _running = false;
 }
 
@@ -33,7 +33,7 @@ Console::~Console(void)
 void Console::start(void)
 {
   connect();
-  _th = std::thread(&Console::run, this);
+  _th = boost::thread(&Console::run, this);
 }
 
 void Console::close(void)
@@ -129,7 +129,7 @@ void Console::do_handshake(boost::system::error_code const& ec)
 {
   if (!ec) {
     _running = true;
-    _ui = std::thread(&Console::input, this);
+    _ui = boost::thread(&Console::input, this);
   }
   else {
     std::clog << "UIConsole: handshake FAILED" << std::endl;
@@ -360,5 +360,25 @@ void Console::cmd_sql(std::vector<std::string> const& av)
     }
   } catch (std::exception const& e) {
     std::cerr << "UIConsole: get: " << e.what() << std::endl;
+  }
+}
+
+void Console::cmd_close(std::vector<std::string> const& av)
+{
+  JSONBuilder builder;
+
+  builder.addValue("name", av[0]);
+  builder.addListValues("param", av);
+
+  try {
+    write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
+    Packet const *reply = read();
+
+    if (reply && reply->MAGIC == MAGIC_NUMBER) {
+      std::cerr << std::string(reply->data, reply->size) << std::endl;
+    }
+
+  } catch (std::exception const& e) {
+    std::cerr << "UIConsole: set: " << e.what() << std::endl;
   }
 }

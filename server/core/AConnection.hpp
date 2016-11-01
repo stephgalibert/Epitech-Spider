@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug 12 03:01:15 2016 stephane galibert
-// Last update Wed Oct 19 14:44:33 2016 stephane galibert
+// Last update Wed Oct 26 16:59:09 2016 stephane galibert
 //
 
 #pragma once
@@ -50,13 +50,14 @@ public:
   Privilege getPrivilege(void) const;
 
   void close(void);
+  bool closePlugin(std::string const& name);
   void reloadPlugin(void);
   void connectToDB(void);
   void disconnectToDB(void);
   bool isRegistered(void) const;
   void addLog(std::string const& toadd);
   std::string executeSQL(std::string const& stmt);
-  std::vector<PluginInfo> const& getPluginsInfo(void) const;
+  std::vector<PluginInfo> const getPluginsInfo(void) const;
   ServerConfig const& getServerConfig(void) const;
 
 protected:

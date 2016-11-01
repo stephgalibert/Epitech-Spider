@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:05:04 2016 stephane galibert
-// Last update Tue Oct  4 18:43:52 2016 chalie_a
+// Last update Tue Oct 25 17:54:47 2016 stephane galibert
 //
 
 #include <iostream>
@@ -26,7 +26,7 @@ int main(void)
 {
   try {
     boost::asio::io_service io_service;
-    
+
     TCPServer tcp(io_service, 4242);
     UDPServer udp(io_service, 4242);
 

@@ -5,7 +5,7 @@
 ## Login   <galibe_s@epitech.net>
 ## 
 ## Started on  Mon Aug  8 20:25:54 2016 stephane galibert
-## Last update Mon Aug 22 19:26:33 2016 stephane galibert
+## Last update Tue Oct 25 19:45:59 2016 stephane galibert
 ##
 
 NAME		=	bin/ui_console.so
@@ -30,7 +30,7 @@ CXXFLAGS	+=	-I./
 CXXFLAGS	+=	-I./lib/
 CXXFLAGS	+=	-I./utils/
 
-LDFLAGS		+=	-lpthread
+LDFLAGS		+=	-lpthread -lboost_thread
 LDFLAGS		+=	-L./lib/ -lplugin
 
 all:		$(NAME)
