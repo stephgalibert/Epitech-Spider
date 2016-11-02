@@ -158,24 +158,35 @@
     <ClCompile Include="..\..\spider\spider\InputKeyboard.cpp" />
     <ClCompile Include="..\..\spider\spider\InputMouse.cpp" />
     <ClCompile Include="..\..\spider\spider\StaticTools.cpp" />
-    <ClCompile Include="ChromeStealer.cpp" />
+    <ClCompile Include="ChromeStealer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="JSONBuilder.cpp" />
     <ClCompile Include="Keylogger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Payload.cpp" />
     <ClCompile Include="Propagator.cpp" />
-    <ClCompile Include="SQLite3.cpp" />
+    <ClCompile Include="SQLite3.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChromeStealer.h" />
+    <ClInclude Include="ChromeStealer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="IPayload.h" />
-    <ClInclude Include="IStealer.h" />
+    <ClInclude Include="IStealer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="JSONBuilder.hpp" />
     <ClInclude Include="Keylogger.h" />
     <ClInclude Include="KeyState.h" />
+    <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Payload.h" />
     <ClInclude Include="Propagator.h" />
-    <ClInclude Include="SQLite3.hpp" />
+    <ClInclude Include="SQLite3.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Typedef.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -20,8 +20,6 @@
 #include "Typedef.hpp"
 #include "JSONBuilder.hpp"
 
-int callback(void *data, int ac, char **av, char **azColName);
-
 class SQLite3
 {
 public:

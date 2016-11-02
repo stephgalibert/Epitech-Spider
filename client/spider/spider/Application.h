@@ -22,7 +22,7 @@ class Application
 {
 public:
 	Application(std::string const& appliPath);
-	~Application();
+	~Application(void);
 
 	void init(void);
 	void loop(void);
@@ -32,7 +32,7 @@ public:
 private:
 	std::string _appliPath;
 	WinDlLoader<IPayload> _dllLoader;
-	IPayload *_payload;
 
+	IPayload *_payload;
 	std::shared_ptr<IDistributor> _distributor;
 };

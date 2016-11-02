@@ -1,14 +1,1 @@
-﻿  AInputType.cpp
-  InputKeyboard.cpp
-  InputMouse.cpp
-  StaticTools.cpp
-  Keylogger.cpp
-  main.cpp
-  Payload.cpp
-  Propagator.cpp
-     Création de la bibliothèque C:\Github\Spider\client\spider\Release\payload.lib et de l'objet C:\Github\Spider\client\spider\Release\payload.exp
-  Génération de code en cours
-  All 1360 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Fin de la génération du code
-  payload.vcxproj -> C:\Github\Spider\client\spider\Release\payload.dll
-  payload.vcxproj -> C:\Github\Spider\client\spider\Release\payload.pdb (Full PDB)
+﻿

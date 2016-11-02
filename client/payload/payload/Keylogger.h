@@ -12,6 +12,7 @@
 #include "AInputType.h"
 #include "InputKeyboard.h"
 #include "InputMouse.h"
+#include "MouseEvent.h"
 
 #include <Windows.h>
 #include <cctype>
@@ -25,7 +26,7 @@ public:
 	void init(void);
 	void keyPressed(LPKBDLLHOOKSTRUCT key);
 	void keyReleased(LPKBDLLHOOKSTRUCT key);
-	void mouseClick(LPMSLLHOOKSTRUCT mouse);
+	void mouseClick(MouseEvent me,LPMSLLHOOKSTRUCT mouse);
 
 	void setDistributor(std::shared_ptr<IDistributor> distributor);
 

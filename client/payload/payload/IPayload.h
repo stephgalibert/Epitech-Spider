@@ -2,9 +2,10 @@
 
 #include <string>
 #include <memory>
+
 #include "IDistributor.h"
 
-class IPayload
+class IPayload : public std::enable_shared_from_this<IPayload>
 {
 public:
 	virtual ~IPayload(void) {}

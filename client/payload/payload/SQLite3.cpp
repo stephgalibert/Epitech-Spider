@@ -13,15 +13,6 @@
 #include <atlstr.h>
 #pragma comment(lib, "crypt32.lib")
 
-int callback(void *data, int ac, char **av, char **azColName)
-{
-  (void)data;
-  for (int i = 0 ; i < ac ; ++i) {
-    std::clog << azColName[i] << ": " << ((av[i]) ? av[i] : "NULL") << std::endl;
-  }
-  return (0);
-}
-
 SQLite3::SQLite3(CRString path)
   : _path(path)
 {
@@ -68,7 +59,7 @@ void SQLite3::select(CRString table, CRString id, CRString idValue)
 
   query = "SELECT * FROM " + table + " WHERE " + id + "='" + idValue + "';";
   try {
-    exec(query, &callback);
+    exec(query, NULL);
   } catch (std::exception const& e) {
     std::cerr << e.what() << std::endl;
   }
