@@ -1,11 +1,11 @@
 //
-// Dump.cpp for server in /home/galibe_s/rendu/Spider/server
+// Dump.cpp for dump in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Tue Oct 25 16:58:36 2016 stephane galibert
-// Last update Tue Oct 25 17:02:39 2016 stephane galibert
+// Started on  Sat Nov  5 15:51:37 2016 stephane galibert
+// Last update Sat Nov  5 15:51:37 2016 stephane galibert
 //
 
 #include "Dump.hpp"

@@ -1,11 +1,11 @@
 //
-// RequestBuilder.hpp for server in /home/galibe_s/project/SpiderServer/core/request
+// RequestBuilder.hpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Thu Aug 18 13:24:38 2016 stephane galibert
-// Last update Tue Oct 25 13:58:10 2016 stephane galibert
+// Started on  Sat Nov  5 15:53:35 2016 stephane galibert
+// Last update Sat Nov  5 15:53:47 2016 stephane galibert
 //
 
 #pragma once
@@ -20,17 +20,9 @@
 
 #include "Protocol.hpp"
 #include "IRequest.hpp"
-//#include "Help.hpp"
 #include "Nc.hpp"
 #include "Exit.hpp"
-/*#include "Dump.hpp"
-#include "Reload.hpp"
-#include "Set.hpp"
-#include "Get.hpp"
-#include "SQL.hpp"*/
 #include "Key.hpp"
-
-//#include "CommandBuilder.hpp"
 
 class RequestBuilder : private boost::noncopyable
 {
@@ -42,15 +34,9 @@ public:
 
   std::unique_ptr<IRequest> create(PacketType type) const;
 private:
-  //std::unique_ptr<IRequest> help(void) const;
   std::unique_ptr<IRequest> nc(void) const;
   std::unique_ptr<IRequest> key(void) const;
   std::unique_ptr<IRequest> exit(void) const;
-  //std::unique_ptr<IRequest> dump(void) const;
-  //std::unique_ptr<IRequest> reload(void) const;
-  //std::unique_ptr<IRequest> set(void) const;
-  //std::unique_ptr<IRequest> get(void) const;
-  //std::unique_ptr<IRequest> sql(void) const;
 
   std::unordered_map<int, Cmds> _cmds;
 };

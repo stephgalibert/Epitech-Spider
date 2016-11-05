@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 18 19:17:41 2016 stephane galibert
-// Last update Tue Oct 25 15:17:23 2016 stephane galibert
+// Last update Sat Nov  5 16:20:23 2016 stephane galibert
 //
 
 #pragma once
@@ -21,6 +21,9 @@
 #define BAD_PARAMETER "Error 45: bad parameter"
 #define BAD_PWD "Error 46: bad password"
 #define BAD_CMD "Error 47: unknown command"
+#define BAD_MAC "Error 48: bad mac address"
+#define BAD_FORMAT "Error 49.3: wrong file format"
+#define UNK_ERROR "Error 50: unknown error"
 
 enum class PacketType : uint16_t
 {

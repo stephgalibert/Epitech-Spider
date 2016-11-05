@@ -1,11 +1,11 @@
 //
-// Set.cpp for server in /home/galibe_s/project/SpiderServer/core/request
+// Set.cpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Sun Aug 14 08:46:16 2016 stephane galibert
-// Last update Wed Oct 26 15:32:16 2016 stephane galibert
+// Started on  Sat Nov  5 15:55:03 2016 stephane galibert
+// Last update Sat Nov  5 15:55:04 2016 stephane galibert
 //
 
 #include "Set.hpp"

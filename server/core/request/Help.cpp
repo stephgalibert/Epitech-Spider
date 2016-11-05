@@ -1,11 +1,11 @@
 //
-// Help.cpp for server in /home/galibe_s/project/SpiderServer/core/request
+// Help.cpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Tue Aug 16 10:51:54 2016 stephane galibert
-// Last update Tue Oct 25 16:54:01 2016 stephane galibert
+// Started on  Sat Nov  5 15:52:52 2016 stephane galibert
+// Last update Sat Nov  5 15:52:53 2016 stephane galibert
 //
 
 #include "Help.hpp"

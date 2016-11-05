@@ -1,11 +1,11 @@
 //
-// IRequest.hpp for server in /home/galibe_s/project/SpiderServer/core/request
+// IRequest.hpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Sun Aug 14 07:54:41 2016 stephane galibert
-// Last update Tue Oct 25 14:16:51 2016 stephane galibert
+// Started on  Sat Nov  5 15:53:12 2016 stephane galibert
+// Last update Sat Nov  5 15:53:17 2016 stephane galibert
 //
 
 #pragma once
@@ -15,9 +15,6 @@
 #include <boost/noncopyable.hpp>
 #include "Protocol.hpp"
 
-//#include "JSONBuilder.hpp"
-//#include "JSONReader.hpp"
-
 #include "AConnection.hpp"
 
 struct IRequest : private boost::noncopyable
@@ -25,6 +22,5 @@ struct IRequest : private boost::noncopyable
   typedef std::shared_ptr<AConnection> Owner;
   virtual ~IRequest(void) {}
 
-  //virtual std::string execute(Owner own, JSONReader &reader) = 0;
   virtual void execute(Owner own, std::string const& param, Packet **packet) = 0;
 };

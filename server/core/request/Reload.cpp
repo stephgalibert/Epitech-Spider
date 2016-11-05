@@ -1,11 +1,11 @@
 //
-// Reload.cpp for server in /home/galibe_s/project/SpiderServer/core/request
+// Reload.cpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Sun Aug 14 09:36:22 2016 stephane galibert
-// Last update Tue Oct 25 17:21:51 2016 stephane galibert
+// Started on  Sat Nov  5 15:54:43 2016 stephane galibert
+// Last update Sat Nov  5 15:54:44 2016 stephane galibert
 //
 
 #include "Reload.hpp"

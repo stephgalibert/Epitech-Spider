@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 14:15:34 2016 stephane galibert
-// Last update Tue Oct 25 14:31:31 2016 stephane galibert
+// Last update Sat Nov  5 15:53:02 2016 stephane galibert
 //
 
 #pragma once
@@ -23,6 +23,5 @@ struct ICommand : private boost::noncopyable
   typedef std::shared_ptr<AConnection> Owner;
   virtual ~ICommand(void) {}
 
-  //virtual std::string execute(Owner own, JSONReader &reader) = 0;
   virtual void execute(Owner own, JSONReader const& reader, Packet **packet) = 0;
 };

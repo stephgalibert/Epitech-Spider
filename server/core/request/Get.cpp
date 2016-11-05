@@ -1,11 +1,11 @@
 //
-// Get.cpp for server in /home/galibe_s/project/SpiderServer/core/request
+// Get.cpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Wed Aug 17 03:54:23 2016 stephane galibert
-// Last update Tue Oct 25 17:16:06 2016 stephane galibert
+// Started on  Sat Nov  5 15:52:41 2016 stephane galibert
+// Last update Sat Nov  5 15:52:44 2016 stephane galibert
 //
 
 #include "Get.hpp"
