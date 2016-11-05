@@ -29,6 +29,7 @@ public:
 	void close(void);
 
 	static bool Existing(void);
+
 private:
 	std::string _appliPath;
 	WinDlLoader<IPayload> _dllLoader;

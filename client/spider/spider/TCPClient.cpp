@@ -151,18 +151,6 @@ void TCPClient::do_handshake(boost::system::error_code const& ec)
 		_ofs << "handshake success" << std::endl;
 		_connected = true;
 
-		//size_t i = 0;
-		//std::string mac = StaticTools::GetMacAddress();
-		//_ofs << "mac: " << mac << std::endl;
-		//int size = sizeof(char) * mac.size();
-		//Packet *packet = (Packet *)malloc(sizeof(Packet) + (size + 1));
-		//packet->type = PacketType::PT_NewClient;
-		//packet->size = size;
-		//while (i < mac.size()) {
-		//	packet->data[i] = mac.at(i);
-		//	++i;
-		//}
-		//packet->data[i] = 0;
 		write(StaticTools::CreatePacket(PacketType::PT_NewClient, StaticTools::GetMacAddress()));
 		
 		read();
