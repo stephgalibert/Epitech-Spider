@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:52 2016 stephane galibert
-// Last update Tue Oct 25 19:40:32 2016 stephane galibert
+// Last update Sun Nov  6 17:40:36 2016 stephane galibert
 //
 
 #pragma once
@@ -24,7 +24,8 @@
 class TCPServer : public AServer
 {
 public:
-  TCPServer(boost::asio::io_service &io_service, int port);
+  TCPServer(boost::asio::io_service &io_service, int port,
+	    RequestHandler &req, ServerConfig &config, PluginManager &pm);
   ~TCPServer(void);
 
   virtual void init(void);
@@ -38,8 +39,9 @@ private:
   void do_accept(std::shared_ptr<TCPConnection> ptr,
 		 boost::system::error_code const& ec);
 
+  boost::asio::ssl::context _context;
   boost::asio::ip::tcp::acceptor _acceptor;
 
   ConnectionManager _coManager;
-  RequestHandler _reqHandler;
+  //RequestHandler _reqHandler;
 };

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:00 2016 stephane galibert
-// Last update Tue Oct 25 14:43:40 2016 stephane galibert
+// Last update Sun Nov  6 20:09:55 2016 stephane galibert
 //
 
 #include "TCPConnection.hpp"
@@ -18,7 +18,8 @@ TCPConnection::TCPConnection(boost::asio::io_service &io_service,
 			     RequestHandler &reqHandler,
 			     PluginManager &pluginManager,
 			     ServerConfig &config)
-  : AConnection(io_service, co_manager, reqHandler, pluginManager, config),
+  : AConnection(io_service, /*co_manager,*/ reqHandler, pluginManager, config),
+    _co_manager(co_manager),
     _socket(io_service, context)
 {
 }
@@ -43,6 +44,13 @@ void TCPConnection::write(Packet *packet)
   _toWrites.push(packet);
   if (!write_in_progress) {
     write();
+  }
+}
+
+void TCPConnection::addLog(std::string const& toadd)
+{
+  if (isRegistered()) {
+    _pluginManager.newKeyDatabase(_mac, toadd);
   }
 }
 

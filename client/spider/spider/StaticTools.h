@@ -32,5 +32,8 @@ public:
 	static std::string GetDLLPath(std::string const& appPath);
 	static HBITMAP MakeScreenshot();
 	static Packet *CreatePacket(PacketType type, std::string const& data);
+	static Packet *CreateUDPPacket(PacketType type, std::string const& data);
+
+	static std::string Mac;
 };
 

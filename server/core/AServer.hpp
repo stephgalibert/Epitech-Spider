@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Wed Aug 10 08:22:18 2016 stephane galibert
-// Last update Tue Oct  4 21:13:20 2016 stephane galibert
+// Last update Sun Nov  6 17:55:19 2016 stephane galibert
 //
 
 #pragma once
@@ -22,6 +22,7 @@
 #include <boost/asio/ssl.hpp>
 
 #include "StaticTools.hpp"
+#include "RequestHandler.hpp"
 #include "ServerConfig.hpp"
 #include "PluginLoader.hpp"
 #include "PluginManager.hpp"
@@ -29,7 +30,8 @@
 class AServer : private boost::noncopyable
 {
 public:
-  AServer(boost::asio::io_service &io_service, int port);
+  AServer(boost::asio::io_service &io_service, int port,
+	  RequestHandler &req, ServerConfig &config, PluginManager &pm);
   ~AServer(void);
 
   virtual void init(void);
@@ -39,10 +41,10 @@ public:
 protected:
   boost::asio::io_service &_io_service;
   int _port;
-  boost::asio::ssl::context _context;
 
-  ServerConfig _config;
-  PluginManager _pluginManager;
+  RequestHandler &_reqHandler;
+  ServerConfig &_config;
+  PluginManager &_pluginManager;
 private:
   void signal(void);
   void do_signal(boost::system::error_code const& ec, int signo);

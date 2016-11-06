@@ -9,7 +9,7 @@ class IClient
 public:
 	virtual ~IClient(void) {}
 
-	virtual void connect(std::string const& remote, std::string const& port) = 0;
+	virtual void connect(void) = 0;
 	virtual void write(Packet *packet) = 0;
 	virtual void disconnect(void) = 0;
 
@@ -18,4 +18,6 @@ public:
 	virtual bool isConnected(void) const = 0;
 
 	virtual IClient &operator<<(Packet *packet) = 0;
+
+	virtual Packet *createPacket(PacketType type, std::string const& data) = 0;
 };

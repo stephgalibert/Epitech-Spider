@@ -166,6 +166,9 @@
     <ClCompile Include="RequestHandler.cpp" />
     <ClCompile Include="StaticTools.cpp" />
     <ClCompile Include="TCPClient.cpp" />
+    <ClCompile Include="UDPClient.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADlLoader.h" />
@@ -184,6 +187,9 @@
     <ClInclude Include="RequestHandler.h" />
     <ClInclude Include="StaticTools.h" />
     <ClInclude Include="TCPClient.h" />
+    <ClInclude Include="UDPClient.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="WinDlLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
