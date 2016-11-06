@@ -12,6 +12,7 @@ SRCS		+=	core/TCPServer.cpp
 SRCS		+=	core/UDPServer.cpp
 SRCS		+=	core/AConnection.cpp
 SRCS		+=	core/TCPConnection.cpp
+SRCS		+=	core/UDPConnection.cpp
 SRCS		+=	core/ConnectionManager.cpp
 SRCS		+=	core/PluginManager.cpp
 SRCS		+=	core/PluginLoader.cpp

@@ -40,7 +40,7 @@ void Application::init(void)
 		}
 	}
 	catch (std::exception const& e) {
-		throw (e);
+		throw (std::runtime_error(e.what()));
 	}
 }
 

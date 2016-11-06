@@ -18,15 +18,16 @@
 class TCPClient : public IClient
 {
 public:
-	TCPClient(void);
+	TCPClient(std::string const& remote, std::string const& port);
 	virtual ~TCPClient(void);
 
-	virtual void connect(std::string const& remote, std::string const& port);
+	virtual void connect(void);
 	virtual void write(Packet* packet);
 	virtual void disconnect(void);
 	virtual void run(void);
 	virtual bool isConnected(void) const;
 	virtual IClient &operator<<(Packet *packet);
+	virtual Packet *createPacket(PacketType type, std::string const& data);
 
 private:
 	void read(void);
@@ -49,12 +50,13 @@ private:
 	boost::asio::streambuf _read;
 	std::queue<Packet *> _toWrites;
 
-	std::string _remote;
-	std::string _port;
 	bool _connected;
 	RequestHandler _reqHandler;
 
 	std::thread _runThread;
 	std::ofstream _ofs;
+
+	std::string _remote;
+	std::string _port;
 };
 

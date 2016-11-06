@@ -1,11 +1,11 @@
 //
-// TCPConnection.hpp for server in /home/galibe_s/project
+// TCPConnection.hpp for server in /home/galibe_s/rendu/Spider/server/core
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Fri Aug  5 21:05:52 2016 stephane galibert
-// Last update Wed Oct 19 14:44:46 2016 stephane galibert
+// Started on  Sun Nov  6 17:00:55 2016 stephane galibert
+// Last update Sun Nov  6 20:09:54 2016 stephane galibert
 //
 
 #pragma once
@@ -19,6 +19,8 @@
 #include <boost/asio/ssl.hpp>
 
 #include "AConnection.hpp"
+
+class ConnectionManager;
 
 class TCPConnection : public AConnection
 {
@@ -34,8 +36,9 @@ public:
   virtual ~TCPConnection(void);
 
   virtual void start(void);
-  //virtual void write(std::string const& data);
   virtual void write(Packet *packet);
+
+  virtual void addLog(std::string const& toadd);
 
   SSLSocket::lowest_layer_type& socket(void);
 
@@ -48,9 +51,9 @@ protected:
   void read(void);
   void handshake(void);
 
+  ConnectionManager &_co_manager;
   SSLSocket _socket;
 
   boost::asio::streambuf _read;
-  //std::queue<std::string> _toWrites;
   std::queue<Packet *> _toWrites;
 };

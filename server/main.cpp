@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:05:04 2016 stephane galibert
-// Last update Tue Oct 25 17:54:47 2016 stephane galibert
+// Last update Sun Nov  6 17:41:41 2016 stephane galibert
 //
 
 #include <iostream>
@@ -13,6 +13,9 @@
 
 #include <boost/asio.hpp>
 
+#include "RequestHandler.hpp"
+#include "ServerConfig.hpp"
+#include "PluginManager.hpp"
 #include "TCPServer.hpp"
 #include "UDPServer.hpp"
 
@@ -26,9 +29,19 @@ int main(void)
 {
   try {
     boost::asio::io_service io_service;
+    RequestHandler reqHandler;
+    ServerConfig config;
+    PluginManager pm(config);
 
-    TCPServer tcp(io_service, 4242);
-    UDPServer udp(io_service, 4242);
+    try {
+      config.read("config.xml");
+      StaticTools::LoadPlugin(pm);
+    } catch (std::runtime_error const& e) {
+      throw (e);
+    }
+
+    TCPServer tcp(io_service, 4242, reqHandler, config, pm);
+    UDPServer udp(io_service, 4242, reqHandler, config, pm);
 
     tcp.init();
     udp.init();

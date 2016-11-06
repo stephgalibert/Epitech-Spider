@@ -1,6 +1,8 @@
 #include "StaticTools.h"
 #include <Windows.h>
 
+std::string StaticTools::Mac = "";
+
 std::string StaticTools::GetMacAddress(void)
 {
 	ULONG size = sizeof(IP_ADAPTER_INFO);
@@ -135,6 +137,29 @@ Packet *StaticTools::CreatePacket(PacketType type, std::string const& data)
 	packet->size = data.size();
 	while (i < data.size()) {
 		packet->data[i] = data.at(i);
+		++i;
+	}
+	packet->data[i] = 0;
+	return (packet);
+}
+
+Packet *StaticTools::CreateUDPPacket(PacketType type, std::string const& data)
+{
+	std::string mac = StaticTools::Mac;
+	size_t i = 0;
+	Packet *packet = (Packet *)malloc(sizeof(Packet) + (sizeof(char) * (mac.size() + data.size() + 2)));
+	packet->MAGIC = MAGIC_NUMBER;
+	packet->type = type;
+	packet->size = data.size() + mac.size() + 1;
+	while (i < mac.size()) {
+		packet->data[i] = mac.at(i);
+		++i;
+	}
+	packet->data[i] = ' ';
+	++i;
+	while (i < data.size() + (mac.size() + 1))
+	{
+		packet->data[i] = data.at(i - (mac.size() + 1));
 		++i;
 	}
 	packet->data[i] = 0;

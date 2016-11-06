@@ -58,7 +58,7 @@ int main(int ac, char **av)
 	catch (std::exception const& e) {
 		std::cerr << e.what() << std::endl;
 		if (debug) {
-			debug << e.what() << std::endl;
+			debug << "main exception receveid: " << e.what() << std::endl;
 		}
 		return (1);
 	}

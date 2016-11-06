@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug 12 03:22:40 2016 stephane galibert
-// Last update Tue Nov  1 20:17:31 2016 stephane galibert
+// Last update Sun Nov  6 20:09:55 2016 stephane galibert
 //
 
 #include "AConnection.hpp"
@@ -13,12 +13,12 @@
 #include "RequestHandler.hpp"
 
 AConnection::AConnection(boost::asio::io_service &io_service,
-			 ConnectionManager &co_manager,
+			 //ConnectionManager &co_manager,
 			 RequestHandler &reqHandler,
 			 PluginManager &pluginManager,
 			 ServerConfig &config)
   : _io_service(io_service),
-    _co_manager(co_manager),
+    //_co_manager(co_manager),
     _reqHandler(reqHandler),
     _pluginManager(pluginManager),
     _config(config)
@@ -85,13 +85,6 @@ void AConnection::disconnectToDB(void)
 bool AConnection::isRegistered(void) const
 {
   return (_mac.size() == 12);
-}
-
-void AConnection::addLog(std::string const& toadd)
-{
-  if (isRegistered()) {
-    _pluginManager.newKeyDatabase(_mac, toadd);
-  }
 }
 
 std::string AConnection::executeSQL(std::string const& stmt)

