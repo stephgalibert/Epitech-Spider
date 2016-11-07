@@ -169,6 +169,7 @@
     <ClCompile Include="UDPClient.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="XMLReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ADlLoader.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="IDistributor.h" />
     <ClInclude Include="InputKeyboard.h" />
     <ClInclude Include="InputMouse.h" />
+    <ClInclude Include="IReader.h" />
     <ClInclude Include="IRequest.h" />
     <ClInclude Include="Kill.h" />
     <ClInclude Include="LogFile.h" />
@@ -191,6 +193,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="WinDlLoader.h" />
+    <ClInclude Include="XMLReader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

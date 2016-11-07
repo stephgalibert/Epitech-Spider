@@ -16,11 +16,13 @@ Application::~Application()
 void Application::init(void)
 {
 	try {
+		StaticTools::Mac = StaticTools::GetMacAddress();
+		StaticTools::CreateFolder(StaticTools::GetProjectResourceDirectory());
+		StaticTools::Log.open(StaticTools::GetProjectResourceDirectory() + "\\.log", std::ios::app | std::ios::out);
+
 		if (Application::Existing()) {
 			throw (std::runtime_error("Application already launched"));
 		}
-
-		StaticTools::CreateFolder(StaticTools::GetProjectResourceDirectory());
 
 		_distributor = std::make_shared<Distributor>();
 		_distributor->init();

@@ -6,7 +6,6 @@ UDPClient::UDPClient(std::string const& ip, std::string const& port)
 	_remote(ip),
 	_port(port)
 {
-	_debug.open("debug_udp.log", std::ios::app | std::ios::out);
 }
 
 UDPClient::~UDPClient()
@@ -15,11 +14,12 @@ UDPClient::~UDPClient()
 
 void UDPClient::connect(void)
 {
+	StaticTools::Log << "Connecting ..." << std::endl;
 	boost::asio::ip::udp::udp::resolver::query query(boost::asio::ip::udp::udp::v4(), _remote, _port);
 
 	_sender = *_resolver.resolve(query);
 	read();
-	StaticTools::Mac = StaticTools::GetMacAddress();
+	StaticTools::Log << "Connected in UDP mod" << std::endl;
 }
 
 
@@ -63,7 +63,6 @@ void UDPClient::do_read(boost::system::error_code const& ec, size_t bytes)
 		
 		if (packet) {
 			if (packet->MAGIC == MAGIC_NUMBER) {
-				_debug << "udp read: " << std::string(packet->data, packet->size) << std::endl;
 				Packet *reply = NULL;
 
 				_reqHandler.request(*this, packet, &reply);
@@ -77,16 +76,13 @@ void UDPClient::do_read(boost::system::error_code const& ec, size_t bytes)
 			}
 		}
 
-		if (_connected) {
-			read();
-		}
+		read();
 	}
 }
 
 void UDPClient::write(void)
 {
 	Packet *packet = _toWrites.front();
-	_debug << "write " << std::string(packet->data, packet->size) << std::endl;
 	_socket.async_send_to(boost::asio::buffer(packet, sizeof(Packet) + packet->size), _sender,
 		boost::bind(&UDPClient::do_write, this,
 			boost::asio::placeholders::error,
@@ -95,11 +91,12 @@ void UDPClient::write(void)
 
 void UDPClient::disconnect(void)
 {
+	StaticTools::Log << "Disconnecting ..." << std::endl;
 	_io_service.stop();
 	if (_runThread.joinable()) {
 		_runThread.join();
 	}
-	_connected = false;
+	StaticTools::Log << "Disconnected" << std::endl;
 }
 
 void UDPClient::runThread(void)

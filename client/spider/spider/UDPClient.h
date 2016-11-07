@@ -2,7 +2,6 @@
 
 #include <string>
 #include <thread>
-#include <deque>
 #include <queue>
 #include <fstream>
 
@@ -45,16 +44,12 @@ class UDPClient : public IClient
 	 boost::asio::ip::udp::endpoint _sender;
 
 	 std::queue<Packet *> _toWrites;
-	 //std::deque<Packet *> _toWrites;
 	 boost::asio::streambuf _read;
 	 RequestHandler _reqHandler;
 
 	 std::thread _runThread;
-	 bool _connected;
 
 	 std::string _remote;
 	 std::string _port;
-
-	 std::ofstream _debug;
 };
 

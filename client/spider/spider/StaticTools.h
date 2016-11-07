@@ -30,10 +30,11 @@ public:
 	static void CreateFolder(std::string const& path);
 	static std::string GetDLLPath();
 	static std::string GetDLLPath(std::string const& appPath);
-	static HBITMAP MakeScreenshot();
+	static HBITMAP MakeScreenshot(void);
 	static Packet *CreatePacket(PacketType type, std::string const& data);
 	static Packet *CreateUDPPacket(PacketType type, std::string const& data);
 
 	static std::string Mac;
+	static std::ofstream Log;
 };
 

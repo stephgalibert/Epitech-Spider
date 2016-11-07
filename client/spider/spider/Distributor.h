@@ -8,6 +8,7 @@
 #include "TCPClient.h"
 #include "LogFile.h"
 #include "IDistributor.h"
+#include "XMLReader.h"
 
 class Distributor : public IDistributor
 {

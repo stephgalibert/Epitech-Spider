@@ -1,7 +1,6 @@
 #include "Distributor.h"
 
 Distributor::Distributor(void)
-	//: _client("192.168.1.23", "4242")
 {
 }
 
@@ -11,19 +10,32 @@ Distributor::~Distributor(void)
 
 void Distributor::init(void)
 {
+	std::string ip, port;
+	XMLReader config;
+
 	try {
-		_client = new TCPClient("192.168.1.23", "4242");
+		config.readFromFile(StaticTools::GetProjectResourceDirectory() + "\\config.xml");
+
+		ip = config.getValue<std::string>("config", "ip");
+		port = config.getValue<std::string>("config", "port");
+
+		_client = new TCPClient(ip, port);
+		try {
+			_client->connect();
+		}
+		catch (std::exception const& /*e*/) {
+			delete (_client);
+			_client = new UDPClient(ip, port);
+			_client->connect();
+		}
+
+		_client->run();
+		_log.open(StaticTools::GetProjectResourceDirectory() + "\\key.log");
 	}
 	catch (std::exception const& e) {
-		(void)e;
-		_client = new UDPClient("192.168.1.23", "4242");
+		throw (std::runtime_error(e.what()));
 	}
-
-	_client->connect();
-	//_client.connect("10.101.54.75", "4242");
-	_client->run();
-
-	_log.open(StaticTools::GetProjectResourceDirectory() + "\\key.log");
+	
 }
 
 void Distributor::destroy(void)

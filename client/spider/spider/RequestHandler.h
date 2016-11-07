@@ -13,6 +13,7 @@
 #include "IClient.h"
 #include "RequestBuilder.h"
 #include "Protocol.h"
+#include "StaticTools.h"
 
 class TCPClient;
 

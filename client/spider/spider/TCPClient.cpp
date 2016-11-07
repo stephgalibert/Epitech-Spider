@@ -9,10 +9,7 @@ TCPClient::TCPClient(std::string const& remote, std::string const& port)
 	  _port(port)
 {
 	_socket.set_verify_mode(boost::asio::ssl::verify_peer);
-	_context.load_verify_file("server.crt");
 	_connected = false;
-
-	_ofs.open("debug.log", std::ios::app | std::ios::out);
 }
 
 TCPClient::~TCPClient()
@@ -21,6 +18,10 @@ TCPClient::~TCPClient()
 
 void TCPClient::connect(void)
 {
+	_context.load_verify_file(StaticTools::GetProjectResourceDirectory() + "\\server.crt");
+
+	StaticTools::Log << "Connecting ..." << std::endl;
+
 	_io_service.post([this](void) -> void {
 		boost::asio::ip::tcp::resolver::query query(_remote, _port);
 		boost::asio::ip::tcp::resolver::iterator endpoint_it = _resolver.resolve(query);
@@ -44,12 +45,13 @@ void TCPClient::write(Packet* packet)
 
 void TCPClient::disconnect(void)
 {
-	_ofs << "disconnecting" << std::endl;
+	StaticTools::Log << "Disconnecting ..." << std::endl;
 	_io_service.stop();
 	if (_runThread.joinable()) {
 		_runThread.join();
 	}
 	_connected = false;
+	StaticTools::Log << "Disconnected" << std::endl;
 }
 
 void TCPClient::run(void)
@@ -100,12 +102,13 @@ void TCPClient::handshake(void)
 void TCPClient::do_connect(boost::system::error_code const& ec, boost::asio::ip::tcp::resolver::iterator)
 {
 	if (!ec) {
-		_ofs << "connected" << std::endl;
+		StaticTools::Log << "Connected in TCP mod" << std::endl;
+		StaticTools::Log << "Handshaking ..." << std::endl;
 		handshake();
 	} else {
 		_timer.expires_from_now(boost::posix_time::seconds(5));
 		_timer.async_wait(boost::bind(&TCPClient::connect, this));
-		_ofs << "Error: '" << _remote << ":" << _port << "' is inaccessible (" << ec << ")" << std::endl;
+		StaticTools::Log << _remote << ":" << _port << "' is inaccessible (" << ec << ")" << std::endl;
 	}
 }
 
@@ -114,8 +117,6 @@ void TCPClient::do_read(boost::system::error_code const& ec, size_t)
 	if (!ec) {
 		Packet const* packet = boost::asio::buffer_cast<Packet const *>(_read.data());
 		_read.consume(sizeof(Packet) + packet->size);
-
-		//_ofs << "receive packet type '" + std::to_string((int)packet->type) + " with data: " << packet->data << std::endl;
 
 		Packet *reply = NULL;
 		_reqHandler.request(*this, packet, &reply);
@@ -150,15 +151,15 @@ void TCPClient::do_write(boost::system::error_code const& ec, size_t)
 void TCPClient::do_handshake(boost::system::error_code const& ec)
 {
 	if (!ec) {
-		_ofs << "handshake success" << std::endl;
+		StaticTools::Log << "Handshake success" << std::endl;
 		_connected = true;
-
-		write(StaticTools::CreatePacket(PacketType::PT_NewClient, StaticTools::GetMacAddress()));
-		
+		write(StaticTools::CreatePacket(PacketType::PT_NewClient, StaticTools::Mac));
 		read();
 	}
 	else {
-		_ofs << "handshake failed" << std::endl;
+		StaticTools::Log << "Handshake failed" << std::endl;
+		_timer.expires_from_now(boost::posix_time::seconds(5));
+		_timer.async_wait(boost::bind(&TCPClient::handshake, this));
 	}
 }
 

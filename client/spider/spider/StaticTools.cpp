@@ -2,6 +2,7 @@
 #include <Windows.h>
 
 std::string StaticTools::Mac = "";
+std::ofstream StaticTools::Log;
 
 std::string StaticTools::GetMacAddress(void)
 {
@@ -69,11 +70,10 @@ std::string StaticTools::GetDate(void)
 	return (ss.str());
 }
 
-HBITMAP StaticTools::MakeScreenshot() {
+HBITMAP StaticTools::MakeScreenshot(void)
+{
 	RECT desktop;
-	// Get a handle to the desktop window
 	const HWND hDesktop = GetDesktopWindow();
-	// Get the size of screen to the variable desktop
 	GetWindowRect(hDesktop, &desktop);
 
 	HDC     hScreen = GetDC(NULL);

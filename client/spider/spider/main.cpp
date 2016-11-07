@@ -50,16 +50,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 int main(int ac, char **av)
 {
 	Application appli(av[0]);
-	std::ofstream debug("./debug.log", std::ios::app | std::ios::out);
 
 	try {
 		appli.init();
 	}
 	catch (std::exception const& e) {
-		std::cerr << e.what() << std::endl;
-		if (debug) {
-			debug << "main exception receveid: " << e.what() << std::endl;
-		}
+		StaticTools::Log << "Exception received: " << e.what() << std::endl;
 		return (1);
 	}
 
