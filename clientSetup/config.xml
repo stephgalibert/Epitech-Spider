@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-  <ip>192.168.1.23</ip>
+  <ip>10.101.53.187</ip>
   <port>4242</port>
 </config>
