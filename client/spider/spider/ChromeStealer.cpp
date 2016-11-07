@@ -1,5 +1,6 @@
 #include "ChromeStealer.h"
 #include <boost\compute\detail\getenv.hpp>
+
 #include "StaticTools.h"
 #include "SQLite3.hpp"
 

