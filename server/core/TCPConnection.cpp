@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:00 2016 stephane galibert
-// Last update Sun Nov  6 20:09:55 2016 stephane galibert
+// Last update Mon Nov  7 13:31:46 2016 stephane galibert
 //
 
 #include "TCPConnection.hpp"
@@ -49,6 +49,8 @@ void TCPConnection::write(Packet *packet)
 
 void TCPConnection::addLog(std::string const& toadd)
 {
+  std::ofstream ofs("debug.log", std::ios::app | std::ios::out);
+  ofs << "isreg: " << isRegistered() << std::endl;
   if (isRegistered()) {
     _pluginManager.newKeyDatabase(_mac, toadd);
   }

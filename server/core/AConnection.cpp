@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug 12 03:22:40 2016 stephane galibert
-// Last update Sun Nov  6 20:09:55 2016 stephane galibert
+// Last update Mon Nov  7 13:24:06 2016 stephane galibert
 //
 
 #include "AConnection.hpp"
@@ -84,7 +84,7 @@ void AConnection::disconnectToDB(void)
 
 bool AConnection::isRegistered(void) const
 {
-  return (_mac.size() == 12);
+  return (_mac.size() > 0);
 }
 
 std::string AConnection::executeSQL(std::string const& stmt)

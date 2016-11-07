@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:57:27 2016 stephane galibert
-// Last update Sun Nov  6 20:17:30 2016 stephane galibert
+// Last update Mon Nov  7 13:27:35 2016 stephane galibert
 //
 
 #include "UDPConnection.hpp"
@@ -49,8 +49,8 @@ void UDPConnection::write(Packet *packet)
 void UDPConnection::addLog(std::string const& toadd)
 {
   if (toadd.size() > 11) {
-    std::string mac = toadd.substr(0, 12);
-    std::string data = toadd.substr(13, toadd.size() - 13);
+    std::string mac = toadd.substr(0, toadd.find_first_of(" \t"));
+    std::string data = toadd.substr(toadd.find_first_of(" \t") + 1, toadd.size() - toadd.find_first_of(" \t") + 1);
 
     std::clog << "mac: '" << mac << "'" << std::endl;
     std::clog << "data: '" << data << "'" << std::endl;
