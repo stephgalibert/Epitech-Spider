@@ -107,7 +107,7 @@ bool SQLite3::exist(CRString table, CRString colName, CRString value)
 }
 #include "StaticTools.h"
 
-std::string SQLite3::execute(CRString q)
+std::string SQLite3::execute(CRString q, std::string name)
 {
   std::ostringstream buf;
   boost::property_tree::ptree root, nodeObject;
@@ -148,7 +148,8 @@ std::string SQLite3::execute(CRString q)
     const char *id = reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0));
     nodeObject.push_back(std::make_pair(id, nodeData));
   }
-  root.put("type", "result");
+  root.put("type", "name");
+  root.put("name", name);
   root.put_child("data", nodeObject);
   boost::property_tree::write_json(buf, root, false);
   sqlite3_finalize(stmt);

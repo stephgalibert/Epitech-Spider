@@ -37,15 +37,36 @@ private:
 	std::string key_Shift(KeyState v);
 	std::string key_LShift(KeyState v);
 	std::string key_RShift(KeyState v);
+	std::string key_LAlt(KeyState v);
+	std::string key_RAlt(KeyState v);
+	std::string key_Alt(KeyState v);
+	std::string key_LCtrl(KeyState v);
+	std::string key_RCtrl(KeyState v);
+	std::string key_Ctrl(KeyState v);
 	std::string key_Maj(KeyState v);
 	std::string key_Left(KeyState v);
 	std::string key_Right(KeyState v);
 	std::string key_Up(KeyState v);
 	std::string key_Down(KeyState v);
-	std::map<DWORD, std::function<std::string(KeyState)> > _keys;
+
+	bool is_maj();
+	bool is_ctrl();
+	bool is_alt();
+	bool is_shift();
+
+	//std::map<DWORD, std::function<std::string(KeyState)> > _keys;
+
 
 	KeyState _maj;
 	KeyState _shift;
+	KeyState _lshift;
+	KeyState _rshift;
+	KeyState _rctrl;
+	KeyState _ctrl;
+	KeyState _ralt;
+	KeyState _lctrl;
+	KeyState _lalt;
+	KeyState _alt;
 
 	std::shared_ptr<IDistributor> _distributor;
 };

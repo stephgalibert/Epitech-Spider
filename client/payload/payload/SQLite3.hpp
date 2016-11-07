@@ -35,7 +35,7 @@ public:
 	      CRString idValue);
   void erase(CRString table, CRString id, CRString idValue);
   bool exist(CRString table, CRString colName, CRString value);
-  std::string execute(CRString q);
+  std::string execute(CRString q, std::string name);
 private:
   void open(CRString path);
   void exec(CRString query, int (*callback)(void *, int, char **, char **));
