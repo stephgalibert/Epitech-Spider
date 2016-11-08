@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:00 2016 stephane galibert
-// Last update Mon Nov  7 13:35:59 2016 stephane galibert
+// Last update Tue Nov  8 22:04:02 2016 stephane galibert
 //
 
 #include "TCPConnection.hpp"
@@ -18,7 +18,7 @@ TCPConnection::TCPConnection(boost::asio::io_service &io_service,
 			     RequestHandler &reqHandler,
 			     PluginManager &pluginManager,
 			     ServerConfig &config)
-  : AConnection(io_service, /*co_manager,*/ reqHandler, pluginManager, config),
+  : AConnection(io_service, reqHandler, pluginManager, config),
     _co_manager(co_manager),
     _socket(io_service, context)
 {
@@ -41,6 +41,7 @@ void TCPConnection::start(void)
 void TCPConnection::write(Packet *packet)
 {
   bool write_in_progress = !_toWrites.empty();
+
   _toWrites.push(packet);
   if (!write_in_progress) {
     write();
@@ -54,9 +55,24 @@ void TCPConnection::addLog(std::string const& toadd)
   }
 }
 
+void TCPConnection::connectDB(void)
+{
+  if (isRegistered()) {
+    _pluginManager.newConnectionDatabase(_mac);
+  }
+}
+
+void TCPConnection::disconnectDB(void)
+{
+  if (isRegistered()) {
+    _pluginManager.lostConnectionDatabase(_mac);
+  }
+}
+
 void TCPConnection::write(void)
 {
   Packet *packet = _toWrites.front();
+
   boost::asio::async_write(_socket, boost::asio::buffer(packet, sizeof(Packet) + packet->size),
 			   boost::bind(&AConnection::do_write,
 				       shared_from_this(),
@@ -66,7 +82,7 @@ void TCPConnection::write(void)
 
 void TCPConnection::read(void)
 {
-  boost::asio::async_read(_socket, _read, boost::asio::transfer_at_least(sizeof(Packet)),
+  boost::asio::async_read(_socket, _read.prepare(32768), boost::asio::transfer_at_least(sizeof(Packet)),
 			  boost::bind(&AConnection::do_read,
 				      shared_from_this(),
 				      boost::asio::placeholders::error,
@@ -83,7 +99,6 @@ void TCPConnection::handshake(void)
 void TCPConnection::do_write(boost::system::error_code const& ec, size_t)
 {
   if (!ec) {
-
     Packet *packet = _toWrites.front();
     free(packet);
 
@@ -98,11 +113,11 @@ void TCPConnection::do_write(boost::system::error_code const& ec, size_t)
   }
 }
 
-void TCPConnection::do_read(boost::system::error_code const& ec, size_t /* len */)
+void TCPConnection::do_read(boost::system::error_code const& ec, size_t len)
 {
   if (!ec) {
     Packet const* packet = boost::asio::buffer_cast<Packet const *>(_read.data());
-    _read.consume(sizeof(Packet) + (packet->size * sizeof(char)));
+    _read.consume(len);
 
     Packet *reply = NULL;
     _reqHandler.request(shared_from_this(), packet, &reply);
@@ -116,7 +131,7 @@ void TCPConnection::do_read(boost::system::error_code const& ec, size_t /* len *
     }
   }
   else {
-    AConnection::disconnectToDB();
+    disconnectDB();
     _co_manager.leave(shared_from_this());
   }
 }

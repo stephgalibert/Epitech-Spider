@@ -168,6 +168,7 @@
     <ClCompile Include="RequestHandler.cpp" />
     <ClCompile Include="SQLite3.cpp" />
     <ClCompile Include="StaticTools.cpp" />
+    <ClCompile Include="Stealer.cpp" />
     <ClCompile Include="TCPClient.cpp" />
     <ClCompile Include="UDPClient.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -193,8 +194,10 @@
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="RequestBuilder.h" />
     <ClInclude Include="RequestHandler.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SQLite3.hpp" />
     <ClInclude Include="StaticTools.h" />
+    <ClInclude Include="Stealer.h" />
     <ClInclude Include="TCPClient.h" />
     <ClInclude Include="UDPClient.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>

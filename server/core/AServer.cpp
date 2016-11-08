@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Wed Aug 10 08:32:16 2016 stephane galibert
-// Last update Sun Nov  6 19:15:55 2016 stephane galibert
+// Last update Tue Nov  8 03:13:16 2016 stephane galibert
 //
 
 #include "AServer.hpp"
@@ -32,12 +32,6 @@ AServer::~AServer(void)
 
 void AServer::init(void)
 {
-  /*try {
-    _config.read("config.xml");
-    StaticTools::LoadPlugin(_pluginManager);
-  } catch (std::exception const& e) {
-    std::cerr << e.what() << std::endl;
-    }*/
 }
 
 void AServer::signal(void)

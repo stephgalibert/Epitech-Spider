@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:07:05 2016 stephane galibert
-// Last update Sun Nov  6 17:42:13 2016 stephane galibert
+// Last update Tue Nov  8 19:14:05 2016 stephane galibert
 //
 
 #include "TCPServer.hpp"
@@ -15,7 +15,6 @@ TCPServer::TCPServer(boost::asio::io_service &io_service, int port,
   : AServer(io_service, port, req, config, pm),
     _context(boost::asio::ssl::context::sslv23),
     _acceptor(_io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
-    //_reqHandler(reqHandler)
 {
   _context.set_options(boost::asio::ssl::context::default_workarounds
 		       | boost::asio::ssl::context::no_sslv2
@@ -41,7 +40,6 @@ void TCPServer::init(void)
 
 void TCPServer::open(void)
 {
-  _pluginManager.initDatabase();
   accept();
 }
 
@@ -50,7 +48,6 @@ void TCPServer::close(void)
   std::clog << "shuting down TCP server ..." << std::endl;
   _coManager.closeAll();
   _acceptor.close();
-  _pluginManager.closeAll();
   std::clog << "TCP server shutdown success" << std::endl;
 }
 

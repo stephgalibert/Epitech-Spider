@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:00:55 2016 stephane galibert
-// Last update Sun Nov  6 20:09:54 2016 stephane galibert
+// Last update Tue Nov  8 15:49:02 2016 stephane galibert
 //
 
 #pragma once
@@ -39,6 +39,8 @@ public:
   virtual void write(Packet *packet);
 
   virtual void addLog(std::string const& toadd);
+  virtual void connectDB(void);
+  virtual void disconnectDB(void);
 
   SSLSocket::lowest_layer_type& socket(void);
 

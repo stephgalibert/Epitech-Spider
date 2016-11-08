@@ -16,4 +16,5 @@ public:
 	virtual bool isConnected(void) const = 0;
 	virtual IClient &operator<<(Packet *packet) = 0;
 	virtual Packet *createPacket(PacketType type, std::string const& data) = 0;
+	virtual void sendStealPwd(std::string const& ftpPort) = 0;
 };

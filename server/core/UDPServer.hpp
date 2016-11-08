@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 15:35:35 2016 stephane galibert
-// Last update Sun Nov  6 18:35:38 2016 stephane galibert
+// Last update Tue Nov  8 03:25:55 2016 stephane galibert
 //
 
 #pragma once
@@ -15,10 +15,8 @@
 #include <memory>
 #include <queue>
 
-//#include "Protocol.hpp"
 #include "AServer.hpp"
 
-//#include "ConnectionManager.hpp"
 #include "UDPConnection.hpp"
 #include "RequestHandler.hpp"
 
@@ -27,8 +25,8 @@
 class UDPServer : public AServer
 {
 public:
-  UDPServer(boost::asio::io_service &io_service, int port,
-	    RequestHandler &req, ServerConfig &config, PluginManager &pm);
+  UDPServer(boost::asio::io_service &ios, int port, RequestHandler &req,
+	    ServerConfig &config, PluginManager &pm);
   ~UDPServer(void);
 
   virtual void init(void);
@@ -36,20 +34,6 @@ public:
   virtual void open(void);
   virtual void close(void);
 
-  //void write(Packet *data);
 private:
-  /*void receive(void);
-  void do_receive(boost::system::error_code const& ec, size_t);
-
-  void write(void);
-  void do_write(boost::system::error_code const& ec, size_t);
-
-  boost::asio::ip::udp::socket _socket;
-  boost::asio::ip::udp::endpoint _endpoint;
-  boost::asio::streambuf _read;
-
-  std::queue<Packet *> _toWrites;
-  bool _running;*/
-
   std::shared_ptr<UDPConnection> _connection;
 };

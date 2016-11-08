@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:05:04 2016 stephane galibert
-// Last update Sun Nov  6 17:41:41 2016 stephane galibert
+// Last update Tue Nov  8 19:20:16 2016 stephane galibert
 //
 
 #include <iostream>
@@ -19,12 +19,6 @@
 #include "TCPServer.hpp"
 #include "UDPServer.hpp"
 
-/*  TODO
-**  Code refactoring (sujet) // to continue
-**  Connection Privilege // maybe ok
-**  XML config // maybe ok
-**  Server UDP // working at
-*/
 int main(void)
 {
   try {
@@ -40,6 +34,8 @@ int main(void)
       throw (e);
     }
 
+    pm.initDatabase();
+
     TCPServer tcp(io_service, 4242, reqHandler, config, pm);
     UDPServer udp(io_service, 4242, reqHandler, config, pm);
 
@@ -53,6 +49,8 @@ int main(void)
 
     tcp.close();
     udp.close();
+
+    pm.closeAll();
   }
   catch (std::exception const& e) {
     std::cerr << e.what() << std::endl;

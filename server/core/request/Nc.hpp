@@ -1,11 +1,11 @@
 //
-// Nc.hpp for server in /home/galibe_s/project/SpiderServer/core/request
+// Nc.hpp for server in /home/galibe_s/rendu/Spider/server/core/request
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Sat Aug 20 19:26:06 2016 stephane galibert
-// Last update Wed Oct 19 15:53:52 2016 stephane galibert
+// Started on  Tue Nov  8 17:48:43 2016 stephane galibert
+// Last update Tue Nov  8 17:49:48 2016 stephane galibert
 //
 
 #pragma once

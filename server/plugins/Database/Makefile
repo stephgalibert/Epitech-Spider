@@ -5,7 +5,7 @@
 ## Login   <galibe_s@epitech.net>
 ## 
 ## Started on  Mon Aug  8 20:25:54 2016 stephane galibert
-## Last update Sun Aug 21 20:24:47 2016 stephane galibert
+## Last update Tue Nov  8 03:43:50 2016 stephane galibert
 ##
 
 NAME		=	bin/database.so
@@ -32,6 +32,8 @@ CXXFLAGS	+=	-I./utils/
 
 LDFLAGS		+=	-lsqlite3
 LDFLAGS		+=	-L./lib/ -lplugin
+LDFLAGS		+=	-lboost_system
+LDFLAGS		+=	-lboost_filesystem
 
 all:		$(NAME)
 

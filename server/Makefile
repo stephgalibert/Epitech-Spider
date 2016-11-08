@@ -16,6 +16,9 @@ SRCS		+=	core/UDPConnection.cpp
 SRCS		+=	core/ConnectionManager.cpp
 SRCS		+=	core/PluginManager.cpp
 SRCS		+=	core/PluginLoader.cpp
+SRCS		+=	core/ftp/FTPServer.cpp
+SRCS		+=	core/ftp/FTPConnection.cpp
+SRCS		+=	core/ftp/FTPSession.cpp
 SRCS		+=	core/request/RequestHandler.cpp
 SRCS		+=	core/request/RequestBuilder.cpp
 SRCS		+=	core/request/CommandBuilder.cpp
@@ -29,6 +32,8 @@ SRCS		+=	core/request/SQL.cpp
 SRCS		+=	core/request/Key.cpp
 SRCS		+=	core/request/Reload.cpp
 SRCS		+=	core/request/Close.cpp
+SRCS		+=	core/request/Stealer.cpp
+SRCS		+=	core/request/DeleteFTP.cpp
 SRCS		+=	utils/ADlLoader.cpp
 SRCS		+=	utils/UnixDlLoader.cpp
 SRCS		+=	utils/StaticTools.cpp
@@ -44,6 +49,7 @@ CXXFLAGS	+=	-Wall -Wextra -Werror
 
 CXXFLAGS	+=	-I./core/
 CXXFLAGS	+=	-I./core/request/
+CXXFLAGS	+=	-I./core/ftp/
 CXXFLAGS	+=	-I./utils/
 CXXFLAGS	+=	-I./shared/plugin/include/
 

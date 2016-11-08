@@ -1,11 +1,11 @@
 //
-// AConnection.cpp for server in /home/galibe_s/project/SpiderServer/core
+// AConnection.cpp for server in /home/galibe_s/rendu/Spider/server/core
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Fri Aug 12 03:22:40 2016 stephane galibert
-// Last update Mon Nov  7 13:24:06 2016 stephane galibert
+// Started on  Tue Nov  8 15:46:09 2016 stephane galibert
+// Last update Tue Nov  8 21:46:13 2016 stephane galibert
 //
 
 #include "AConnection.hpp"
@@ -13,12 +13,10 @@
 #include "RequestHandler.hpp"
 
 AConnection::AConnection(boost::asio::io_service &io_service,
-			 //ConnectionManager &co_manager,
 			 RequestHandler &reqHandler,
 			 PluginManager &pluginManager,
 			 ServerConfig &config)
   : _io_service(io_service),
-    //_co_manager(co_manager),
     _reqHandler(reqHandler),
     _pluginManager(pluginManager),
     _config(config)
@@ -29,6 +27,10 @@ AConnection::AConnection(boost::asio::io_service &io_service,
 
 AConnection::~AConnection(void)
 {
+  for (auto it : _ftps) {
+    it->close();
+    delete (it);
+  }
 }
 
 void AConnection::setMacAddress(std::string const& mac)
@@ -68,20 +70,6 @@ bool AConnection::closePlugin(std::string const& name)
   return (_pluginManager.close(name));
 }
 
-void AConnection::connectToDB(void)
-{
-  if (isRegistered()) {
-    _pluginManager.newConnectionDatabase(_mac);
-  }
-}
-
-void AConnection::disconnectToDB(void)
-{
-  if (isRegistered()) {
-    _pluginManager.lostConnectionDatabase(_mac);
-  }
-}
-
 bool AConnection::isRegistered(void) const
 {
   return (_mac.size() > 0);
@@ -100,4 +88,47 @@ std::vector<PluginInfo> const AConnection::getPluginsInfo(void) const
 ServerConfig const& AConnection::getServerConfig(void) const
 {
   return (_config);
+}
+
+unsigned short AConnection::createFTP(std::string const& filename)
+{
+  //if (!isRegistered())
+  //return (0);
+  std::string file = "./clients/" + _mac + "/" + filename;
+
+  std::clog << "ftp filename: " << file << std::endl;
+
+  std::list<FTPServer *>::iterator it = _ftps.begin();
+  while (it != _ftps.end()) {
+    if (!(*it)->inUse()) {
+      std::clog << "reusing " << (*it)->getPort() << std::endl;
+      (*it)->setInUse(true);
+      (*it)->setFilename(file);
+      return ((*it)->getPort());
+    }
+    ++it;
+  }
+
+  FTPServer *ftp = new FTPServer(_io_service, _pluginManager, file);
+
+  ftp->open();
+  _ftps.push_front(ftp);
+
+  std::clog << "create new ftp server :" << ftp->getPort() << std::endl;
+  return (ftp->getPort());
+}
+
+void AConnection::deleteFTP(unsigned short port)
+{
+  std::list<FTPServer *>::iterator it = _ftps.begin();
+  while (it != _ftps.end()) {
+    if ((*it)->getPort() == port) {
+      //(*it)->close();
+      (*it)->setInUse(false);
+      //delete (*it);
+      //_ftps.erase(it);
+      break;
+    }
+    ++it;
+  }
 }

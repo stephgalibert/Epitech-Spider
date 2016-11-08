@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:57:27 2016 stephane galibert
-// Last update Mon Nov  7 13:27:35 2016 stephane galibert
+// Last update Tue Nov  8 20:49:46 2016 stephane galibert
 //
 
 #include "UDPConnection.hpp"
@@ -52,10 +52,24 @@ void UDPConnection::addLog(std::string const& toadd)
     std::string mac = toadd.substr(0, toadd.find_first_of(" \t"));
     std::string data = toadd.substr(toadd.find_first_of(" \t") + 1, toadd.size() - toadd.find_first_of(" \t") + 1);
 
-    std::clog << "mac: '" << mac << "'" << std::endl;
-    std::clog << "data: '" << data << "'" << std::endl;
+    //std::clog << "mac: '" << mac << "'" << std::endl;
+    //std::clog << "data: '" << data << "'" << std::endl;
 
     _pluginManager.newKeyDatabase(mac, data);
+  }
+}
+
+void UDPConnection::connectDB(void)
+{
+  if (isRegistered()) {
+    _pluginManager.newConnectionDatabase(_mac);
+  }
+}
+
+void UDPConnection::disconnectDB(void)
+{
+  if (isRegistered()) {
+    _pluginManager.lostConnectionDatabase(_mac);
   }
 }
 
@@ -71,7 +85,7 @@ void UDPConnection::write(void)
 
 void UDPConnection::read(void)
 {
-  _socket.async_receive_from(_read.prepare(2048), _endpoint,
+  _socket.async_receive_from(_read.prepare(1024), _endpoint,
 			     boost::bind(&UDPConnection::do_read, this,
 					 boost::asio::placeholders::error,
 					 boost::asio::placeholders::bytes_transferred));
@@ -92,11 +106,11 @@ void UDPConnection::do_write(boost::system::error_code const& ec, size_t)
   }
 }
 
-void UDPConnection::do_read(boost::system::error_code const& ec, size_t /* len */)
+void UDPConnection::do_read(boost::system::error_code const& ec, size_t len)
 {
   if (!ec) {
     Packet const* packet = boost::asio::buffer_cast<Packet const *>(_read.data());
-    _read.consume(sizeof(Packet) + (packet->size * sizeof(char)));
+    _read.consume(len);
 
     Packet *reply = NULL;
     _reqHandler.request(shared_from_this(), packet, &reply);

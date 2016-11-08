@@ -13,7 +13,7 @@ void RequestHandler::request(IClient &client, Packet const* received, Packet **r
 	if (received && received->MAGIC == MAGIC_NUMBER) {
 
 		StaticTools::Log << "receive packet type '" << (int)received->type
-			<< " with data: " << received->data << "'" << std::endl;
+			<< " with data: " << std::string(received->data, received->size) << "'" << std::endl;
 
 		if (received->type != PacketType::PT_Error
 			&& received->type != PacketType::PT_Response) {	
@@ -24,5 +24,8 @@ void RequestHandler::request(IClient &client, Packet const* received, Packet **r
 				ptr->execute(client, param, reply);
 			}
 		}
+	}
+	else {
+		client << client.createPacket(PacketType::PT_Error, UNK_ERROR);
 	}
 }
