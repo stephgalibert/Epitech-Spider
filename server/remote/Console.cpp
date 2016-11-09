@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:19 2016 stephane galibert
-// Last update Tue Nov  1 20:55:43 2016 stephane galibert
+// Last update Wed Nov  9 05:44:50 2016 stephane galibert
 //
 
 #include "Console.hpp"
@@ -23,6 +23,7 @@ Console::Console(std::string const& ip, std::string const& port)
   _cmds["get"] = std::bind(&Console::cmd_get, this, std::placeholders::_1);
   _cmds["sql"] = std::bind(&Console::cmd_sql, this, std::placeholders::_1);
   _cmds["close"] = std::bind(&Console::cmd_close, this, std::placeholders::_1);
+  _cmds["listen"] = std::bind(&Console::cmd_listen, this, std::placeholders::_1);
   _running = false;
   _remoteIP = ip;
   _remotePort = port;
@@ -147,14 +148,15 @@ bool Console::verify_crt(bool preverified, boost::asio::ssl::verify_context& ctx
 Packet const *Console::read(void)
 {
   boost::system::error_code ec;
+  size_t len;
 
-  boost::asio::read(_socket, _read, boost::asio::transfer_at_least(sizeof(Packet)));
+  len = boost::asio::read(_socket, _read, boost::asio::transfer_at_least(sizeof(Packet)));
   if (ec) {
     throw (std::runtime_error(ec.message()));
   }
 
   Packet const *packet = boost::asio::buffer_cast<Packet const *>(_read.data());
-  _read.consume(sizeof(Packet) + packet->size);
+  _read.consume(len);
   return (packet);
 }
 
@@ -284,7 +286,6 @@ void Console::cmd_set(std::vector<std::string> const& av)
     if (reply && reply->MAGIC == MAGIC_NUMBER) {
       std::cerr << std::string(reply->data, reply->size) << std::endl;
     }
-
   } catch (std::exception const& e) {
     std::cerr << "Error: " << e.what() << std::endl;
   }
@@ -375,7 +376,48 @@ void Console::cmd_close(std::vector<std::string> const& av)
     if (reply && reply->MAGIC == MAGIC_NUMBER) {
       std::cerr << std::string(reply->data, reply->size) << std::endl;
     }
+  } catch (std::exception const& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+  }
+}
 
+void Console::cmd_listen(std::vector<std::string> const& av)
+{
+  JSONBuilder builder;
+
+  if (av.size() < 2) {
+    std::cerr << "Usage: listen [address mac]" << std::endl;
+    return ;
+  }
+
+  builder.addValue("name", av[0]);
+  builder.addValue("param", av[1]);
+  builder.addValue("enable", "true");
+
+  try {
+    write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
+    Packet const *reply = read();
+
+    if (reply->MAGIC == MAGIC_NUMBER) {
+      if (reply->type != PacketType::PT_Error) {
+	Listen listen(_io_service, _socket);
+	//listen.init();
+	//listen.start();
+	listen.listen();
+	//listen.close();
+
+	builder.addValue("enable", "false");
+	write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
+	if (reply->MAGIC == MAGIC_NUMBER) {
+	  if (reply->type == PacketType::PT_Error) {
+	    std::cerr << std::string(reply->data, reply->size) << std::endl;
+	  }
+	}
+
+      } else {
+	std::cerr << std::string(reply->data, reply->size) << std::endl;
+      }
+    }
   } catch (std::exception const& e) {
     std::cerr << "Error: " << e.what() << std::endl;
   }

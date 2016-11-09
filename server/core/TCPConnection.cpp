@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:00 2016 stephane galibert
-// Last update Tue Nov  8 22:04:02 2016 stephane galibert
+// Last update Wed Nov  9 00:06:50 2016 stephane galibert
 //
 
 #include "TCPConnection.hpp"
@@ -18,8 +18,8 @@ TCPConnection::TCPConnection(boost::asio::io_service &io_service,
 			     RequestHandler &reqHandler,
 			     PluginManager &pluginManager,
 			     ServerConfig &config)
-  : AConnection(io_service, reqHandler, pluginManager, config),
-    _co_manager(co_manager),
+  : AConnection(io_service, reqHandler, pluginManager, co_manager, config),
+    //_co_manager(co_manager),
     _socket(io_service, context)
 {
 }

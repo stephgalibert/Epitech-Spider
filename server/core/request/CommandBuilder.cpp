@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 13:58:56 2016 stephane galibert
-// Last update Wed Oct 26 15:28:28 2016 stephane galibert
+// Last update Wed Nov  9 04:08:24 2016 stephane galibert
 //
 
 #include "CommandBuilder.hpp"
@@ -19,6 +19,7 @@ CommandBuilder::CommandBuilder(void)
   _cmds["sql"] = std::bind(&CommandBuilder::sql, this);
   _cmds["reload"] = std::bind(&CommandBuilder::reload, this);
   _cmds["close"] = std::bind(&CommandBuilder::close, this);
+  _cmds["listen"] = std::bind(&CommandBuilder::listen, this);
 }
 
 CommandBuilder::~CommandBuilder(void)
@@ -66,4 +67,9 @@ std::unique_ptr<ICommand> CommandBuilder::reload(void) const
 std::unique_ptr<ICommand> CommandBuilder::close(void) const
 {
   return (std::unique_ptr<ICommand>(new Close));
+}
+
+std::unique_ptr<ICommand> CommandBuilder::listen(void) const
+{
+  return (std::unique_ptr<ICommand>(new Listen));
 }

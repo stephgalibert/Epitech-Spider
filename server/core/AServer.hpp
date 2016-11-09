@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Wed Aug 10 08:22:18 2016 stephane galibert
-// Last update Sun Nov  6 17:55:19 2016 stephane galibert
+// Last update Wed Nov  9 05:29:49 2016 stephane galibert
 //
 
 #pragma once
@@ -26,12 +26,13 @@
 #include "ServerConfig.hpp"
 #include "PluginLoader.hpp"
 #include "PluginManager.hpp"
+#include "ConnectionManager.hpp"
 
 class AServer : private boost::noncopyable
 {
 public:
-  AServer(boost::asio::io_service &io_service, int port,
-	  RequestHandler &req, ServerConfig &config, PluginManager &pm);
+  AServer(boost::asio::io_service &io_service, int port, RequestHandler &req,
+	  ServerConfig &config, PluginManager &pm, ConnectionManager &cm);
   ~AServer(void);
 
   virtual void init(void);
@@ -45,6 +46,7 @@ protected:
   RequestHandler &_reqHandler;
   ServerConfig &_config;
   PluginManager &_pluginManager;
+  ConnectionManager &_coManager;
 private:
   void signal(void);
   void do_signal(boost::system::error_code const& ec, int signo);

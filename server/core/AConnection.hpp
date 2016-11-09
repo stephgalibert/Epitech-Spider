@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug 12 03:01:15 2016 stephane galibert
-// Last update Tue Nov  8 19:00:57 2016 stephane galibert
+// Last update Wed Nov  9 03:59:55 2016 stephane galibert
 //
 
 #pragma once
@@ -24,6 +24,7 @@
 #include "FTPServer.hpp"
 
 class RequestHandler;
+class ConnectionManager;
 
 class AConnection : public std::enable_shared_from_this<AConnection>
 {
@@ -33,6 +34,7 @@ public:
   AConnection(boost::asio::io_service &io_service,
 	      RequestHandler &reqHandler,
 	      PluginManager &pluginManager,
+	      ConnectionManager &cm,
 	      ServerConfig &config);
   virtual ~AConnection(void);
 
@@ -64,13 +66,23 @@ public:
   unsigned short createFTP(std::string const& filename);
   void deleteFTP(unsigned short port);
 
+  void enableRedirection(bool value);
+  bool redirectionActive(void) const;
+  void broadcast(std::string const& msg);
+
+  void listen(std::string const& mac, bool enable);
+  bool isListened(std::string const& mac) const;
+
 protected:
+  std::list<std::string> _listened;
   std::list<FTPServer *> _ftps;
   boost::asio::io_service &_io_service;
   RequestHandler &_reqHandler;
   PluginManager &_pluginManager;
+  ConnectionManager &_co_manager;
   ServerConfig &_config;
   Privilege _privilege;
   std::string _mac;
   bool _running;
+  bool _redirection;
 };

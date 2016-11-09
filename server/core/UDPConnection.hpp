@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:00:50 2016 stephane galibert
-// Last update Tue Nov  8 15:49:00 2016 stephane galibert
+// Last update Wed Nov  9 00:05:39 2016 stephane galibert
 //
 
 #pragma once
@@ -19,12 +19,15 @@
 
 #include "AConnection.hpp"
 
+class ConnectionManager;
+
 class UDPConnection : public AConnection
 {
 public:
   UDPConnection(boost::asio::io_service &io_service,
 		RequestHandler &reqHandler,
 		PluginManager &pluginManager,
+		ConnectionManager &cm,
 		ServerConfig &config,
 		int port);
   virtual ~UDPConnection(void);

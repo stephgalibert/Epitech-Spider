@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sat Nov  5 15:51:01 2016 stephane galibert
-// Last update Sat Nov  5 15:51:02 2016 stephane galibert
+// Last update Wed Nov  9 04:00:36 2016 stephane galibert
 //
 
 #include "Key.hpp"
@@ -22,5 +22,6 @@ void Key::execute(AConnection::shared own, std::string const& param,
 		  Packet **reply)
 {
   (void)reply;
+  own->broadcast(param);
   own->addLog(param);
 }

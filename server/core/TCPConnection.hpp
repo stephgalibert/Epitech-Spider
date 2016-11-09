@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:00:55 2016 stephane galibert
-// Last update Tue Nov  8 15:49:02 2016 stephane galibert
+// Last update Wed Nov  9 00:05:03 2016 stephane galibert
 //
 
 #pragma once
@@ -53,7 +53,7 @@ protected:
   void read(void);
   void handshake(void);
 
-  ConnectionManager &_co_manager;
+  //ConnectionManager &_co_manager;
   SSLSocket _socket;
 
   boost::asio::streambuf _read;

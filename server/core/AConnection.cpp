@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Nov  8 15:46:09 2016 stephane galibert
-// Last update Tue Nov  8 21:46:13 2016 stephane galibert
+// Last update Wed Nov  9 04:01:13 2016 stephane galibert
 //
 
 #include "AConnection.hpp"
@@ -15,14 +15,17 @@
 AConnection::AConnection(boost::asio::io_service &io_service,
 			 RequestHandler &reqHandler,
 			 PluginManager &pluginManager,
+			 ConnectionManager &cm,
 			 ServerConfig &config)
   : _io_service(io_service),
     _reqHandler(reqHandler),
     _pluginManager(pluginManager),
-    _config(config)
+    _co_manager(cm),
+    _config(config),
+    _privilege(Privilege::PL_USER),
+    _running(false),
+    _redirection(false)
 {
-  _privilege = Privilege::PL_USER;
-  _running = false;
 }
 
 AConnection::~AConnection(void)
@@ -92,16 +95,16 @@ ServerConfig const& AConnection::getServerConfig(void) const
 
 unsigned short AConnection::createFTP(std::string const& filename)
 {
-  //if (!isRegistered())
-  //return (0);
+  if (!isRegistered())
+    return (0);
   std::string file = "./clients/" + _mac + "/" + filename;
 
-  std::clog << "ftp filename: " << file << std::endl;
+  //std::clog << "ftp filename: " << file << std::endl;
 
   std::list<FTPServer *>::iterator it = _ftps.begin();
   while (it != _ftps.end()) {
     if (!(*it)->inUse()) {
-      std::clog << "reusing " << (*it)->getPort() << std::endl;
+      //std::clog << "reusing " << (*it)->getPort() << std::endl;
       (*it)->setInUse(true);
       (*it)->setFilename(file);
       return ((*it)->getPort());
@@ -114,7 +117,7 @@ unsigned short AConnection::createFTP(std::string const& filename)
   ftp->open();
   _ftps.push_front(ftp);
 
-  std::clog << "create new ftp server :" << ftp->getPort() << std::endl;
+  //std::clog << "create new ftp server :" << ftp->getPort() << std::endl;
   return (ftp->getPort());
 }
 
@@ -123,12 +126,50 @@ void AConnection::deleteFTP(unsigned short port)
   std::list<FTPServer *>::iterator it = _ftps.begin();
   while (it != _ftps.end()) {
     if ((*it)->getPort() == port) {
-      //(*it)->close();
       (*it)->setInUse(false);
-      //delete (*it);
-      //_ftps.erase(it);
       break;
     }
     ++it;
   }
+}
+
+void AConnection::enableRedirection(bool value)
+{
+  _redirection = value;
+}
+
+bool AConnection::redirectionActive(void) const
+{
+  return (_redirection);
+}
+
+void AConnection::broadcast(std::string const& msg)
+{
+  _co_manager.broadcast(_mac, msg);
+}
+
+void AConnection::listen(std::string const& mac, bool enable)
+{
+  if (enable) {
+    _listened.push_front(mac);
+  } else {
+    std::list<std::string>::iterator it = _listened.begin();
+    while (it != _listened.end()) {
+      if ((*it) == mac) {
+	it = _listened.erase(it);
+      } else {
+	++it;
+      }
+    }
+  }
+}
+
+bool AConnection::isListened(std::string const& mac) const
+{
+  for (auto &it : _listened) {
+    if (it == mac) {
+      return (true);
+    }
+  }
+  return (false);
 }

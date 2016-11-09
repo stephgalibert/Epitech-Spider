@@ -5,14 +5,15 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:07:05 2016 stephane galibert
-// Last update Tue Nov  8 19:14:05 2016 stephane galibert
+// Last update Tue Nov  8 23:53:13 2016 stephane galibert
 //
 
 #include "TCPServer.hpp"
 
 TCPServer::TCPServer(boost::asio::io_service &io_service, int port,
-		     RequestHandler &req, ServerConfig &config, PluginManager &pm)
-  : AServer(io_service, port, req, config, pm),
+		     RequestHandler &req, ServerConfig &config, PluginManager &pm,
+		     ConnectionManager &cm)
+  : AServer(io_service, port, req, config, pm, cm),
     _context(boost::asio::ssl::context::sslv23),
     _acceptor(_io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port))
 {

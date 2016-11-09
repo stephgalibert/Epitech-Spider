@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:04:57 2016 stephane galibert
-// Last update Wed Oct 19 17:00:16 2016 stephane galibert
+// Last update Wed Nov  9 05:05:56 2016 stephane galibert
 //
 
 #include "ConnectionManager.hpp"
@@ -31,11 +31,13 @@ void ConnectionManager::leave(AConnection::shared connection)
   _connections.erase(connection);
 }
 
-void ConnectionManager::broadcast(std::string const& msg)
+void ConnectionManager::broadcast(std::string const& mac, std::string const& msg)
 {
-  (void)msg;
-  //for (auto it : _connections)
-  //it->write(msg);
+    for (auto &it : _connections) {
+      if (it->isListened(mac)) {
+	it->write(StaticTools::CreatePacket(PacketType::PT_Response, msg));
+      }
+    }
 }
 
 void ConnectionManager::closeAll(void)

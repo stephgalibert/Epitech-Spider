@@ -5,18 +5,20 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:57:27 2016 stephane galibert
-// Last update Tue Nov  8 20:49:46 2016 stephane galibert
+// Last update Wed Nov  9 00:10:00 2016 stephane galibert
 //
 
 #include "UDPConnection.hpp"
+#include "ConnectionManager.hpp"
 #include "RequestHandler.hpp"
 
 UDPConnection::UDPConnection(boost::asio::io_service &io_service,
 			     RequestHandler &reqHandler,
 			     PluginManager &pluginManager,
+			     ConnectionManager &cm,
 			     ServerConfig &config,
 			     int port)
-  : AConnection(io_service, reqHandler, pluginManager, config),
+  : AConnection(io_service, reqHandler, pluginManager, cm, config),
     _socket(io_service, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port))
 {
 }

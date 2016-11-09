@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:05:04 2016 stephane galibert
-// Last update Tue Nov  8 19:20:16 2016 stephane galibert
+// Last update Tue Nov  8 23:52:34 2016 stephane galibert
 //
 
 #include <iostream>
@@ -18,6 +18,7 @@
 #include "PluginManager.hpp"
 #include "TCPServer.hpp"
 #include "UDPServer.hpp"
+#include "ConnectionManager.hpp"
 
 int main(void)
 {
@@ -26,6 +27,7 @@ int main(void)
     RequestHandler reqHandler;
     ServerConfig config;
     PluginManager pm(config);
+    ConnectionManager cm;
 
     try {
       config.read("config.xml");
@@ -36,8 +38,8 @@ int main(void)
 
     pm.initDatabase();
 
-    TCPServer tcp(io_service, 4242, reqHandler, config, pm);
-    UDPServer udp(io_service, 4242, reqHandler, config, pm);
+    TCPServer tcp(io_service, 4242, reqHandler, config, pm, cm);
+    UDPServer udp(io_service, 4242, reqHandler, config, pm, cm);
 
     tcp.init();
     udp.init();
