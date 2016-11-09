@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Nov  8 15:46:09 2016 stephane galibert
-// Last update Wed Nov  9 04:01:13 2016 stephane galibert
+// Last update Wed Nov  9 14:11:49 2016 stephane galibert
 //
 
 #include "AConnection.hpp"
@@ -23,8 +23,7 @@ AConnection::AConnection(boost::asio::io_service &io_service,
     _co_manager(cm),
     _config(config),
     _privilege(Privilege::PL_USER),
-    _running(false),
-    _redirection(false)
+    _running(false)
 {
 }
 
@@ -131,21 +130,6 @@ void AConnection::deleteFTP(unsigned short port)
     }
     ++it;
   }
-}
-
-void AConnection::enableRedirection(bool value)
-{
-  _redirection = value;
-}
-
-bool AConnection::redirectionActive(void) const
-{
-  return (_redirection);
-}
-
-void AConnection::broadcast(std::string const& msg)
-{
-  _co_manager.broadcast(_mac, msg);
 }
 
 void AConnection::listen(std::string const& mac, bool enable)

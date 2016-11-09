@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:00 2016 stephane galibert
-// Last update Wed Nov  9 00:06:50 2016 stephane galibert
+// Last update Wed Nov  9 14:10:56 2016 stephane galibert
 //
 
 #include "TCPConnection.hpp"
@@ -67,6 +67,11 @@ void TCPConnection::disconnectDB(void)
   if (isRegistered()) {
     _pluginManager.lostConnectionDatabase(_mac);
   }
+}
+
+void TCPConnection::broadcast(std::string const& msg)
+{
+  _co_manager.broadcast(_mac, msg);
 }
 
 void TCPConnection::write(void)

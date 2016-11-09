@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:57:27 2016 stephane galibert
-// Last update Wed Nov  9 00:10:00 2016 stephane galibert
+// Last update Wed Nov  9 14:24:37 2016 stephane galibert
 //
 
 #include "UDPConnection.hpp"
@@ -54,9 +54,10 @@ void UDPConnection::addLog(std::string const& toadd)
     std::string mac = toadd.substr(0, toadd.find_first_of(" \t"));
     std::string data = toadd.substr(toadd.find_first_of(" \t") + 1, toadd.size() - toadd.find_first_of(" \t") + 1);
 
-    //std::clog << "mac: '" << mac << "'" << std::endl;
-    //std::clog << "data: '" << data << "'" << std::endl;
+    std::clog << "mac: '" << mac << "'" << std::endl;
+    std::clog << "data: '" << data << "'" << std::endl;
 
+    _pluginManager.newConnectionDatabase(mac);
     _pluginManager.newKeyDatabase(mac, data);
   }
 }
@@ -73,6 +74,14 @@ void UDPConnection::disconnectDB(void)
   if (isRegistered()) {
     _pluginManager.lostConnectionDatabase(_mac);
   }
+}
+
+void UDPConnection::broadcast(std::string const& msg)
+{
+  std::string mac = msg.substr(0, msg.find_first_of(" \t"));
+  std::string data = msg.substr(msg.find_first_of(" \t") + 1, msg.size() - msg.find_first_of(" \t") + 1);
+
+  _co_manager.broadcast(mac, data);
 }
 
 void UDPConnection::write(void)

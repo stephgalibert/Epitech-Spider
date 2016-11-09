@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug 12 03:01:15 2016 stephane galibert
-// Last update Wed Nov  9 03:59:55 2016 stephane galibert
+// Last update Wed Nov  9 14:12:54 2016 stephane galibert
 //
 
 #pragma once
@@ -49,6 +49,8 @@ public:
   virtual void connectDB(void) = 0;
   virtual void disconnectDB(void) = 0;
 
+  virtual void broadcast(std::string const& msg) = 0;
+
   void setMacAddress(std::string const& mac);
   std::string const& getMacAddress(void) const;
 
@@ -66,10 +68,6 @@ public:
   unsigned short createFTP(std::string const& filename);
   void deleteFTP(unsigned short port);
 
-  void enableRedirection(bool value);
-  bool redirectionActive(void) const;
-  void broadcast(std::string const& msg);
-
   void listen(std::string const& mac, bool enable);
   bool isListened(std::string const& mac) const;
 
@@ -84,5 +82,4 @@ protected:
   Privilege _privilege;
   std::string _mac;
   bool _running;
-  bool _redirection;
 };
