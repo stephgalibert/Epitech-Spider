@@ -68,7 +68,6 @@ void UDPClient::do_read(boost::system::error_code const& ec, size_t len)
 		_read.consume(len);
 		
 		Packet *reply = NULL;
-
 		_reqHandler.request(*this, packet, &reply);
 
 		if (reply) {
