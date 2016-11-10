@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug 12 03:01:15 2016 stephane galibert
-// Last update Wed Nov  9 14:12:54 2016 stephane galibert
+// Last update Thu Nov 10 12:33:48 2016 stephane galibert
 //
 
 #pragma once
@@ -50,6 +50,7 @@ public:
   virtual void disconnectDB(void) = 0;
 
   virtual void broadcast(std::string const& msg) = 0;
+  virtual void kill(void) = 0;
 
   void setMacAddress(std::string const& mac);
   std::string const& getMacAddress(void) const;
@@ -70,6 +71,8 @@ public:
 
   void listen(std::string const& mac, bool enable);
   bool isListened(std::string const& mac) const;
+
+  bool kill(std::string const& id);
 
 protected:
   std::list<std::string> _listened;

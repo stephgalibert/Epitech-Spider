@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:00:55 2016 stephane galibert
-// Last update Wed Nov  9 14:10:21 2016 stephane galibert
+// Last update Thu Nov 10 12:30:46 2016 stephane galibert
 //
 
 #pragma once
@@ -43,6 +43,7 @@ public:
   virtual void disconnectDB(void);
 
   virtual void broadcast(std::string const& msg);
+  virtual void kill(void);
 
   SSLSocket::lowest_layer_type& socket(void);
 
@@ -55,7 +56,6 @@ protected:
   void read(void);
   void handshake(void);
 
-  //ConnectionManager &_co_manager;
   SSLSocket _socket;
 
   boost::asio::streambuf _read;

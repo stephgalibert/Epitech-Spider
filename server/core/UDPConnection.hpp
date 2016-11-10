@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:00:50 2016 stephane galibert
-// Last update Wed Nov  9 14:10:30 2016 stephane galibert
+// Last update Thu Nov 10 12:34:21 2016 stephane galibert
 //
 
 #pragma once
@@ -40,6 +40,7 @@ public:
   virtual void disconnectDB(void);
 
   virtual void broadcast(std::string const& msg);
+  virtual void kill(void);
 
 protected:
   virtual void do_write(boost::system::error_code const& ec, size_t len);

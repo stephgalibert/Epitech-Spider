@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:19 2016 stephane galibert
-// Last update Wed Nov  9 05:44:50 2016 stephane galibert
+// Last update Thu Nov 10 12:26:24 2016 stephane galibert
 //
 
 #include "Console.hpp"
@@ -17,13 +17,14 @@ Console::Console(std::string const& ip, std::string const& port)
 {
   _cmds["help"] = std::bind(&Console::cmd_help, this, std::placeholders::_1);
   _cmds["dump"] = std::bind(&Console::cmd_dump, this, std::placeholders::_1);
-  _cmds["exit"] = std::bind(&Console::cmd_exit, this, std::placeholders::_1);
+  //_cmds["exit"] = std::bind(&Console::cmd_exit, this, std::placeholders::_1);
   _cmds["reload"] = std::bind(&Console::cmd_reload, this, std::placeholders::_1);
   _cmds["set"] = std::bind(&Console::cmd_set, this, std::placeholders::_1);
   _cmds["get"] = std::bind(&Console::cmd_get, this, std::placeholders::_1);
   _cmds["sql"] = std::bind(&Console::cmd_sql, this, std::placeholders::_1);
   _cmds["close"] = std::bind(&Console::cmd_close, this, std::placeholders::_1);
   _cmds["listen"] = std::bind(&Console::cmd_listen, this, std::placeholders::_1);
+  _cmds["kill"] = std::bind(&Console::cmd_kill, this, std::placeholders::_1);
   _running = false;
   _remoteIP = ip;
   _remotePort = port;
@@ -52,7 +53,6 @@ void Console::init(void)
 {
   try {
     _socket.set_verify_mode(boost::asio::ssl::verify_peer);
-    //_socket.set_verify_callback(boost::bind(&Console::verify_crt, this, _1, _2));
     _context.load_verify_file("server.crt");
   } catch (std::exception const& e) {
     std::cerr << "console init: " << e.what() << std::endl;
@@ -401,10 +401,7 @@ void Console::cmd_listen(std::vector<std::string> const& av)
     if (reply->MAGIC == MAGIC_NUMBER) {
       if (reply->type != PacketType::PT_Error) {
 	Listen listen(_io_service, _socket);
-	//listen.init();
-	//listen.start();
 	listen.listen();
-	//listen.close();
 
 	builder.addValue("enable", "false");
 	write(StaticTools::CreatePacket(PacketType::PT_Command, builder.get()));
@@ -419,6 +416,31 @@ void Console::cmd_listen(std::vector<std::string> const& av)
       }
     }
   } catch (std::exception const& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+  }
+}
+
+void Console::cmd_kill(std::vector<std::string> const& av)
+{
+  //JSONBuilder builder;
+
+  if (av.size() < 2) {
+    std::cerr << "Usage: kill [address mac]" << std::endl;
+    return ;
+  }
+
+  /*builder.addValue("name", av[0]);
+    builder.addValue("param", av[1]);*/
+
+  try {
+    write(StaticTools::CreatePacket(PacketType::PT_Kill, av[1]));
+    Packet const *reply = read();
+
+    if (reply->MAGIC == MAGIC_NUMBER) {
+      std::clog << std::string(reply->data, reply->size) << std::endl;
+    }
+
+  } catch(std::exception const& e) {
     std::cerr << "Error: " << e.what() << std::endl;
   }
 }

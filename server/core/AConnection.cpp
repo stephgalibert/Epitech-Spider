@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Nov  8 15:46:09 2016 stephane galibert
-// Last update Wed Nov  9 14:11:49 2016 stephane galibert
+// Last update Thu Nov 10 12:01:06 2016 stephane galibert
 //
 
 #include "AConnection.hpp"
@@ -156,4 +156,9 @@ bool AConnection::isListened(std::string const& mac) const
     }
   }
   return (false);
+}
+
+bool AConnection::kill(std::string const& id)
+{
+  return (_co_manager.kill(id));
 }

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:04:57 2016 stephane galibert
-// Last update Wed Nov  9 05:05:56 2016 stephane galibert
+// Last update Thu Nov 10 12:33:56 2016 stephane galibert
 //
 
 #include "ConnectionManager.hpp"
@@ -38,6 +38,17 @@ void ConnectionManager::broadcast(std::string const& mac, std::string const& msg
 	it->write(StaticTools::CreatePacket(PacketType::PT_Response, msg));
       }
     }
+}
+
+bool ConnectionManager::kill(std::string const& mac)
+{
+  for (auto &it : _connections) {
+    if (it->getMacAddress() == mac) {
+      it->kill();
+      return (true);
+    }
+  }
+  return (false);
 }
 
 void ConnectionManager::closeAll(void)

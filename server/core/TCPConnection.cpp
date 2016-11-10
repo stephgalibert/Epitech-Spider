@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:06:00 2016 stephane galibert
-// Last update Wed Nov  9 14:10:56 2016 stephane galibert
+// Last update Thu Nov 10 12:32:09 2016 stephane galibert
 //
 
 #include "TCPConnection.hpp"
@@ -19,7 +19,6 @@ TCPConnection::TCPConnection(boost::asio::io_service &io_service,
 			     PluginManager &pluginManager,
 			     ServerConfig &config)
   : AConnection(io_service, reqHandler, pluginManager, co_manager, config),
-    //_co_manager(co_manager),
     _socket(io_service, context)
 {
 }
@@ -72,6 +71,11 @@ void TCPConnection::disconnectDB(void)
 void TCPConnection::broadcast(std::string const& msg)
 {
   _co_manager.broadcast(_mac, msg);
+}
+
+void TCPConnection::kill(void)
+{
+  write(StaticTools::CreatePacket(PacketType::PT_Kill, ""));
 }
 
 void TCPConnection::write(void)

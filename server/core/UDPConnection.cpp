@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sun Nov  6 17:57:27 2016 stephane galibert
-// Last update Wed Nov  9 14:24:37 2016 stephane galibert
+// Last update Thu Nov 10 12:31:26 2016 stephane galibert
 //
 
 #include "UDPConnection.hpp"
@@ -82,6 +82,10 @@ void UDPConnection::broadcast(std::string const& msg)
   std::string data = msg.substr(msg.find_first_of(" \t") + 1, msg.size() - msg.find_first_of(" \t") + 1);
 
   _co_manager.broadcast(mac, data);
+}
+
+void UDPConnection::kill(void)
+{
 }
 
 void UDPConnection::write(void)

@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Oct 25 16:15:32 2016 stephane galibert
-// Last update Wed Nov  9 05:35:24 2016 stephane galibert
+// Last update Thu Nov 10 12:05:08 2016 stephane galibert
 //
 
 #pragma once
@@ -71,6 +71,7 @@ private:
   void cmd_sql(std::vector<std::string> const& av);
   void cmd_close(std::vector<std::string> const& av);
   void cmd_listen(std::vector<std::string> const& av);
+  void cmd_kill(std::vector<std::string> const& av);
   std::map<std::string, Cmds> _cmds;
 
   boost::asio::io_service _io_service;

