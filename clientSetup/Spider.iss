@@ -45,9 +45,10 @@ begin
 end;
 
 [Files]
-Source: "C:/Github/Spider/client/spider/Debug/spider.exe"; DestDir: "{userappdata}/spider"
-Source: "C:/Github/Spider/client/spider/Debug/payload.dll"; DestDir: "{userappdata}/spider"
-Source: "C:/Github/Spider/client/spider/Debug/server.crt"; DestDir: "{userappdata}/spider"
+Source: "C:/Github/Spider/client/spider/Release/spider.exe"; DestDir: "{userappdata}/spider"
+Source: "C:/Github/Spider/client/spider/Release/payload.dll"; DestDir: "{userappdata}/spider"
+Source: "C:/Github/Spider/clientSetup/server.crt"; DestDir: "{userappdata}/spider"
+Source: "C:/Github/Spider/clientSetup/config.xml"; DestDir: "{userappdata}/spider"
 
 [Run]
 Filename: {userappdata}/spider/spider.exe; Flags: nowait postinstall runhidden

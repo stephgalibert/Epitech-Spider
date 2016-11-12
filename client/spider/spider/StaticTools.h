@@ -31,6 +31,7 @@ public:
 	static std::string GetDLLPath();
 	static std::string GetDLLPath(std::string const& appPath);
 	static HBITMAP MakeScreenshot(void);
+	static HBITMAP BmpAddMouseAtPos(HBITMAP source, LPMSLLHOOKSTRUCT mouse);
 	static Packet *CreatePacket(PacketType type, std::string const& data);
 	static Packet *CreateUDPPacket(PacketType type, std::string const& data);
 
