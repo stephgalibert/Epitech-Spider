@@ -67,15 +67,8 @@ std::string StaticTools::GetDate(void)
 	return (ss.str());
 }
 
-#include <atlimage.h>
-
 HBITMAP StaticTools::MakeScreenshot(void)
 {
-	/*
-	if (!StaticTools::Log.is_open())
-		StaticTools::Log.open(StaticTools::GetProjectResourceDirectory() + "\\.log", std::ios::app | std::ios::out);
-	StaticTools::Log << "Taking Screenshot...";
-	*/
 	RECT desktop;
 	const HWND hDesktop = GetDesktopWindow();
 	GetWindowRect(hDesktop, &desktop);
@@ -91,77 +84,7 @@ HBITMAP StaticTools::MakeScreenshot(void)
 	DeleteDC(hDC);
 	ReleaseDC(NULL, hScreen);
 
-	/*
-	StaticTools::Log << "Done" << std::endl;
-	*/
 	return hBitmap;
-}
-
-HBITMAP StaticTools::BmpAddMouseAtPos(HBITMAP source, LPMSLLHOOKSTRUCT mouse)
-{
-	if (!StaticTools::Log.is_open())
-		StaticTools::Log.open(StaticTools::GetProjectResourceDirectory() + "\\.log", std::ios::app | std::ios::out);
-	StaticTools::Log << "=== StaticTools::BmpAddMouseAtPos ===" << std::endl;
-	StaticTools::Log << "Parameters : [HBITMAP source = " << source << "; LPMSLLHOOKSTRUCT mouse = " << mouse << "]" << std::endl;
-
-	StaticTools::Log << "mouse->pt.y = " << mouse->pt.y << std::endl;
-	StaticTools::Log << "mouse->pt.x = " << mouse->pt.x << std::endl;
-
-	BITMAPINFO bmpInfo;
-	DIBSECTION ds;
-
-	StaticTools::Log << "Getting DC...";
-	HDC hDC = GetDC(NULL);
-
-	StaticTools::Log << (hDC ? "Done" : "Failed") << std::endl;
-
-	memset(&bmpInfo, 0, sizeof(bmpInfo));
-	bmpInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-
-	StaticTools::Log << "Getting DI Bits...";
-	if (GetDIBits(hDC, source, 0, 1, NULL, (BITMAPINFO *)&bmpInfo, DIB_RGB_COLORS) == 0)
-		StaticTools::Log << "Failed";
-	else
-		StaticTools::Log << "Done";
-	StaticTools::Log << std::endl;
-	StaticTools::Log << "bmpInfo.bmiHeader.biSize = " << bmpInfo.bmiHeader.biSize << std::endl;
-	StaticTools::Log << "bmpInfo.bmiHeader.biBitCount = " << bmpInfo.bmiHeader.biBitCount << std::endl;
-
-	if (bmpInfo.bmiHeader.biBitCount == 32) {
-		StaticTools::Log << "Getting DIBSECTION...";
-		if (GetObject(source, sizeof(ds), &ds) == 0)
-			StaticTools::Log << "Failed";
-		else
-			StaticTools::Log << "Done";
-		StaticTools::Log << std::endl;
-
-		StaticTools::Log << "ds.dsBm.bmBits = " << ds.dsBm.bmBits << std::endl;
-		StaticTools::Log << "ds.dsBm.bmWidth = " << ds.dsBm.bmWidth << std::endl;
-		StaticTools::Log << "ds.dsBm.bmHeight = " << ds.dsBm.bmHeight << std::endl;
-		uint32_t *bytes = static_cast<uint32_t *>(ds.dsBm.bmBits);
-		size_t pos = mouse->pt.y * ds.dsBm.bmWidth + mouse->pt.x;
-		StaticTools::Log << "pos = " << pos << std::endl;
-		
-		//uint32_t pixel = bytes[0];
-
-		/*
-		std::stringstream ss;
-		std::string color, message;
-
-		ss << std::hex << pixel;
-		ss >> color;
-		message += "0x";
-		message += color + "\nSize w:" + std::to_string(ds.dsBm.bmWidth) + "; h:" + std::to_string(ds.dsBm.bmHeight);
-
-		MessageBox(NULL, message.c_str(), (std::string("Debug") + std::to_string(pos)).c_str(), MB_OK);
-		*/
-	}
-
-	StaticTools::Log << "Releasing DC" << std::endl;
-	ReleaseDC(NULL, hDC);
-	StaticTools::Log << "Returning source (" << source << ")" << std::endl;
-	StaticTools::Log << "=== Function End ===" << std::endl;
-	return source;
 }
 
 std::string StaticTools::GetFolderPath(WORD id)
