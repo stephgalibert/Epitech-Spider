@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Mon Nov  7 17:21:45 2016 stephane galibert
-// Last update Tue Nov  8 21:26:44 2016 stephane galibert
+// Last update Sat Nov 12 19:57:42 2016 stephane galibert
 //
 
 #include "FTPServer.hpp"
@@ -42,10 +42,8 @@ void FTPServer::open(void)
 
 void FTPServer::close(void)
 {
-  //std::clog << "shuting down FTP server ..." << std::endl;
   _coManager.closeAll();
   _acceptor.close();
-  //std::clog << "FTP server shutdown success" << std::endl;
 }
 
 unsigned short FTPServer::getPort(void) const

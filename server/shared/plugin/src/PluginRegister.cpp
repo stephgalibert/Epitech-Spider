@@ -1,11 +1,11 @@
 //
-// PluginRegister.cpp for server in /home/galibe_s/project/SpiderServer/shared
+// PluginRegister.cpp for server in /home/galibe_s/rendu/Spider/server/shared/plugin/src
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Tue Aug 16 08:06:26 2016 stephane galibert
-// Last update Tue Nov  1 20:15:56 2016 stephane galibert
+// Started on  Sat Nov 12 19:56:17 2016 stephane galibert
+// Last update Sat Nov 12 19:56:18 2016 stephane galibert
 //
 
 #include "PluginRegister.hpp"

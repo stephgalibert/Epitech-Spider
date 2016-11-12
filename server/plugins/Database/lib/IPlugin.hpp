@@ -1,11 +1,11 @@
 //
-// IPlugin.hpp for server in /home/galibe_s/project/SpiderServer/shared
+// IPlugin.hpp for plugin in /home/galibe_s/rendu/Spider/server/shared/plugin/include
 //
 // Made by stephane galibert
 // Login   <galibe_s@epitech.net>
 //
-// Started on  Fri Aug 19 15:11:21 2016 stephane galibert
-// Last update Fri Aug 19 15:15:15 2016 stephane galibert
+// Started on  Sat Nov 12 19:55:40 2016 stephane galibert
+// Last update Sat Nov 12 19:55:42 2016 stephane galibert
 //
 
 #pragma once

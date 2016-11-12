@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Tue Nov  8 15:46:09 2016 stephane galibert
-// Last update Thu Nov 10 12:01:06 2016 stephane galibert
+// Last update Sat Nov 12 19:58:34 2016 stephane galibert
 //
 
 #include "AConnection.hpp"
@@ -98,12 +98,9 @@ unsigned short AConnection::createFTP(std::string const& filename)
     return (0);
   std::string file = "./clients/" + _mac + "/" + filename;
 
-  //std::clog << "ftp filename: " << file << std::endl;
-
   std::list<FTPServer *>::iterator it = _ftps.begin();
   while (it != _ftps.end()) {
     if (!(*it)->inUse()) {
-      //std::clog << "reusing " << (*it)->getPort() << std::endl;
       (*it)->setInUse(true);
       (*it)->setFilename(file);
       return ((*it)->getPort());
@@ -115,8 +112,6 @@ unsigned short AConnection::createFTP(std::string const& filename)
 
   ftp->open();
   _ftps.push_front(ftp);
-
-  //std::clog << "create new ftp server :" << ftp->getPort() << std::endl;
   return (ftp->getPort());
 }
 

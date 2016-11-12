@@ -5,7 +5,7 @@
 // Login   <galibe_s@epitech.net>
 //
 // Started on  Fri Aug  5 21:04:39 2016 stephane galibert
-// Last update Sun Nov  6 18:34:11 2016 stephane galibert
+// Last update Sat Nov 12 19:58:06 2016 stephane galibert
 //
 
 #include "RequestHandler.hpp"
@@ -26,7 +26,7 @@ void RequestHandler::request(AConnection::shared own, Packet const* received,
   if (received && received->type != PacketType::PT_Response
       && received->type != PacketType::PT_Error) {
     if (received->MAGIC == MAGIC_NUMBER) {
-      std::clog << "read: " << std::string(received->data, received->size) << std::endl;
+
       if (received->type == PacketType::PT_Command) {
 	createCmd(own, received, reply);
       }
