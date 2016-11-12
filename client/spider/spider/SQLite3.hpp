@@ -1,13 +1,3 @@
-//
-// SQLite3.hpp for server in /home/galibe_s/project/SpiderServer/plugins/Database
-//
-// Made by stephane galibert
-// Login   <galibe_s@epitech.net>
-//
-// Started on  Sat Aug 20 10:36:41 2016 stephane galibert
-// Last update Mon Aug 22 09:50:36 2016 stephane galibert
-//
-
 #pragma once
 
 #include <iostream>

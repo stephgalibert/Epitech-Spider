@@ -56,7 +56,6 @@ private:
 	RequestHandler _reqHandler;
 
 	std::thread _runThread;
-	//std::ofstream _ofs;
 
 	std::string _remote;
 	std::string _port;

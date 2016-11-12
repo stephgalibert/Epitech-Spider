@@ -35,9 +35,6 @@ std::string StaticTools::GetMacAddress(void)
 	else {
 		delete (adapter);
 	}
-	/*std::ofstream ofs("debug.log", std::ios::app | std::ios::out);
-	ofs << "ulong: " << (ERROR_INVALID_DATA == ret) << std::endl;
-	ofs << "ulong: " << (ERROR_BUFFER_OVERFLOW == ret) << std::endl;*/
 	return ("");
 }
 

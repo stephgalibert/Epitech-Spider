@@ -1,4 +1,5 @@
 #include "Kill.h"
+
 Kill::Kill(void)
 {
 }

@@ -54,9 +54,6 @@ private:
 	bool is_alt();
 	bool is_shift();
 
-	//std::map<DWORD, std::function<std::string(KeyState)> > _keys;
-
-
 	KeyState _maj;
 	KeyState _shift;
 	KeyState _lshift;

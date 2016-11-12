@@ -39,7 +39,6 @@ AInputType &InputKeyboard::operator>>(LogFile &logger)
 
 AInputType &InputKeyboard::operator>>(IClient &client)
 {
-	//client << StaticTools::CreatePacket(PacketType::PT_KeyboardEvent, _format + _data);
 	client << client.createPacket(PacketType::PT_KeyboardEvent, _format + _data);
 	return (*this);
 }

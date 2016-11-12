@@ -4,7 +4,6 @@
 
 #include "IClient.h"
 #include "LogFile.h"
-//#include "JSONBuilder.h"
 
 class AInputType
 {
