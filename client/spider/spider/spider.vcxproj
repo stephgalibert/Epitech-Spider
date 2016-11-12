@@ -194,7 +194,6 @@
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="RequestBuilder.h" />
     <ClInclude Include="RequestHandler.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="SQLite3.hpp" />
     <ClInclude Include="StaticTools.h" />
     <ClInclude Include="Stealer.h" />

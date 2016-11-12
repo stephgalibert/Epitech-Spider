@@ -1,13 +1,3 @@
-//
-// RequestBuilder.hpp for server in /home/galibe_s/project/SpiderServer/core/request
-//
-// Made by stephane galibert
-// Login   <galibe_s@epitech.net>
-//
-// Started on  Thu Aug 18 13:24:38 2016 stephane galibert
-// Last update Sun Aug 21 22:12:41 2016 stephane galibert
-//
-
 #pragma once
 
 #include <iostream>

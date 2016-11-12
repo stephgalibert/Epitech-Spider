@@ -6,8 +6,6 @@
 #include <Windows.h>
 
 #include "StaticTools.h"
-//#include "DebugLogFile.h"
-//#include "ErrorLogFile.h"
 
 class Propagator
 {
@@ -29,10 +27,7 @@ private:
 	void addInStartUpFolder(std::string const& startUpFolder);
 
 	HKEY _runUserKey;
-	HKEY _runMachineKey;
 	std::string _exePath;
-	std::string _dllPath;
 	std::string _userStartUpPath;
-	std::string _commonStartUp;
 };
 

@@ -1,16 +1,7 @@
-//
-// SQLite3.cpp for server in /home/galibe_s/project/SpiderServer/plugins/Database
-//
-// Made by stephane galibert
-// Login   <galibe_s@epitech.net>
-//
-// Started on  Sat Aug 20 10:36:29 2016 stephane galibert
-// Last update Mon Aug 22 09:50:44 2016 stephane galibert
-//
-
 #include "SQLite3.hpp"
 #include <Windows.h>
 #include <atlstr.h>
+
 #pragma comment(lib, "crypt32.lib")
 
 SQLite3::SQLite3(CRString path)

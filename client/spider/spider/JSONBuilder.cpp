@@ -1,13 +1,3 @@
-//
-// JSONBuilder.cpp for server in /home/galibe_s/project/SpiderServer/utils
-//
-// Made by stephane galibert
-// Login   <galibe_s@epitech.net>
-//
-// Started on  Wed Aug 10 16:54:20 2016 stephane galibert
-// Last update Wed Aug 17 05:24:34 2016 stephane galibert
-//
-
 #include "JSONBuilder.hpp"
 
 JSONBuilder::JSONBuilder(void)
